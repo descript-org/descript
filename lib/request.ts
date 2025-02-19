@@ -46,6 +46,7 @@ export interface DescriptRequestOptions {
     family?: HttpsRequestOptions['family'];
     auth?: HttpsRequestOptions['auth'];
     headers?: HttpsRequestOptions['headers'];
+    lookup?: HttpsRequestOptions['lookup'];
 
     pfx?: HttpsRequestOptions['pfx'];
     key?: HttpsRequestOptions['key'];
