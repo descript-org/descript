@@ -34,7 +34,7 @@ const block1 = de.http({
                 return false;
             }
 
-            return DEFAULT_OPTIONS.isError?.(error);
+            return DEFAULT_OPTIONS.isError?.(error) || false;
         },
         isRetryAllowed: (error, requestOptions) => {
             const method = requestOptions.httpOptions.method;
@@ -51,7 +51,7 @@ const block1 = de.http({
                 return true;
             }
 
-            return DEFAULT_OPTIONS.isRetryAllowed?.(error, requestOptions);
+            return DEFAULT_OPTIONS.isRetryAllowed?.(error, requestOptions) || false;
         },
     },
 
