@@ -183,6 +183,9 @@ export class RequestOptions {
         if (options.auth) {
             this.httpOptions.auth = options.auth;
         }
+        if (options.lookup) {
+            this.httpOptions.lookup = options.lookup;
+        }
 
         //  Нужно для логов.
         this.url = url_.format({
