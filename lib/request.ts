@@ -85,7 +85,7 @@ export interface DescriptRequestOptions {
 
 //  ---------------------------------------------------------------------------------------------------------------  //
 
-export const DEFAULT_OPTIONS = {
+export const DEFAULT_OPTIONS: DescriptRequestOptions = {
     method: 'GET',
     protocol: 'http:',
     hostname: 'localhost',

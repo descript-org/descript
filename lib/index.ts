@@ -6,7 +6,7 @@ import Logger, { EVENT } from './logger';
 import type { LoggerEvent, LoggerInterface } from './logger';
 import Cache, { CacheInterface } from './cache';
 
-import request, { DEFAULT_OPTIONS } from './request';
+import request from './request';
 import type { GenerateId, DescriptBlockDeps, DescriptBlockId } from './depsDomain';
 import Block from './block';
 import ArrayBlock from './arrayBlock';
@@ -184,7 +184,6 @@ export {
     Cache,
     CacheInterface,
     request,
-    DEFAULT_OPTIONS as DEFAULT_HTTP_OPTIONS,
     ERROR_ID,
     createError as error,
     isError,
