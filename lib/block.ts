@@ -181,7 +181,7 @@ abstract class BaseBlock<
 
         options.lifecycle = this.extendLifecycle(what, by);
 
-        options.timeout = by.timeout || what.timeout || 0;
+        options.timeout = by.timeout || what.timeout;
 
         options.key = (by.key || what.key) as BlockOptions<
         Context, ExtendedParamsOut, ExtendedBlockResult,

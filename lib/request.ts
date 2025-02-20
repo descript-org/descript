@@ -83,6 +83,12 @@ export interface DescriptRequestOptions {
     agent?: HttpsAgent | HttpsAgentOptions | false | null;
 }
 
+export interface BlockRequestOptions {
+    name?: NonNullable<DescriptRequestOptions['extra']>['name'];
+    required?: boolean;
+    timeout: DescriptRequestOptions['timeout'];
+}
+
 //  ---------------------------------------------------------------------------------------------------------------  //
 
 export const DEFAULT_OPTIONS: DescriptRequestOptions = {

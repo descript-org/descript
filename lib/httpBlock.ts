@@ -1,7 +1,7 @@
 import Block from './block' ;
 import { ERROR_ID, createError } from './error' ;
 
-import type { DescriptRequestOptions } from './request';
+import type { DescriptRequestOptions, BlockRequestOptions } from './request';
 import request from './request' ;
 
 import extend from './extend' ;
@@ -99,7 +99,7 @@ export interface DescriptHttpBlockDescription<
 
     isJson?: boolean;
 
-    prepareRequestOptions?: (options: DescriptRequestOptions) => DescriptRequestOptions;
+    prepareRequestOptions?: (httpOptions: DescriptRequestOptions, blockOptions: BlockRequestOptions) => DescriptRequestOptions;
 
     parseBody?: (result: {body: DescriptHttpResult['body']; headers: DescriptHttpResult['headers']}, context: Context) =>
     HTTPResult;
@@ -326,7 +326,11 @@ class HttpBlock<
         }
 
         if (typeof block.prepareRequestOptions === 'function') {
-            options = block.prepareRequestOptions(options);
+            options = block.prepareRequestOptions(options, {
+                name: this.options.name,
+                required: this.options.required,
+                timeout: this.options.timeout,
+            });
         }
 
         let result: DescriptHttpResult | undefined = undefined;
