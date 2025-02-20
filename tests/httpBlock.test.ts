@@ -240,6 +240,73 @@ describe('http', <
             expect(headers[ 'x-b' ]).toBe('B');
         });
 
+        it('custom headers at prepare_request_options', async() => {
+            const path = getPath();
+
+            const spy = jest.fn((req, res) => res.end());
+
+            fake.add(path, spy);
+
+            const block = baseBlock({
+                block: {
+                    pathname: path,
+                    timeout: 150,
+                    prepareRequestOptions: (requestOptions, blockOptions) => {
+                        requestOptions.headers = requestOptions.headers || {};
+                        requestOptions.headers['x-timeout-header'] = String(requestOptions.timeout ?? blockOptions.timeout);
+                        requestOptions.headers['x-required-header'] = blockOptions.required ? 'true' : 'false';
+                        return requestOptions;
+                    },
+                },
+                options: {
+                    required: true,
+                    timeout: 250,
+                },
+            });
+
+            await de.run(block);
+
+            const headers = spy.mock.calls[ 0 ][ 0 ].headers;
+            expect(headers[ 'x-timeout-header' ]).toBe('150');
+            expect(headers[ 'x-required-header' ]).toBe('true');
+        });
+
+        it('custom headers in child at prepare_request_options', async() => {
+            const path = getPath();
+
+            const spy = jest.fn((req, res) => res.end());
+
+            fake.add(path, spy);
+
+            const parent = baseBlock({
+                block: {
+                    timeout: 100,
+                    pathname: path,
+                    prepareRequestOptions: (requestOptions, blockOptions) => {
+                        requestOptions.headers = requestOptions.headers || {};
+                        requestOptions.headers['x-timeout-header'] = String(requestOptions.timeout ?? blockOptions.timeout);
+                        requestOptions.headers['x-required-header'] = blockOptions.required ? 'true' : 'false';
+                        return requestOptions;
+                    },
+                },
+            });
+
+            const child = parent.extend({
+                block: {
+                    timeout: 200,
+                },
+                options: {
+                    required: true,
+                },
+            });
+
+            await de.run(child);
+
+            const childHeaders = spy.mock.calls[ 0 ][ 0 ].headers;
+            expect(childHeaders[ 'x-timeout-header' ]).toBe('200');
+            expect(childHeaders[ 'x-required-header' ]).toBe('true');
+        });
+
         it('is an object', async() => {
             const path = getPath();
 
@@ -1498,7 +1565,6 @@ describe('http', <
             expect(Buffer.compare(aResult.body, Buffer.from(CONTENT))).toBe(0);
             expect(aContext).toBe(context);
         });
-
     });
 
 });
