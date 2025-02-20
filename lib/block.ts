@@ -193,7 +193,7 @@ abstract class BaseBlock<
         ExtendedBeforeResultOut, ExtendedAfterResultOut, ExtendedErrorResultOut, ExtendedParams
         >['cache'];
 
-        options.required = by.required;
+        options.required = typeof by.required === 'boolean' ? by.required : what.required;
 
         options.logger = by.logger || what.logger;
 
