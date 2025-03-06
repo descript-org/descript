@@ -1,5 +1,5 @@
 import { gunzipSync } from 'node:zlib' ;
-import { expect } from '@jest/globals';
+import { expect } from 'vitest';
 
 expect.extend({
     toBeValidGzip(received) {

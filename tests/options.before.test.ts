@@ -1,3 +1,5 @@
+import { afterAll, beforeAll, describe, expect, it, vi } from 'vitest';
+
 import { getResultBlock, waitForError, waitForValue } from './helpers';
 
 import * as de from '../lib';
@@ -5,7 +7,7 @@ import * as de from '../lib';
 describe('options.before', () => {
 
     it('before gets { params, context }', async() => {
-        const spy = jest.fn();
+        const spy = vi.fn();
         const block = getResultBlock(null).extend({
             options: {
                 before: spy,
@@ -27,7 +29,7 @@ describe('options.before', () => {
 
     [ null, false, 0, '', 42, 'foo', {} ].forEach((beforeResult) => {
         it(`before returns ${ beforeResult }, action never called`, async() => {
-            const spy = jest.fn();
+            const spy = vi.fn();
             const block = getResultBlock(spy).extend({
                 options: {
                     before: () => beforeResult,
@@ -42,7 +44,7 @@ describe('options.before', () => {
     });
 
     it('before throws, action never called', async() => {
-        const spy = jest.fn();
+        const spy = vi.fn();
         const beforeError = de.error('SOME_ERROR');
         const block = getResultBlock(spy).extend({
             options: {
@@ -66,7 +68,7 @@ describe('options.before', () => {
     });
 
     it('before returns promise that rejects, action never called', async() => {
-        const spy = jest.fn();
+        const spy = vi.fn();
         const beforeError = de.error('SOME_ERROR');
         const block = getResultBlock(spy).extend({
             options: {
@@ -127,7 +129,7 @@ describe('options.before', () => {
     });
 
     it('before returns promise that resolves, action never called', async() => {
-        const spy = jest.fn();
+        const spy = vi.fn();
         const beforeResult = {
             foo: 42,
         };
@@ -198,7 +200,7 @@ describe('options.before', () => {
     describe('inheritance', () => {
 
         it('child\'s first, parent\'s second', async() => {
-            const spy = jest.fn();
+            const spy = vi.fn();
             const parent = getResultBlock(null).extend({
                 options: {
                     before: () => spy('PARENT'),
@@ -219,7 +221,7 @@ describe('options.before', () => {
         });
 
         it.each([ null, false, 0, '', 42, 'foo', {} ])('child returns %j, parent never called', async(childBeforeResult) => {
-            const spy = jest.fn();
+            const spy = vi.fn();
             const parent = getResultBlock(null).extend({
                 options: {
                     before: spy,
@@ -301,7 +303,7 @@ describe('options.before', () => {
         });
 
         it('child throws, parent never called', async() => {
-            const spy = jest.fn();
+            const spy = vi.fn();
             const childBeforeError = de.error('SOME_ERROR');
             const parent = getResultBlock(null).extend({
                 options: {

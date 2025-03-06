@@ -1,12 +1,14 @@
+import { describe, expect, it, vi } from 'vitest';
+
 /* eslint-disable jest/no-conditional-expect */
 
 import * as de from '../lib';
 
 describe('de.first', () => {
 
-    it('first block is successful', async() => {
+    it.only('first block is successful', async() => {
         let result1;
-        const spy1 = jest.fn<any, any>(() => {
+        const spy1 = vi.fn<(...args: Array<any>) => any>(() => {
             result1 = {
                 a: 1,
             };
@@ -16,7 +18,7 @@ describe('de.first', () => {
             block: spy1,
         });
 
-        const spy2 = jest.fn();
+        const spy2 = vi.fn();
         const block2 = de.func({
             block: spy2,
         });
@@ -34,7 +36,7 @@ describe('de.first', () => {
 
     it('first block throws', async() => {
         let error1;
-        const spy1 = jest.fn(() => {
+        const spy1 = vi.fn(() => {
             error1 = de.error({
                 id: 'ERROR',
             });
@@ -45,7 +47,7 @@ describe('de.first', () => {
         });
 
         let result2;
-        const spy2 = jest.fn<any, any>(() => {
+        const spy2 = vi.fn<(...args: Array<any>) => any>(() => {
             result2 = {
                 a: 1,
             };
@@ -68,7 +70,7 @@ describe('de.first', () => {
 
     it('second block throws', async() => {
         let error1;
-        const spy1 = jest.fn(() => {
+        const spy1 = vi.fn(() => {
             error1 = de.error({
                 id: 'ERROR',
             });

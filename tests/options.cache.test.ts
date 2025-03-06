@@ -1,3 +1,5 @@
+import { afterAll, beforeAll, describe, expect, it, vi } from 'vitest';
+
 import * as de from '../lib';
 
 import { getResultBlock, getTimeout, waitForValue } from './helpers';
@@ -51,7 +53,7 @@ describe('options.cache, options.key, options.maxage', () => {
         const cache = new Cache();
 
         const blockValue = Symbol();
-        const spy = jest.fn<typeof blockValue, any>(() => blockValue);// as () => typeof blockValue;
+        const spy = vi.fn<typeof blockValue, any>(() => blockValue);// as () => typeof blockValue;
         const block = getResultBlock(spy, 50).extend({
             options: {
                 cache: cache,
@@ -73,7 +75,7 @@ describe('options.cache, options.key, options.maxage', () => {
         const cache = new Cache();
 
         const blockValue = Symbol();
-        const spy = jest.fn(() => blockValue);
+        const spy = vi.fn(() => blockValue);
         const block = getResultBlock(spy, 50).extend({
             options: {
                 cache: cache,
@@ -95,7 +97,7 @@ describe('options.cache, options.key, options.maxage', () => {
         const cache = new Cache();
 
         const blockValue = Symbol();
-        const spy = jest.fn(() => blockValue);
+        const spy = vi.fn(() => blockValue);
         const key = 'KEY';
         const block = getResultBlock(spy, 50).extend({
             options: {
@@ -120,7 +122,7 @@ describe('options.cache, options.key, options.maxage', () => {
         const cache = new Cache();
 
         const blockValue = Symbol();
-        const spy = jest.fn(() => blockValue);
+        const spy = vi.fn(() => blockValue);
         const key = 'KEY';
         const block = getResultBlock(spy, 50).extend({
             options: {
@@ -140,7 +142,7 @@ describe('options.cache, options.key, options.maxage', () => {
     });
 
     it('key is a function and returns undefined', async() => {
-        const spy = jest.fn();
+        const spy = vi.fn();
 
         const data = {
             foo: 42,
@@ -166,7 +168,7 @@ describe('options.cache, options.key, options.maxage', () => {
         const cache = new Cache();
 
         const blockValue = Symbol();
-        const spy = jest.fn(() => blockValue);
+        const spy = vi.fn(() => blockValue);
         const block = getResultBlock(spy, 50).extend({
             options: {
                 cache: cache,
@@ -195,7 +197,7 @@ describe('options.cache, options.key, options.maxage', () => {
             return Promise.resolve(undefined);
         };
 
-        const spy = jest.fn(() => null);
+        const spy = vi.fn(() => null);
         const block = getResultBlock(spy, 50).extend({
             options: {
                 cache: cache,
@@ -222,7 +224,7 @@ describe('options.cache, options.key, options.maxage', () => {
             return Promise.resolve(undefined);
         };
 
-        const spy = jest.fn(() => null);
+        const spy = vi.fn(() => null);
 
         const block = de.func({
             block: ({ generateId }) => {
@@ -286,7 +288,7 @@ describe('options.cache, options.key, options.maxage', () => {
             return Promise.resolve(undefined);
         };
 
-        const spy = jest.fn(() => null);
+        const spy = vi.fn(() => null);
         const block = getResultBlock(spy, 50).extend({
             options: {
                 cache: cache,

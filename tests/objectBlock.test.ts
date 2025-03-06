@@ -1,3 +1,5 @@
+import { describe, expect, it, vi } from 'vitest';
+
 import * as de from '../lib';
 
 import {
@@ -264,12 +266,12 @@ describe('de.object', () => {
     describe('cancel', () => {
 
         it('cancel object, subblocks cancelled too #1', async() => {
-            const actionFooSpy = jest.fn();
+            const actionFooSpy = vi.fn();
             const blockFoo = getResultBlock(null, 150, {
                 onCancel: actionFooSpy,
             });
 
-            const actionBarSpy = jest.fn();
+            const actionBarSpy = vi.fn();
             const blockBar = getResultBlock(null, 150, {
                 onCancel: actionBarSpy,
             });
@@ -300,12 +302,12 @@ describe('de.object', () => {
         });
 
         it('cancel object, subblocks cancelled too #2', async() => {
-            const actionFooSpy = jest.fn();
+            const actionFooSpy = vi.fn();
             const blockFoo = getResultBlock(null, 50, {
                 onCancel: actionFooSpy,
             });
 
-            const actionBarSpy = jest.fn();
+            const actionBarSpy = vi.fn();
             const blockBar = getResultBlock(null, 150, {
                 onCancel: actionBarSpy,
             });
@@ -338,7 +340,7 @@ describe('de.object', () => {
             const errorFoo = de.error('SOME_ERROR');
             const blockFoo = getErrorBlock(errorFoo, 50);
 
-            const actionBarSpy = jest.fn();
+            const actionBarSpy = vi.fn();
             const blockBar = getResultBlock(null, 150, {
                 onCancel: actionBarSpy,
             });

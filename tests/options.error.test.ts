@@ -1,3 +1,5 @@
+import { afterAll, beforeAll, describe, expect, it, vi } from 'vitest';
+
 /* eslint-disable jest/no-conditional-expect */
 import { getErrorBlock, getResultBlock } from './helpers';
 
@@ -8,7 +10,7 @@ describe('options.error', () => {
 
     it('receives { params, context, error }', async() => {
         const error = de.error('ERROR');
-        const spy = jest.fn<any, any>(() => null);
+        const spy = vi.fn<(...args: Array<any>) => any>(() => null);
         const block = getErrorBlock(error).extend({
             options: {
                 error: spy,
@@ -33,7 +35,7 @@ describe('options.error', () => {
         const blockResult = {
             foo: 42,
         };
-        const spy = jest.fn();
+        const spy = vi.fn();
         const block = getResultBlock(blockResult).extend({
             options: {
                 error: spy,
@@ -64,7 +66,7 @@ describe('options.error', () => {
 
     it('throws ReferenceError', async() => {
         const error1 = de.error('ERROR_1');
-        const spy = jest.fn(() => {
+        const spy = vi.fn(() => {
             // eslint-disable-next-line no-undef,@typescript-eslint/ban-ts-comment
             // @ts-ignore
             return x;
@@ -89,7 +91,7 @@ describe('options.error', () => {
     it('throws de.error', async() => {
         const error1 = de.error('ERROR_1');
         let error2;
-        const spy = jest.fn(() => {
+        const spy = vi.fn(() => {
             error2 = de.error('ERROR_2');
 
             throw error2;
@@ -125,7 +127,7 @@ describe('options.error', () => {
 
     it('returns undefined', async() => {
         const error = de.error('ERROR');
-        const spy = jest.fn(() => undefined);
+        const spy = vi.fn(() => undefined);
         const block = getErrorBlock(error).extend({
             options: {
                 error: spy,
@@ -138,7 +140,7 @@ describe('options.error', () => {
 
     it.each([ { foo: 42 }, 0, '', null, false, undefined ])('first returns %j, second never called', async(value) => {
         const error = de.error('ERROR');
-        const spy = jest.fn();
+        const spy = vi.fn();
         const block1 = getErrorBlock(error).extend({
             options: {
                 error: () => value,
@@ -166,7 +168,7 @@ describe('options.error', () => {
                 },
             },
         });
-        const spy = jest.fn<any, any>(() => null);
+        const spy = vi.fn<(...args: Array<any>) => any>(() => null);
         const block2 = block1.extend({
             options: {
                 error: spy,

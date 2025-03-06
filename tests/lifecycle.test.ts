@@ -1,10 +1,12 @@
+import { describe, expect, it, vi } from 'vitest';
+
 import * as de from '../lib';
 
 describe('lifecycle', () => {
 
     it('inheritance', async() => {
         let actionResult;
-        const actionSpy = jest.fn<any, any>(() => {
+        const actionSpy = vi.fn<(...args: Array<any>) => any>(() => {
             actionResult = {
                 a: 1,
             };
@@ -12,17 +14,17 @@ describe('lifecycle', () => {
         });
 
         let parentParamsResult;
-        const parentParamsSpy = jest.fn<any, any>(() => {
+        const parentParamsSpy = vi.fn<(...args: Array<any>) => any>(() => {
             parentParamsResult = {
                 b: 2,
             };
             return parentParamsResult;
         });
 
-        const parentBeforeSpy = jest.fn();
+        const parentBeforeSpy = vi.fn();
 
         let parentAfterResult;
-        const parentAfterSpy = jest.fn<any, any>(() => {
+        const parentAfterSpy = vi.fn<(...args: Array<any>) => any>(() => {
             parentAfterResult = {
                 c: 3,
             };
@@ -39,17 +41,17 @@ describe('lifecycle', () => {
         });
 
         let childParamsResult;
-        const childParamsSpy = jest.fn<any, any>(() => {
+        const childParamsSpy = vi.fn<(...args: Array<any>) => any>(() => {
             childParamsResult = {
                 d: 4,
             };
             return childParamsResult;
         });
 
-        const childBeforeSpy = jest.fn();
+        const childBeforeSpy = vi.fn();
 
         let childAfterResult;
-        const childAfterSpy = jest.fn<any, any>(() => {
+        const childAfterSpy = vi.fn<(...args: Array<any>) => any>(() => {
             childAfterResult = {
                 e: 5,
             };
