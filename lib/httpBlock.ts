@@ -79,16 +79,29 @@ export interface DescriptHttpBlockDescription<
     HTTPResult
 > extends Pick<
     DescriptRequestOptions,
-    'bodyCompress' | 'timeout' | 'isError' | 'isRetryAllowed' | 'maxRetries' | 'retryTimeout' | 'agent' |
-    'auth' | 'ca' | 'cert' | 'ciphers' | 'key' | 'passphrase' | 'pfx' | 'rejectUnauthorized' | 'secureProtocol' | 'servername'
+    'isError' | 'isRetryAllowed' | 'retryTimeout'
     > {
-    protocol?: DescriptHttpBlockDescriptionCallback< string, Params, Context >;
-    hostname?: DescriptHttpBlockDescriptionCallback< string, Params, Context >;
-    port?: DescriptHttpBlockDescriptionCallback< number, Params, Context >;
-    method?: DescriptHttpBlockDescriptionCallback< string, Params, Context >;
-    pathname?: DescriptHttpBlockDescriptionCallback< string, Params, Context >;
-
-    family?: DescriptHttpBlockDescriptionCallback< number, Params, Context >;
+    // sync with EVALUABLE_PROPS
+    agent?: DescriptHttpBlockDescriptionCallback< DescriptRequestOptions['agent'], Params, Context >;
+    auth?: DescriptHttpBlockDescriptionCallback< DescriptRequestOptions['auth'], Params, Context >;
+    bodyCompress?: DescriptHttpBlockDescriptionCallback< DescriptRequestOptions['bodyCompress'], Params, Context >;
+    ca?: DescriptHttpBlockDescriptionCallback< DescriptRequestOptions['ca'], Params, Context >;
+    cert?: DescriptHttpBlockDescriptionCallback< DescriptRequestOptions['cert'], Params, Context >;
+    ciphers?: DescriptHttpBlockDescriptionCallback< DescriptRequestOptions['ciphers'], Params, Context >;
+    family?: DescriptHttpBlockDescriptionCallback< DescriptRequestOptions['family'], Params, Context >;
+    hostname?: DescriptHttpBlockDescriptionCallback< DescriptRequestOptions['hostname'], Params, Context >;
+    key?: DescriptHttpBlockDescriptionCallback< DescriptRequestOptions['key'], Params, Context >;
+    maxRetries?: DescriptHttpBlockDescriptionCallback< DescriptRequestOptions['maxRetries'], Params, Context >;
+    method?: DescriptHttpBlockDescriptionCallback< DescriptRequestOptions['method'], Params, Context >;
+    passphrase?: DescriptHttpBlockDescriptionCallback< DescriptRequestOptions['passphrase'], Params, Context >;
+    pathname?: DescriptHttpBlockDescriptionCallback< DescriptRequestOptions['pathname'], Params, Context >;
+    pfx?: DescriptHttpBlockDescriptionCallback< DescriptRequestOptions['pfx'], Params, Context >;
+    port?: DescriptHttpBlockDescriptionCallback< DescriptRequestOptions['port'], Params, Context >;
+    protocol?: DescriptHttpBlockDescriptionCallback< DescriptRequestOptions['protocol'], Params, Context >;
+    rejectUnauthorized?: DescriptHttpBlockDescriptionCallback< DescriptRequestOptions['rejectUnauthorized'], Params, Context >;
+    secureProtocol?: DescriptHttpBlockDescriptionCallback< DescriptRequestOptions['secureProtocol'], Params, Context >;
+    servername?: DescriptHttpBlockDescriptionCallback< DescriptRequestOptions['servername'], Params, Context >;
+    timeout?: DescriptHttpBlockDescriptionCallback< DescriptRequestOptions['timeout'], Params, Context >;
 
     query?: HttpQuery<Params, Context> | Array<HttpQuery<Params, Context>>;
 
