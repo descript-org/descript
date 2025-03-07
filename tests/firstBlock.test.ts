@@ -6,7 +6,7 @@ import * as de from '../lib';
 
 describe('de.first', () => {
 
-    it.only('first block is successful', async() => {
+    it('first block is successful', async() => {
         let result1;
         const spy1 = vi.fn<(...args: Array<any>) => any>(() => {
             result1 = {
