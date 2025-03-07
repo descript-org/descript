@@ -1,3 +1,5 @@
+import { describe, expect, it, vi } from 'vitest';
+
 import * as de from '../lib' ;
 
 import {
@@ -7,8 +9,6 @@ import {
     getErrorBlock,
     getTimeout,
 } from './helpers' ;
-
-import { describe, it, expect, jest } from '@jest/globals';
 
 //  ---------------------------------------------------------------------------------------------------------------  //
 
@@ -273,12 +273,12 @@ describe('de.array', () => {
     describe('cancel', () => {
 
         it('cancel object, subblocks cancelled too #1', async() => {
-            const actionFooSpy = jest.fn();
+            const actionFooSpy = vi.fn();
             const blockFoo = getResultBlock(null, 150, {
                 onCancel: actionFooSpy,
             });
 
-            const actionBarSpy = jest.fn();
+            const actionBarSpy = vi.fn();
             const blockBar = getResultBlock(null, 150, {
                 onCancel: actionBarSpy,
             });
@@ -310,12 +310,12 @@ describe('de.array', () => {
         });
 
         it('cancel object, subblocks cancelled too #2', async() => {
-            const actionFooSpy = jest.fn();
+            const actionFooSpy = vi.fn();
             const blockFoo = getResultBlock(null, 50, {
                 onCancel: actionFooSpy,
             });
 
-            const actionBarSpy = jest.fn();
+            const actionBarSpy = vi.fn();
             const blockBar = getResultBlock(null, 150, {
                 onCancel: actionBarSpy,
             });
@@ -351,7 +351,7 @@ describe('de.array', () => {
             const errorFoo = de.error('SOME_ERROR');
             const blockFoo = getErrorBlock(errorFoo, 50);
 
-            const actionBarSpy = jest.fn();
+            const actionBarSpy = vi.fn();
             const blockBar = getResultBlock(null, 150, {
                 onCancel: actionBarSpy,
             });

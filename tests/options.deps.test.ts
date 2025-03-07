@@ -1,3 +1,5 @@
+import { describe, expect, it, vi } from 'vitest';
+
 /* eslint-disable jest/no-conditional-expect */
 import * as de from '../lib';
 
@@ -26,7 +28,7 @@ describe('options.deps', () => {
     });
 
     it('no options.deps, deps is empty object', async() => {
-        const spy = jest.fn();
+        const spy = vi.fn();
         const block = de.func({
             block: spy,
         });
@@ -120,7 +122,7 @@ describe('options.deps', () => {
     });
 
     it('block depends on block #1 (deps is id)', async() => {
-        const spy = jest.fn();
+        const spy = vi.fn();
 
         const blockFoo = getResultBlock(() => spy('FOO'), 50);
         const blockBar = getResultBlock(() => spy('BAR'), 50);
@@ -156,7 +158,7 @@ describe('options.deps', () => {
     });
 
     it('block depends on block #2 (deps is array)', async() => {
-        const spy = jest.fn();
+        const spy = vi.fn();
 
         const blockFoo = getResultBlock(() => spy('FOO'), 50);
         const blockBar = getResultBlock(() => spy('BAR'), 50);
@@ -192,7 +194,7 @@ describe('options.deps', () => {
     });
 
     it('block depends on block depends on block', async() => {
-        const spy = jest.fn();
+        const spy = vi.fn();
 
         const blockFoo = getResultBlock(() => spy('FOO'), 50);
         const blockBar = getResultBlock(() => spy('BAR'), 50);
@@ -237,7 +239,7 @@ describe('options.deps', () => {
     });
 
     it('block depends on two blocks', async() => {
-        const spy = jest.fn();
+        const spy = vi.fn();
 
         const blockFoo = getResultBlock(() => spy('FOO'), getTimeout(50, 100));
         const blockBar = getResultBlock(() => spy('BAR'), getTimeout(50, 100));
@@ -279,7 +281,7 @@ describe('options.deps', () => {
     });
 
     it('two block depend on block', async() => {
-        const spy = jest.fn();
+        const spy = vi.fn();
 
         const blockFoo = getResultBlock(() => spy('FOO'), getTimeout(50, 100));
         const blockBar = getResultBlock(() => spy('BAR'), 50);
@@ -325,7 +327,7 @@ describe('options.deps', () => {
         const errorFoo = de.error('SOME_ERROR');
         const blockFoo = getErrorBlock(errorFoo, 50);
 
-        const bodyBar = jest.fn<any, any>(() => undefined);
+        const bodyBar = vi.fn<(...args: Array<any>) => any>(() => undefined);
         const blockBar = getResultBlock(bodyBar, 50);
 
         const block = de.func({
@@ -369,7 +371,7 @@ describe('options.deps', () => {
         const errorBar = de.error('SOME_ERROR_2');
         const blockBar = getErrorBlock(errorBar, 50);
 
-        const bodyQuu = jest.fn();
+        const bodyQuu = vi.fn();
         const blockQuu = getResultBlock(bodyQuu, 50);
 
         const block = de.func({
@@ -541,7 +543,7 @@ describe('options.deps', () => {
         const blockFoo = getResultBlock(dataFoo, 50);
         const blockBar = getResultBlock(null, 50);
 
-        const beforeBar = jest.fn();
+        const beforeBar = vi.fn();
 
         let idFoo: DescriptBlockId;
         const block = de.func({
@@ -589,7 +591,7 @@ describe('options.deps', () => {
 
         const blockQuu = getResultBlock(null, 100);
 
-        const beforeQuu = jest.fn();
+        const beforeQuu = vi.fn();
 
         let idFoo: DescriptBlockId;
         let idBar: DescriptBlockId;
@@ -648,7 +650,7 @@ describe('options.deps', () => {
 
         const blockQuu = getResultBlock(null, 50);
 
-        const beforeQuu = jest.fn();
+        const beforeQuu = vi.fn();
 
         let idFoo: DescriptBlockId;
         let idBar: DescriptBlockId;
@@ -695,7 +697,7 @@ describe('options.deps', () => {
     });
 
     it('wait for result of de.func', async() => {
-        const beforeQuu = jest.fn();
+        const beforeQuu = vi.fn();
 
         const dataFoo = {
             foo: 42,
@@ -822,7 +824,8 @@ describe('options.deps', () => {
         }
     });
 
-    it.each([ Symbol('foo') ])('unresolved deps #1, id is %p', async(id) => {
+    it('unresolved deps #1, id is "foo"', async() => {
+        const id = Symbol('foo');
         const block = getResultBlock(null, 50).extend({
             options: {
                 deps: id,
@@ -839,7 +842,8 @@ describe('options.deps', () => {
         }
     });
 
-    it.each([ Symbol('foo') ])('unresolved deps #2, id is %p', async(id) => {
+    it('unresolved deps #2, id is "foo"', async() => {
+        const id = Symbol('foo');
         const blockFoo = getResultBlock(null, 50);
         const blockBar = getResultBlock(null, 50);
 

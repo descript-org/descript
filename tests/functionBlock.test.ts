@@ -1,3 +1,5 @@
+import { describe, expect, it } from 'vitest';
+
 import { getErrorBlock, getResultBlock, waitForValue } from './helpers';
 
 import * as de from '../lib';

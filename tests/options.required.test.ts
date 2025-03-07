@@ -1,3 +1,5 @@
+import { afterAll, beforeAll, describe, expect, it, vi } from 'vitest';
+
 import http from 'node:http';
 
 import * as de from '../lib';
@@ -60,7 +62,7 @@ describe('options.required', () => {
 
     it('required=true for parent=undefined and child=true', async() => {
         const path = getPath();
-        const spy = jest.fn((req, res) => res.end());
+        const spy = vi.fn((req, res) => res.end());
         fake.add(path, spy);
 
         const parent = de.http({
@@ -89,7 +91,7 @@ describe('options.required', () => {
 
     it('required=false for parent=true and child=false', async() => {
         const path = getPath();
-        const spy = jest.fn((req, res) => res.end());
+        const spy = vi.fn((req, res) => res.end());
         fake.add(path, spy);
 
         const parent = de.http({
@@ -121,7 +123,7 @@ describe('options.required', () => {
 
     it('required=true for parent=true and child=undefined', async() => {
         const path = getPath();
-        const spy = jest.fn((req, res) => res.end());
+        const spy = vi.fn((req, res) => res.end());
         fake.add(path, spy);
 
         const parent = de.http({
@@ -149,7 +151,7 @@ describe('options.required', () => {
 
     it('required=true for parent=false and child=true', async() => {
         const path = getPath();
-        const spy = jest.fn((req, res) => res.end());
+        const spy = vi.fn((req, res) => res.end());
         fake.add(path, spy);
 
         const parent = de.http({

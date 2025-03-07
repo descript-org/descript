@@ -1,3 +1,5 @@
+import { describe, expect, it } from 'vitest';
+
 /* eslint-disable no-console */
 /* eslint-disable jest/no-conditional-expect */
 

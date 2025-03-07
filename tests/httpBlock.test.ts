@@ -1,3 +1,5 @@
+import { afterAll, beforeAll, describe, expect, it, vi } from 'vitest';
+
 import http_ from 'http';
 
 import url_ from 'url';
@@ -15,7 +17,6 @@ import strip_null_and_undefined_values from '../lib/stripNullAndUndefinedValues'
 import type { DescriptBlockOptions, DescriptHttpBlockResult } from '../lib/types';
 import type { DescriptHttpBlockDescription } from '../lib/httpBlock';
 import type { DescriptBlockId } from '../lib/depsDomain';
-import { expect } from '@jest/globals';
 //  ---------------------------------------------------------------------------------------------------------------  //
 
 describe('http', <
@@ -84,7 +85,7 @@ describe('http', <
 
         it.each(PROPS)('%j is a function and it gets { params, context }', async(name, value) => {
             // eslint-disable-next-line @typescript-eslint/no-unused-vars
-            const spy = jest.fn((...args: any) => value);
+            const spy = vi.fn((...args: any) => value);
 
             const block = baseBlock({
                 block: {
@@ -111,7 +112,7 @@ describe('http', <
 
         it.each(PROPS)('%j is a function and it gets { deps }', async(name, value) => {
             // eslint-disable-next-line @typescript-eslint/no-unused-vars
-            const spy = jest.fn((...args: any) => value);
+            const spy = vi.fn((...args: any) => value);
 
             let fooResult;
             let id: DescriptBlockId;
@@ -215,7 +216,7 @@ describe('http', <
         it('is a function', async() => {
             const path = getPath();
 
-            const spy = jest.fn((req, res) => res.end());
+            const spy = vi.fn((req, res) => res.end());
 
             fake.add(path, spy);
 
@@ -243,7 +244,7 @@ describe('http', <
         it('custom headers at prepare_request_options', async() => {
             const path = getPath();
 
-            const spy = jest.fn((req, res) => res.end());
+            const spy = vi.fn((req, res) => res.end());
 
             fake.add(path, spy);
 
@@ -274,7 +275,7 @@ describe('http', <
         it('custom headers in child at prepare_request_options', async() => {
             const path = getPath();
 
-            const spy = jest.fn((req, res) => res.end());
+            const spy = vi.fn((req, res) => res.end());
 
             fake.add(path, spy);
 
@@ -310,11 +311,11 @@ describe('http', <
         it('is an object', async() => {
             const path = getPath();
 
-            const spy = jest.fn((req, res) => res.end());
+            const spy = vi.fn((req, res) => res.end());
 
             fake.add(path, spy);
 
-            const headerSpy = jest.fn(() => 'c');
+            const headerSpy = vi.fn(() => 'c');
             const block = baseBlock({
                 block: {
                     pathname: path,
@@ -339,7 +340,7 @@ describe('http', <
 
             fake.add(path);
 
-            const spy = jest.fn<any, [any]>(() => 'a');
+            const spy = vi.fn<(...args: Array<any>) => string>(() => 'a');
             const block = baseBlock({
                 block: {
                     pathname: path,
@@ -389,7 +390,7 @@ describe('http', <
 
                 fake.add(path);
 
-                const spy = jest.fn();
+                const spy = vi.fn();
 
                 let parentHeaders;
                 const parent = baseBlock({
@@ -418,10 +419,10 @@ describe('http', <
             it('child is an object', async() => {
                 const path = getPath();
 
-                const spy = jest.fn((req, res) => res.end());
+                const spy = vi.fn((req, res) => res.end());
                 fake.add(path, spy);
 
-                const headerSpy = jest.fn<any, [{headers: any}], any>(() => 'b');
+                const headerSpy = vi.fn<(...args: Array<any>) => any>(() => 'b');
 
                 let parentHeaders;
                 const parent = baseBlock({
@@ -463,7 +464,7 @@ describe('http', <
 
         it('is a function', async() => {
             const path = getPath();
-            const spy = jest.fn((req, res) => res.end());
+            const spy = vi.fn((req, res) => res.end());
             fake.add(path, spy);
 
             const block = baseBlock({
@@ -497,7 +498,7 @@ describe('http', <
 
         it('is an object and value is null', async() => {
             const path = getPath();
-            const spy = jest.fn((req, res) => res.end());
+            const spy = vi.fn((req, res) => res.end());
             fake.add(path, spy);
 
             const block = baseBlock({
@@ -540,7 +541,7 @@ describe('http', <
 
         it('is an object and value is undefined', async() => {
             const path = getPath();
-            const spy = jest.fn((req, res) => res.end());
+            const spy = vi.fn((req, res) => res.end());
             fake.add(path, spy);
 
             const block = baseBlock({
@@ -575,7 +576,7 @@ describe('http', <
 
         it('is an object and value is not null or undefined #1', async() => {
             const path = getPath();
-            const spy = jest.fn((req, res) => res.end());
+            const spy = vi.fn((req, res) => res.end());
             fake.add(path, spy);
 
             const block = baseBlock({
@@ -607,7 +608,7 @@ describe('http', <
 
         it('is an object and value is not null or undefined #2', async() => {
             const path = getPath();
-            const spy = jest.fn((req, res) => res.end());
+            const spy = vi.fn((req, res) => res.end());
             fake.add(path, spy);
 
             const block = baseBlock({
@@ -647,7 +648,7 @@ describe('http', <
             const path = getPath();
             fake.add(path);
 
-            const spy = jest.fn();
+            const spy = vi.fn();
             const block = baseBlock({
                 block: {
                     pathname: path,
@@ -671,7 +672,7 @@ describe('http', <
 
         it('is an array of object and function', async() => {
             const path = getPath();
-            const spy = jest.fn((req, res) => res.end());
+            const spy = vi.fn((req, res) => res.end());
             fake.add(path, spy);
 
             const params = {
@@ -735,7 +736,7 @@ describe('http', <
                     },
                 });
 
-                const spy = jest.fn();
+                const spy = vi.fn();
                 const child = parent.extend({
                     block: {
                         query: spy,
@@ -770,7 +771,7 @@ describe('http', <
                     },
                 });
 
-                const spy = jest.fn();
+                const spy = vi.fn();
                 const child = parent.extend({
                     block: {
                         query: {
@@ -794,7 +795,7 @@ describe('http', <
         it('no body', async() => {
             const path = getPath();
 
-            const spy = jest.fn<any, any>((req, res) => res.end());
+            const spy = vi.fn<(...args: Array<any>) => any>((req, res) => res.end());
 
             fake.add(path, spy);
 
@@ -814,7 +815,7 @@ describe('http', <
         it('is a string', async() => {
             const path = getPath();
 
-            const spy = jest.fn<any, any>((req, res) => res.end());
+            const spy = vi.fn<(...args: Array<any>) => any>((req, res) => res.end());
 
             fake.add(path, spy);
 
@@ -836,7 +837,7 @@ describe('http', <
         it('is a number', async() => {
             const path = getPath();
 
-            const spy = jest.fn<any, any>((req, res) => res.end());
+            const spy = vi.fn<(...args: Array<any>) => any>((req, res) => res.end());
 
             fake.add(path, spy);
 
@@ -858,7 +859,7 @@ describe('http', <
         it('is a Buffer', async() => {
             const path = getPath();
 
-            const spy = jest.fn<any, any>((req, res) => res.end());
+            const spy = vi.fn<(...args: Array<any>) => any>((req, res) => res.end());
 
             fake.add(path, spy);
 
@@ -880,7 +881,7 @@ describe('http', <
         it('is a function returning string', async() => {
             const path = getPath();
 
-            const spy = jest.fn<any, any>((req, res) => res.end());
+            const spy = vi.fn<(...args: Array<any>) => any>((req, res) => res.end());
 
             fake.add(path, spy);
 
@@ -902,7 +903,7 @@ describe('http', <
         it('is a function returning Buffer', async() => {
             const path = getPath();
 
-            const spy = jest.fn<any, any>((req, res) => res.end());
+            const spy = vi.fn<(...args: Array<any>) => any>((req, res) => res.end());
 
             fake.add(path, spy);
 
@@ -924,7 +925,7 @@ describe('http', <
         it('is an function returning object', async() => {
             const path = getPath();
 
-            const spy = jest.fn<any, any>((req, res) => res.end());
+            const spy = vi.fn<(...args: Array<any>) => any>((req, res) => res.end());
 
             fake.add(path, spy);
 
@@ -948,7 +949,7 @@ describe('http', <
         it('with body_compress', async() => {
             const path = getPath();
 
-            const spy = jest.fn<any, any>((req, res) => res.end());
+            const spy = vi.fn<(...args: Array<any>) => any>((req, res) => res.end());
 
             fake.add(path, spy);
 
@@ -1418,8 +1419,8 @@ describe('http', <
             const path1 = getPath();
             const path2 = getPath();
 
-            const spy1 = jest.fn((req, res) => res.end());
-            const spy2 = jest.fn((req, res) => res.end());
+            const spy1 = vi.fn((req, res) => res.end());
+            const spy2 = vi.fn((req, res) => res.end());
             fake.add(path1, spy1);
             fake.add(path2, spy2);
 
@@ -1477,7 +1478,7 @@ describe('http', <
             });
 
             const BODY = 'Пока!';
-            const spy = jest.fn<any, any>(() => {
+            const spy = vi.fn<(...args: Array<any>) => any>(() => {
                 return BODY;
             });
 
@@ -1539,7 +1540,7 @@ describe('http', <
             });
 
             const BODY = 'Пока!';
-            const spy = jest.fn<any, any>(() => {
+            const spy = vi.fn<(...args: Array<any>) => any>(() => {
                 return BODY;
             });
 

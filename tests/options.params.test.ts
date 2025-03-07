@@ -1,3 +1,5 @@
+import { describe, expect, it, vi } from 'vitest';
+
 /* eslint-disable jest/no-conditional-expect */
 
 import * as de from '../lib';
@@ -9,7 +11,7 @@ import type { DescriptBlockId } from '../lib/depsDomain';
 describe('options.params', () => {
 
     it('no params', async() => {
-        const spy = jest.fn();
+        const spy = vi.fn();
         const block = getResultBlock(spy);
 
         await de.run(block);
@@ -21,7 +23,7 @@ describe('options.params', () => {
     describe('params is a function', () => {
 
         it('params gets { params, context }', async() => {
-            const spy = jest.fn<any, any>(() => ({}));
+            const spy = vi.fn<(...args: Array<any>) => any>(() => ({}));
             const block = getResultBlock(null).extend({
                 options: {
                     params: spy,
@@ -42,7 +44,7 @@ describe('options.params', () => {
         });
 
         it('params gets { deps }', async() => {
-            const spy = jest.fn();
+            const spy = vi.fn();
 
             let dataFoo;
             let idFoo: DescriptBlockId;
@@ -82,7 +84,7 @@ describe('options.params', () => {
         });
 
         it.each([ undefined, null, false, '', 0, 42 ])('params returns %j', async(paramsResult) => {
-            const spy = jest.fn();
+            const spy = vi.fn();
             const block = getResultBlock(spy).extend({
                 options: {
                     params: () => paramsResult,
@@ -101,7 +103,7 @@ describe('options.params', () => {
         });
 
         it('params returns object, action gets it as { params }', async() => {
-            const spy = jest.fn();
+            const spy = vi.fn();
 
             let params;
 
@@ -147,7 +149,7 @@ describe('options.params', () => {
 
         it('child first, then parent', async() => {
             let parentParams;
-            const parentSpy = jest.fn<any, any>(() => {
+            const parentSpy = vi.fn<(...args: Array<any>) => any>(() => {
                 parentParams = {
                     foo: 42,
                 };
@@ -155,14 +157,14 @@ describe('options.params', () => {
             });
 
             let childParams;
-            const childSpy = jest.fn<any, any>(() => {
+            const childSpy = vi.fn<(...args: Array<any>) => any>(() => {
                 childParams = {
                     bar: 24,
                 };
                 return childParams;
             });
 
-            const actionSpy = jest.fn<any, any>();
+            const actionSpy = vi.fn<(...args: Array<any>) => any>();
 
             const parent = getResultBlock(actionSpy).extend({
                 options: {

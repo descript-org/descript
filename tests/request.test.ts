@@ -1,3 +1,5 @@
+import { afterAll, beforeAll, describe, expect, it, vi } from 'vitest';
+
 /* eslint-disable jest/no-conditional-expect */
 import url_ from 'url';
 
@@ -93,7 +95,7 @@ describe('request', () => {
         it('pathname always starts with /', async() => {
             const path = getPath();
 
-            const spy = jest.fn((req, res) => res.end());
+            const spy = vi.fn((req, res) => res.end());
 
             fake.add(path, spy);
 
@@ -109,7 +111,7 @@ describe('request', () => {
         it('sets accept-encoding to gzip,deflate', async() => {
             const path = getPath();
 
-            const spy = jest.fn((req, res) => res.end());
+            const spy = vi.fn((req, res) => res.end());
 
             fake.add(path, spy);
 
@@ -125,7 +127,7 @@ describe('request', () => {
         it('adds gzip,deflate to accept-encoding', async() => {
             const path = getPath();
 
-            const spy = jest.fn((req, res) => res.end());
+            const spy = vi.fn((req, res) => res.end());
 
             fake.add(path, spy);
 
@@ -144,7 +146,7 @@ describe('request', () => {
         it('sends lower-cased headers', async() => {
             const path = getPath();
 
-            const spy = jest.fn((req, res) => res.end());
+            const spy = vi.fn((req, res) => res.end());
 
             fake.add(path, spy);
 
@@ -167,7 +169,7 @@ describe('request', () => {
         it('query', async() => {
             const path = getPath();
 
-            const spy = jest.fn((req, res) => res.end());
+            const spy = vi.fn((req, res) => res.end());
 
             fake.add(path, spy);
 
@@ -189,7 +191,7 @@ describe('request', () => {
         it('basic auth', async() => {
             const path = getPath();
 
-            const spy = jest.fn((req, res) => res.end());
+            const spy = vi.fn((req, res) => res.end());
 
             const AUTH = 'user:password';
 
@@ -234,7 +236,7 @@ describe('request', () => {
             const BODY = Buffer.from('Привет!');
 
             // eslint-disable-next-line @typescript-eslint/no-unused-vars
-            const spy = jest.fn((req: http.IncomingMessage, res: http.OutgoingMessage, body: any) => res.end());
+            const spy = vi.fn((req: http.IncomingMessage, res: http.OutgoingMessage, body: any) => res.end());
 
             fake.add(path, spy);
 
@@ -258,7 +260,7 @@ describe('request', () => {
             const BODY = 'Привет!';
 
             // eslint-disable-next-line @typescript-eslint/no-unused-vars
-            const spy = jest.fn((req: http.IncomingMessage, res: http.OutgoingMessage, body: any) => res.end());
+            const spy = vi.fn((req: http.IncomingMessage, res: http.OutgoingMessage, body: any) => res.end());
 
             fake.add(path, spy);
 
@@ -282,7 +284,7 @@ describe('request', () => {
             const BODY = 'div { color: red; }';
 
             // eslint-disable-next-line @typescript-eslint/no-unused-vars
-            const spy = jest.fn((req: http.IncomingMessage, res: http.OutgoingMessage, body: any) => res.end());
+            const spy = vi.fn((req: http.IncomingMessage, res: http.OutgoingMessage, body: any) => res.end());
 
             fake.add(path, spy);
 
@@ -312,7 +314,7 @@ describe('request', () => {
             };
 
             // eslint-disable-next-line @typescript-eslint/no-unused-vars
-            const spy = jest.fn((req: http.IncomingMessage, res: http.OutgoingMessage, body: any) => res.end());
+            const spy = vi.fn((req: http.IncomingMessage, res: http.OutgoingMessage, body: any) => res.end());
 
             fake.add(path, spy);
 
@@ -340,7 +342,7 @@ describe('request', () => {
             };
 
             // eslint-disable-next-line @typescript-eslint/no-unused-vars
-            const spy = jest.fn((req: http.IncomingMessage, res: http.OutgoingMessage, body: any) => res.end());
+            const spy = vi.fn((req: http.IncomingMessage, res: http.OutgoingMessage, body: any) => res.end());
 
             fake.add(path, spy);
 
@@ -368,7 +370,7 @@ describe('request', () => {
             const BODY = 'Привет!'.repeat(1000);
 
             // eslint-disable-next-line @typescript-eslint/no-unused-vars
-            const spy = jest.fn((req: http.IncomingMessage, res: http.OutgoingMessage, body: any) => res.end());
+            const spy = vi.fn((req: http.IncomingMessage, res: http.OutgoingMessage, body: any) => res.end());
 
             fake.add(path, spy);
 
@@ -402,7 +404,7 @@ describe('request', () => {
             const BODY = 'Привет!'.repeat(1000);
 
             // eslint-disable-next-line @typescript-eslint/no-unused-vars
-            const spy = jest.fn((req: http.IncomingMessage, res: http.OutgoingMessage, body: any) => res.end());
+            const spy = vi.fn((req: http.IncomingMessage, res: http.OutgoingMessage, body: any) => res.end());
 
             fake.add(path, spy);
 
@@ -459,7 +461,7 @@ describe('request', () => {
                 const path = getPath();
                 const statusCode = 404;
 
-                const spy = jest.fn((res) => res.end());
+                const spy = vi.fn((res) => res.end());
 
                 fake.add(path, [
                     {
@@ -511,7 +513,7 @@ describe('request', () => {
                 const path = getPath();
                 const statusCode = 503;
 
-                const spy = jest.fn((res) => res.end());
+                const spy = vi.fn((res) => res.end());
 
                 fake.add(path, [
                     {
@@ -538,7 +540,7 @@ describe('request', () => {
                 const path = getPath();
                 const statusCode = 503;
 
-                const spy = jest.fn((res) => res.end());
+                const spy = vi.fn((res) => res.end());
 
                 fake.add(path, [
                     {
@@ -644,7 +646,7 @@ describe('request', () => {
                 const path = getPath();
                 const statusCode = 503;
 
-                const spy = jest.fn((res) => res.end());
+                const spy = vi.fn((res) => res.end());
 
                 fake.add(path, [
                     {

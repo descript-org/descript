@@ -1,3 +1,5 @@
+import { describe, expect, it, vi } from 'vitest';
+
 import * as de from '../lib';
 //  ---------------------------------------------------------------------------------------------------------------  //
 
@@ -6,7 +8,7 @@ describe('de.Cancel', () => {
     it('cancel', () => {
         const cancel = new de.Cancel();
 
-        const spy = jest.fn();
+        const spy = vi.fn();
         cancel.subscribe(spy);
 
         const error = de.error('SOME_ERROR');
@@ -18,7 +20,7 @@ describe('de.Cancel', () => {
     it('cancel with plain object', () => {
         const cancel = new de.Cancel();
 
-        const spy = jest.fn();
+        const spy = vi.fn();
         cancel.subscribe(spy);
 
         const error = 'SOME_ERROR';
@@ -32,7 +34,7 @@ describe('de.Cancel', () => {
     it('cancel after cancel', () => {
         const cancel = new de.Cancel();
 
-        const spy = jest.fn();
+        const spy = vi.fn();
         cancel.subscribe(spy);
 
         const error1 = de.error('SOME_ERROR_1');
@@ -46,7 +48,7 @@ describe('de.Cancel', () => {
     it('cancel after close', () => {
         const cancel = new de.Cancel();
 
-        const spy = jest.fn();
+        const spy = vi.fn();
         cancel.subscribe(spy);
 
         cancel.close();
@@ -87,7 +89,7 @@ describe('de.Cancel', () => {
 
         cancel.close();
 
-        const spy = jest.fn();
+        const spy = vi.fn();
         cancel.subscribe(spy);
 
         expect(spy.mock.calls).toHaveLength(0);
@@ -99,7 +101,7 @@ describe('de.Cancel', () => {
         const error = de.error('SOME_ERROR');
         cancel.cancel(error);
 
-        const spy = jest.fn();
+        const spy = vi.fn();
         cancel.subscribe(spy);
 
         expect(spy.mock.calls[ 0 ][ 0 ]).toBe(error);
@@ -149,7 +151,7 @@ describe('de.Cancel', () => {
         const parentCancel = new de.Cancel();
         const childCancel = parentCancel.create();
 
-        const spy = jest.fn();
+        const spy = vi.fn();
         childCancel.subscribe(spy);
 
         const error = de.error('SOME_ERROR');
@@ -163,7 +165,7 @@ describe('de.Cancel', () => {
         parentCancel.close();
         const childCancel = parentCancel.create();
 
-        const spy = jest.fn();
+        const spy = vi.fn();
         childCancel.subscribe(spy);
 
         const error = de.error('SOME_ERROR');
@@ -177,7 +179,7 @@ describe('de.Cancel', () => {
         parentCancel.close();
         const childCancel = parentCancel.create();
 
-        const spy = jest.fn();
+        const spy = vi.fn();
         childCancel.subscribe(spy);
 
         const error = de.error('SOME_ERROR');
@@ -193,7 +195,7 @@ describe('de.Cancel', () => {
 
         const childCancel = parentCancel.create();
 
-        const spy = jest.fn();
+        const spy = vi.fn();
         childCancel.subscribe(spy);
 
         expect(spy.mock.calls[ 0 ][ 0 ]).toBe(error);

@@ -1,3 +1,5 @@
+import { describe, expect, it } from 'vitest';
+
 import stripNullAndUndefinedValues from '../lib/stripNullAndUndefinedValues';
 
 describe('stripNullAndUndefinedValues', () => {

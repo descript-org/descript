@@ -1,3 +1,5 @@
+import { describe, expect, it } from 'vitest';
+
 /* eslint-disable jest/no-conditional-expect */
 import * as de from '../lib';
 
