@@ -17,7 +17,7 @@
     },
     "scripts": {
         "eslint": "npx eslint .",
-        "test": "cd tests && ./gen-certs.sh && npx jest",
+        "test": "cd tests && ./gen-certs.sh && npx vitest",
         "ts-compile": "npx tsc --noEmit",
         "prepack": "rm -rf build && npx tsc -p ./tsconfig-build.json && npx ts-add-js-extension --dir=build"
     },

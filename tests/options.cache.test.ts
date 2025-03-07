@@ -1,4 +1,4 @@
-import { afterAll, beforeAll, describe, expect, it, vi } from 'vitest';
+import { describe, expect, it, vi } from 'vitest';
 
 import * as de from '../lib';
 
@@ -53,7 +53,7 @@ describe('options.cache, options.key, options.maxage', () => {
         const cache = new Cache();
 
         const blockValue = Symbol();
-        const spy = vi.fn<typeof blockValue, any>(() => blockValue);// as () => typeof blockValue;
+        const spy = vi.fn(() => blockValue);// as () => typeof blockValue;
         const block = getResultBlock(spy, 50).extend({
             options: {
                 cache: cache,
