@@ -28,7 +28,7 @@
         "@vitest/eslint-plugin": "^1.1.36",
         "eslint": "^9.22.0",
         "globals": "^16.0.0",
-        "ts-add-js-extension": "^1.6.4",
+        "ts-add-js-extension": "^1.6.5",
         "typescript": "^5.8.2",
         "typescript-eslint": "^8.26.0",
         "vitest": "^3.0.8"
