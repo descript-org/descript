@@ -164,11 +164,11 @@ describe('options.before', () => {
         type Params = {
             n: number;
             r: number;
-        }
+        };
         const factorial: any = de.func({
             block: () => 1,
             options: {
-                before: ({ params }: { params: Params}) => {
+                before: ({ params }: { params: Params }) => {
                     if (params.n === 1) {
                         return {
                             r: params.r,

@@ -1,7 +1,6 @@
 import { describe, expect, it } from 'vitest';
 
 /* eslint-disable no-console */
-/* eslint-disable jest/no-conditional-expect */
 
 import fs_ from 'fs';
 
@@ -36,7 +35,7 @@ describe('de.error', () => {
         expect.assertions(1);
         try {
             const b = null;
-            // eslint-disable-next-line no-unused-vars,@typescript-eslint/ban-ts-comment
+            // eslint-disable-next-line @typescript-eslint/ban-ts-comment
             // @ts-ignore
             // eslint-disable-next-line @typescript-eslint/no-unused-vars
             const a = b.foo;
@@ -60,11 +59,11 @@ describe('de.error', () => {
 
         } catch (e) {
             // some bug in jest
-            // eslint-disable-next-line no-ex-assign
+
             const err = new Error(e);
             // eslint-disable-next-line @typescript-eslint/ban-ts-comment
             // @ts-ignore
-            Object.keys(e).forEach(key => err[key] = e[key]);
+            Object.keys(e).forEach((key) => err[ key ] = e[ key ]);
             const error = de.error(err);
 
             expect(error.error.id).toBe('JS_ERROR');

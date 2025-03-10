@@ -72,7 +72,7 @@ describe('options.required', () => {
                 pathname: path,
                 prepareRequestOptions: (requestOptions, blockOptions) => {
                     requestOptions.headers = requestOptions.headers || {};
-                    requestOptions.headers['x-required-header'] = blockOptions.required ? 'true' : 'false';
+                    requestOptions.headers[ 'x-required-header' ] = blockOptions.required ? 'true' : 'false';
                     return requestOptions;
                 },
             },
@@ -101,7 +101,7 @@ describe('options.required', () => {
                 pathname: path,
                 prepareRequestOptions: (requestOptions, blockOptions) => {
                     requestOptions.headers = requestOptions.headers || {};
-                    requestOptions.headers['x-required-header'] = blockOptions.required ? 'true' : 'false';
+                    requestOptions.headers[ 'x-required-header' ] = blockOptions.required ? 'true' : 'false';
                     return requestOptions;
                 },
             },
@@ -133,7 +133,7 @@ describe('options.required', () => {
                 pathname: path,
                 prepareRequestOptions: (requestOptions, blockOptions) => {
                     requestOptions.headers = requestOptions.headers || {};
-                    requestOptions.headers['x-required-header'] = blockOptions.required ? 'true' : 'false';
+                    requestOptions.headers[ 'x-required-header' ] = blockOptions.required ? 'true' : 'false';
                     return requestOptions;
                 },
             },
@@ -161,7 +161,7 @@ describe('options.required', () => {
                 pathname: path,
                 prepareRequestOptions: (requestOptions, blockOptions) => {
                     requestOptions.headers = requestOptions.headers || {};
-                    requestOptions.headers['x-required-header'] = blockOptions.required ? 'true' : 'false';
+                    requestOptions.headers[ 'x-required-header' ] = blockOptions.required ? 'true' : 'false';
                     return requestOptions;
                 },
             },

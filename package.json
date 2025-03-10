@@ -22,13 +22,15 @@
         "prepack": "rm -rf build && npx tsc -p ./tsconfig-build.json && npx ts-add-js-extension --dir=build"
     },
     "devDependencies": {
-        "@types/node": "^20.12.7",
-        "@typescript-eslint/eslint-plugin": "^5.62.0",
-        "@typescript-eslint/parser": "^5.62.0",
-        "eslint": "^8.57.0",
-        "eslint-plugin-jest": "^27.9.0",
-        "ts-add-js-extension": "^1.6.4",
-        "typescript": "^5.6.2",
+        "@eslint/js": "^9.21.0",
+        "@stylistic/eslint-plugin": "^4.2.0",
+        "@types/node": "^22.13.10",
+        "@vitest/eslint-plugin": "^1.1.36",
+        "eslint": "^9.22.0",
+        "globals": "^16.0.0",
+        "ts-add-js-extension": "^1.6.5",
+        "typescript": "^5.8.2",
+        "typescript-eslint": "^8.26.0",
         "vitest": "^3.0.8"
     },
     "files": [

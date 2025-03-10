@@ -1,12 +1,9 @@
 import { describe, expect, it, vi } from 'vitest';
 
-/* eslint-disable jest/no-conditional-expect */
-
 import * as de from '../lib';
 
 import { getResultBlock } from './helpers';
 import type { DescriptBlockId } from '../lib/depsDomain';
-
 
 describe('options.params', () => {
 

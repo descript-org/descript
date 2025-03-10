@@ -1,7 +1,7 @@
-import { createError, ERROR_ID } from './error' ;
+import { createError, ERROR_ID } from './error';
 
 import type { DescriptBlockDeps, DescriptBlockId } from './depsDomain';
-import DepsDomain from './depsDomain' ;
+import DepsDomain from './depsDomain';
 import type Cancel from './cancel';
 import type ContextClass from './context';
 import type { BlockResultOut, InferResultOrResult, DescriptBlockOptions, DepsIds } from './types';
@@ -16,20 +16,19 @@ type BlockOptions<
     ErrorResultOut,
     Params,
 > =
-    {
+  {
 
-        deps?: DepsIds | null;
-        lifecycle: Array<
-        Pick<
-        DescriptBlockOptions<Context, ParamsOut, BlockResult, BeforeResultOut, AfterResultOut, ErrorResultOut, Params>,
+      deps?: DepsIds | null;
+      lifecycle: Array<
+          Pick<
+              DescriptBlockOptions<Context, ParamsOut, BlockResult, BeforeResultOut, AfterResultOut, ErrorResultOut, Params>,
         'before' | 'after' | 'error' | 'params'
-        >
-        >;
-    } & Partial<Omit<
-    DescriptBlockOptions<Context, ParamsOut, BlockResult, BeforeResultOut, AfterResultOut, ErrorResultOut, Params>,
+          >
+      >;
+  } & Partial<Omit<
+      DescriptBlockOptions<Context, ParamsOut, BlockResult, BeforeResultOut, AfterResultOut, ErrorResultOut, Params>,
     'before' | 'after' | 'error' | 'params' | 'deps'
-    >>
-
+  >>;
 
 interface BlockConstructor<
     Context,
@@ -40,7 +39,7 @@ interface BlockConstructor<
     ErrorResultOut,
     Params,
     ClassType,
-    CustomBlock
+    CustomBlock,
 > {
     new ({ block, options }: {
         block?: CustomBlock;
@@ -58,7 +57,7 @@ abstract class BaseBlock<
     BeforeResultOut = undefined,
     AfterResultOut = undefined,
     ErrorResultOut = undefined,
-    Params = ParamsOut
+    Params = ParamsOut,
 > {
     protected block: CustomBlock;
     protected options: BlockOptions<Context, ParamsOut, BlockResult, BeforeResultOut, AfterResultOut, ErrorResultOut, Params>;
@@ -71,7 +70,7 @@ abstract class BaseBlock<
         block?: CustomBlock;
 
         options?: DescriptBlockOptions<Context, ParamsOut, BlockResult, BeforeResultOut, AfterResultOut, ErrorResultOut, Params> |
-        BlockOptions<Context, ParamsOut, BlockResult, BeforeResultOut, AfterResultOut, ErrorResultOut, Params>;
+          BlockOptions<Context, ParamsOut, BlockResult, BeforeResultOut, AfterResultOut, ErrorResultOut, Params>;
 
     }) {
         // если таки умудрились не передать блок, то кастомный  initBlock в большинстве блоков кинет ошибку
@@ -94,20 +93,20 @@ abstract class BaseBlock<
         block?: ExtendedCustomBlock;
         options?:
         DescriptBlockOptions<
-        Context, ExtendedParamsOut, ExtendedBlockResult, ExtendedBeforeResultOut, ExtendedAfterResultOut, ExtendedErrorResultOut, ExtendedParams
+            Context, ExtendedParamsOut, ExtendedBlockResult, ExtendedBeforeResultOut, ExtendedAfterResultOut, ExtendedErrorResultOut, ExtendedParams
         >;
     }): ClassType {
 
         return new (<BlockConstructor<
-        Context,
-        ExtendedParamsOut,
-        ExtendedBlockResult,
-        ExtendedBeforeResultOut,
-        ExtendedAfterResultOut,
-        ExtendedErrorResultOut,
-        ExtendedParams,
-        ClassType,
-        ExtendedCustomBlock
+            Context,
+            ExtendedParamsOut,
+            ExtendedBlockResult,
+            ExtendedBeforeResultOut,
+            ExtendedAfterResultOut,
+            ExtendedErrorResultOut,
+            ExtendedParams,
+            ClassType,
+            ExtendedCustomBlock
         >> this.constructor)({
             block: this.extendBlock(block) as ExtendedCustomBlock,
             options: this.extendOptions(this.options, options),
@@ -115,12 +114,12 @@ abstract class BaseBlock<
     }
 
     abstract extend<
-        // eslint-disable-next-line @typescript-eslint/no-unused-vars
-        //ExtendedResultOut extends
-        //BlockResultOut<ExtendedBlockResult, ExtendedBeforeResultOut, ExtendedAfterResultOut, ExtendedErrorResultOut>,
+
+        // ExtendedResultOut extends
+        // BlockResultOut<ExtendedBlockResult, ExtendedBeforeResultOut, ExtendedAfterResultOut, ExtendedErrorResultOut>,
         ExtendedParamsOut extends Params = Params,
         ExtendedParams = Params,
-        //ExtendedCustomBlock = CustomBlock,
+        // ExtendedCustomBlock = CustomBlock,
         ExtendedBlockResult = ResultOut,
         ExtendedBeforeResultOut = void,
         ExtendedAfterResultOut = void,
@@ -128,24 +127,24 @@ abstract class BaseBlock<
     >({ block, options }: {
         block?: CustomBlock;
         options?: DescriptBlockOptions<
-        Context, ParamsOut & ExtendedParamsOut, ExtendedBlockResult, ExtendedBeforeResultOut, ExtendedAfterResultOut, ExtendedErrorResultOut, ExtendedParams
+            Context, ParamsOut & ExtendedParamsOut, ExtendedBlockResult, ExtendedBeforeResultOut, ExtendedAfterResultOut, ExtendedErrorResultOut, ExtendedParams
         >;
-    }): unknown
+    }): unknown;
 
     protected initBlock(block: CustomBlock) {
         this.block = block;
     }
 
     protected initOptions(options?: DescriptBlockOptions<Context, ParamsOut,
-    BlockResult,
-    BeforeResultOut,
-    AfterResultOut,
-    ErrorResultOut,
-    Params> | BlockOptions<Context, ParamsOut, BlockResult, BeforeResultOut, AfterResultOut, ErrorResultOut, Params>) {
+        BlockResult,
+        BeforeResultOut,
+        AfterResultOut,
+        ErrorResultOut,
+        Params> | BlockOptions<Context, ParamsOut, BlockResult, BeforeResultOut, AfterResultOut, ErrorResultOut, Params>) {
         this.options = this.extendOptions({ lifecycle: [] }, options);
     }
 
-    //eslint-disable-next-line @typescript-eslint/no-unused-vars
+    // eslint-disable-next-line @typescript-eslint/no-unused-vars
     protected extendBlock<ExtendedCustomBlock extends CustomBlock>(block?: ExtendedCustomBlock) {
         return this.block;
     }
@@ -159,18 +158,18 @@ abstract class BaseBlock<
         ExtendedParams,
     >(
         what: BlockOptions<Context, ParamsOut, BlockResult,
-        BeforeResultOut, AfterResultOut, ErrorResultOut, Params>,
+            BeforeResultOut, AfterResultOut, ErrorResultOut, Params>,
         by: DescriptBlockOptions<
-        Context, ExtendedParamsOut, ExtendedBlockResult,
-        ExtendedBeforeResultOut, ExtendedAfterResultOut, ExtendedErrorResultOut, ExtendedParams
+            Context, ExtendedParamsOut, ExtendedBlockResult,
+            ExtendedBeforeResultOut, ExtendedAfterResultOut, ExtendedErrorResultOut, ExtendedParams
         > | BlockOptions<
-        Context, ExtendedParamsOut, ExtendedBlockResult,
-        ExtendedBeforeResultOut, ExtendedAfterResultOut, ExtendedErrorResultOut, ExtendedParams
+            Context, ExtendedParamsOut, ExtendedBlockResult,
+            ExtendedBeforeResultOut, ExtendedAfterResultOut, ExtendedErrorResultOut, ExtendedParams
         > = {},
     ) {
         const options: BlockOptions<
-        Context, ExtendedParamsOut, ExtendedBlockResult,
-        ExtendedBeforeResultOut, ExtendedAfterResultOut, ExtendedErrorResultOut, ExtendedParams
+            Context, ExtendedParamsOut, ExtendedBlockResult,
+            ExtendedBeforeResultOut, ExtendedAfterResultOut, ExtendedErrorResultOut, ExtendedParams
         > = {
             deps: extendDeps(by.deps),
             lifecycle: [],
@@ -184,13 +183,13 @@ abstract class BaseBlock<
         options.timeout = by.timeout || what.timeout;
 
         options.key = (by.key || what.key) as BlockOptions<
-        Context, ExtendedParamsOut, ExtendedBlockResult,
-        ExtendedBeforeResultOut, ExtendedAfterResultOut, ExtendedErrorResultOut, ExtendedParams
+            Context, ExtendedParamsOut, ExtendedBlockResult,
+            ExtendedBeforeResultOut, ExtendedAfterResultOut, ExtendedErrorResultOut, ExtendedParams
         >['key'];
         options.maxage = by.maxage || what.maxage;
         options.cache = (by.cache || what.cache) as BlockOptions<
-        Context, ExtendedParamsOut, ExtendedBlockResult,
-        ExtendedBeforeResultOut, ExtendedAfterResultOut, ExtendedErrorResultOut, ExtendedParams
+            Context, ExtendedParamsOut, ExtendedBlockResult,
+            ExtendedBeforeResultOut, ExtendedAfterResultOut, ExtendedErrorResultOut, ExtendedParams
         >['cache'];
 
         options.required = typeof by.required === 'boolean' ? by.required : what.required;
@@ -207,35 +206,33 @@ abstract class BaseBlock<
         ExtendedAfterResultOut = void,
         ExtendedErrorResultOut = void,
         ExtendedParams = ExtendedParamsOut,
-        // eslint-disable-next-line max-len
-        W extends BlockOptions<Context, ParamsOut, BlockResult, BeforeResultOut, AfterResultOut, ErrorResultOut, Params> =
-        BlockOptions<Context, ParamsOut, BlockResult, BeforeResultOut, AfterResultOut, ErrorResultOut, Params>,
+
+        W extends BlockOptions<Context, ParamsOut, BlockResult, BeforeResultOut, AfterResultOut, ErrorResultOut, Params> = BlockOptions<Context, ParamsOut, BlockResult, BeforeResultOut, AfterResultOut, ErrorResultOut, Params>,
         B extends DescriptBlockOptions<
-        Context, ExtendedParamsOut, ExtendedBlockResult, ExtendedBeforeResultOut, ExtendedAfterResultOut, ExtendedErrorResultOut, ExtendedParams
+            Context, ExtendedParamsOut, ExtendedBlockResult, ExtendedBeforeResultOut, ExtendedAfterResultOut, ExtendedErrorResultOut, ExtendedParams
         > | BlockOptions<
-        Context, ExtendedParamsOut, ExtendedBlockResult, ExtendedBeforeResultOut, ExtendedAfterResultOut, ExtendedErrorResultOut, ExtendedParams
-        > =
-        DescriptBlockOptions<
-        Context, ExtendedParamsOut, ExtendedBlockResult, ExtendedBeforeResultOut, ExtendedAfterResultOut, ExtendedErrorResultOut, ExtendedParams
+            Context, ExtendedParamsOut, ExtendedBlockResult, ExtendedBeforeResultOut, ExtendedAfterResultOut, ExtendedErrorResultOut, ExtendedParams
+        > = DescriptBlockOptions<
+            Context, ExtendedParamsOut, ExtendedBlockResult, ExtendedBeforeResultOut, ExtendedAfterResultOut, ExtendedErrorResultOut, ExtendedParams
         > | BlockOptions<
-        Context, ExtendedParamsOut, ExtendedBlockResult, ExtendedBeforeResultOut, ExtendedAfterResultOut, ExtendedErrorResultOut, ExtendedParams
-        >
+            Context, ExtendedParamsOut, ExtendedBlockResult, ExtendedBeforeResultOut, ExtendedAfterResultOut, ExtendedErrorResultOut, ExtendedParams
+        >,
     >(what: W, by: B): BlockOptions<
-    Context, ExtendedParamsOut, ExtendedBlockResult,
-    ExtendedBeforeResultOut, ExtendedAfterResultOut, ExtendedErrorResultOut, ExtendedParams>['lifecycle'] {
+        Context, ExtendedParamsOut, ExtendedBlockResult,
+        ExtendedBeforeResultOut, ExtendedAfterResultOut, ExtendedErrorResultOut, ExtendedParams>['lifecycle'] {
         const newArray: BlockOptions<Context, ParamsOut, BlockResult, BeforeResultOut, AfterResultOut, ErrorResultOut, Params>['lifecycle'] = [];
 
         if ('lifecycle' in by && by.lifecycle) {
             return ((what.lifecycle) ? newArray.concat(by.lifecycle as typeof newArray, what.lifecycle) : newArray.concat(by.lifecycle as typeof newArray)) as
                 Array<DescriptBlockOptions<
-                Context, ExtendedParamsOut, ExtendedBlockResult, ExtendedBeforeResultOut,
-                ExtendedAfterResultOut, ExtendedErrorResultOut, ExtendedParams
+                    Context, ExtendedParamsOut, ExtendedBlockResult, ExtendedBeforeResultOut,
+                    ExtendedAfterResultOut, ExtendedErrorResultOut, ExtendedParams
                 >>;
 
         } else if (!('lifecycle' in by) && (by.params || by.before || by.after || by.error)) {
             const lifecycle: Array<DescriptBlockOptions<
-            Context, ExtendedParamsOut, ExtendedBlockResult, ExtendedBeforeResultOut,
-            ExtendedAfterResultOut, ExtendedErrorResultOut, ExtendedParams
+                Context, ExtendedParamsOut, ExtendedBlockResult, ExtendedBeforeResultOut,
+                ExtendedAfterResultOut, ExtendedErrorResultOut, ExtendedParams
             >> = [
                 {
                     params: by.params,
@@ -249,8 +246,8 @@ abstract class BaseBlock<
 
         } else {
             return ((what.lifecycle) ? (newArray).concat(what.lifecycle) : []) as Array<DescriptBlockOptions<
-            Context, ExtendedParamsOut, ExtendedBlockResult, ExtendedBeforeResultOut,
-            ExtendedAfterResultOut, ExtendedErrorResultOut, ExtendedParams
+                Context, ExtendedParamsOut, ExtendedBlockResult, ExtendedBeforeResultOut,
+                ExtendedAfterResultOut, ExtendedErrorResultOut, ExtendedParams
             >>;
         }
     }
@@ -291,10 +288,10 @@ abstract class BaseBlock<
 
             runContext.incNumberOfActiveBlocks();
 
-            //TODO типизировать
+            // TODO типизировать
             if (prev !== undefined) {
                 // eslint-disable-next-line @typescript-eslint/ban-ts-comment
-                //@ts-ignore
+                // @ts-ignore
                 deps.prev = prev;
             }
 
@@ -387,7 +384,7 @@ abstract class BaseBlock<
             ]) as Array<unknown>;
 
             const r: DescriptBlockDeps = {};
-            //TODO как это типизировать?
+            // TODO как это типизировать?
             deps.forEach((id, i) => {
                 r[ id ] = results[ i ];
             });
@@ -540,7 +537,7 @@ abstract class BaseBlock<
         deps: DescriptBlockDeps;
         nParents: number;
         depsDomain?: DepsDomain;
-    }): Promise<BlockResult>
+    }): Promise<BlockResult>;
 
     private async doAction({
         runContext,
@@ -553,13 +550,13 @@ abstract class BaseBlock<
         nParents,
     }: {
         runContext: ContextClass<
-        BlockResult,
-        IntermediateResult,
-        ResultOut,
-        Context,
-        BeforeResultOut,
-        AfterResultOut,
-        ErrorResultOut
+            BlockResult,
+            IntermediateResult,
+            ResultOut,
+            Context,
+            BeforeResultOut,
+            AfterResultOut,
+            ErrorResultOut
         >;
         blockCancel: Cancel;
         cancel: Cancel;
@@ -585,7 +582,7 @@ abstract class BaseBlock<
                 try {
                     result = await cache.get({ key });
 
-                } catch (e) {
+                } catch {
                     //  Do nothing.
                 }
                 blockCancel.throwIfCancelled();
@@ -628,7 +625,7 @@ abstract class BaseBlock<
 
 }
 
-//BaseBlock.prototype = Object.create(Function.prototype);
+// BaseBlock.prototype = Object.create(Function.prototype);
 
 export default BaseBlock;
 

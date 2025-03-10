@@ -1,7 +1,7 @@
 //  https://github.com/tc39/proposal-cancellation
 
 import type { DescriptError, Reason, ERROR_ID } from './error';
-import { createError } from './error' ;
+import { createError } from './error';
 
 export type SubscribeCallback = (reason: DescriptError) => unknown;
 

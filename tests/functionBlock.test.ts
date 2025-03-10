@@ -51,7 +51,7 @@ describe('de.func', () => {
     it('recursion', async() => {
         type Params = {
             n: number;
-        }
+        };
         // eslint-disable-next-line @typescript-eslint/ban-ts-comment
         // @ts-ignore
         const block = de.func({

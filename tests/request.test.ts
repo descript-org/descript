@@ -1,6 +1,5 @@
 import { afterAll, beforeAll, describe, expect, it, vi } from 'vitest';
 
-/* eslint-disable jest/no-conditional-expect */
 import url_ from 'url';
 
 import qs_ from 'querystring';
@@ -18,7 +17,6 @@ import http from 'http';
 import fs_ from 'fs';
 import path_ from 'path';
 import type { Cancel, LoggerInterface } from '../lib';
-
 
 //  ---------------------------------------------------------------------------------------------------------------  //
 
@@ -975,7 +973,7 @@ describe('request', () => {
             serverKey = fs_.readFileSync(path_.join(__dirname, 'server.key'));
             serverCert = fs_.readFileSync(path_.join(__dirname, 'server.crt'));
 
-        } catch (e) {
+        } catch {
             throw Error(
                 'Generate https keys:\n' +
                 '    cd tests\n' +

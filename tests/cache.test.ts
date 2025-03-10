@@ -4,7 +4,6 @@ import * as de from '../lib';
 
 import { waitForValue } from './helpers';
 
-
 describe('cache', () => {
 
     it('get', async() => {

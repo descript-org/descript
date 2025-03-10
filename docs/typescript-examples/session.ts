@@ -10,7 +10,7 @@ interface TRequest extends Request {
 
 type SessionResult = {
     session: Session;
-}
+};
 
 interface TDescriptContext {
     req: TRequest;
@@ -20,13 +20,13 @@ interface TDescriptContext {
 
 type SessionParams = {
     dealerId?: string;
-}
+};
 
 type Session = {
     id: string;
     username: string;
     clientId?: string;
-}
+};
 
 const baseResource = de.http({
     block: {},
@@ -123,7 +123,6 @@ const sessionMethod = de.func({
     block: ({ generateId: generateId }) => {
         const sessionId = generateId();
 
-
         return de.object({
             block: {
                 session: session.extend({
@@ -160,7 +159,7 @@ const sessionMethod = de.func({
 
 type Params = {
     param: string;
-}
+};
 
 const controller = de.func({
     // eslint-disable-next-line @typescript-eslint/no-unused-vars
@@ -190,7 +189,7 @@ const controller = de.func({
 });
 
 de.run(controller, {})
-    .then(result => {
+    .then((result) => {
         console.log(result.session, result.session2);
     });
 
@@ -252,9 +251,8 @@ const sessionMethod2 = de.func({
     },
 });
 
-
 de.run(sessionMethod2, {})
-    .then(result => {
+    .then((result) => {
         if (!de.isError(result)) {
             console.log(result.username);
         }

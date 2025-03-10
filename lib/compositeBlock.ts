@@ -1,12 +1,12 @@
-import BaseBlock from './block' ;
+import BaseBlock from './block';
 import type { DescriptError } from './error';
-import { ERROR_ID, createError } from './error' ;
+import { ERROR_ID, createError } from './error';
 import type { BlockResultOut, InferResultFromBlock } from './types';
 import type ContextClass from './context';
 import type Cancel from './cancel';
 import type DepsDomain from './depsDomain';
 
-type ArrayResults< T > = {
+type ArrayResults<T> = {
     [ P in keyof T ]: T[P] extends {
         key: number | string;
         block: infer B;
@@ -14,7 +14,7 @@ type ArrayResults< T > = {
         InferResultFromBlock<B>
         :
         never
-}
+};
 
 abstract class CompositeBlock<
     Context,
@@ -27,25 +27,25 @@ abstract class CompositeBlock<
     BeforeResultOut = undefined,
     AfterResultOut = undefined,
     ErrorResultOut = undefined,
-    Params = ParamsOut
+    Params = ParamsOut,
 > extends BaseBlock<
-    Context,
-    CustomBlock,
-    ParamsOut,
-    ResultOut,
-    IntermediateResult,
-    BlockResultInt,
+        Context,
+        CustomBlock,
+        ParamsOut,
+        ResultOut,
+        IntermediateResult,
+        BlockResultInt,
 
-    BeforeResultOut,
-    AfterResultOut,
-    ErrorResultOut,
-    Params
+        BeforeResultOut,
+        AfterResultOut,
+        ErrorResultOut,
+        Params
     > {
 
     protected blocks: Array<{
         key: string | number;
         block: BaseBlock<
-        Context, CustomBlock, ParamsOut, ResultOut, IntermediateResult, BlockResultInt, BeforeResultOut, AfterResultOut, ErrorResultOut, Params
+            Context, CustomBlock, ParamsOut, ResultOut, IntermediateResult, BlockResultInt, BeforeResultOut, AfterResultOut, ErrorResultOut, Params
         >;
     }>;
 

@@ -1,4 +1,4 @@
-import * as url_ from 'url' ;
+import * as url_ from 'url';
 
 //  ---------------------------------------------------------------------------------------------------------------  //
 
@@ -48,7 +48,6 @@ class Answer {
         let content = (typeof answer.content === 'function') ? answer.content(req, res, data) : answer.content;
         content = await content;
 
-        //  eslint-disable-next-line require-atomic-updates
         res.statusCode = answer.statusCode;
         for (const headerName in answer.headers) {
             res.setHeader(headerName, answer.headers[ headerName ]);

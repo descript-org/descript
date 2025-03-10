@@ -9,7 +9,7 @@ type CacheItem<Result> = {
     maxage: number;
     value: Result;
     timestamp: number;
-}
+};
 class Cache<Result> implements de.CacheInterface<Result> {
     #cache: Record<string, CacheItem<Result>> = {};
 

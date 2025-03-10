@@ -42,15 +42,15 @@ const func = function<
     BeforeResultOut = undefined,
     AfterResultOut = undefined,
     ErrorResultOut = undefined,
-    Params = ParamsOut
+    Params = ParamsOut,
 >({ block, options }: {
     block: FunctionBlockDefinition<Context, ParamsOut, BlockResult>;
     options?: DescriptBlockOptions<
-    Context, ParamsOut, BlockResult, BeforeResultOut, AfterResultOut, ErrorResultOut, Params
+        Context, ParamsOut, BlockResult, BeforeResultOut, AfterResultOut, ErrorResultOut, Params
     >;
 }) {
     return new FunctionBlock<
-    Context, ParamsOut, BlockResult, ResultOut, BeforeResultOut, AfterResultOut, ErrorResultOut, Params
+        Context, ParamsOut, BlockResult, ResultOut, BeforeResultOut, AfterResultOut, ErrorResultOut, Params
     >({ block, options });
 };
 const array = function<
@@ -102,7 +102,7 @@ const http = function<
     options?: DescriptBlockOptions<Context, ParamsOut, BlockResult, BeforeResultOut, AfterResultOut, ErrorResultOut, Params>;
 }) {
     return new HttpBlock<
-    Context, ParamsOut, IntermediateResult, ResultOut, BlockResult, BeforeResultOut, AfterResultOut, ErrorResultOut, Params
+        Context, ParamsOut, IntermediateResult, ResultOut, BlockResult, BeforeResultOut, AfterResultOut, ErrorResultOut, Params
     >({ block, options });
 };
 
@@ -157,11 +157,10 @@ const run = function<
     Params = ParamsOut,
 >(
     block: BaseBlock<Context, CustomBlock, ParamsOut, ResultOut, IntermediateResult, BlockResult, BeforeResultOut, AfterResultOut, ErrorResultOut, Params>,
-    //block: FunctionBlock<Context, ParamsOut, BlockResult, ResultOut, BeforeResultOut, AfterResultOut, ErrorResultOut, Params>,
+    // block: FunctionBlock<Context, ParamsOut, BlockResult, ResultOut, BeforeResultOut, AfterResultOut, ErrorResultOut, Params>,
     { params, context, cancel }: {
         params?: Params; context?: Context; cancel?: Cancel;
     } = {}) {
-
     const runContext = new RunContext<BlockResult, IntermediateResult, ResultOut, Context, BeforeResultOut, AfterResultOut, ErrorResultOut>();
 
     if (!(params && typeof params === 'object')) {
@@ -172,7 +171,7 @@ const run = function<
     }
 
     const blockCancel = cancel.create();
-    //return block.run({ runContext, blockCancel, cancel, params });
+    // return block.run({ runContext, blockCancel, cancel, params });
     return runContext.run({ block, blockCancel, params, cancel, context });// as ReturnType<typeof block['run']>;
 };
 

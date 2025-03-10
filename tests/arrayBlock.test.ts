@@ -1,6 +1,6 @@
 import { describe, expect, it, vi } from 'vitest';
 
-import * as de from '../lib' ;
+import * as de from '../lib';
 
 import {
     //  wait_for_value,
@@ -8,7 +8,7 @@ import {
     getResultBlock,
     getErrorBlock,
     getTimeout,
-} from './helpers' ;
+} from './helpers';
 
 //  ---------------------------------------------------------------------------------------------------------------  //
 
@@ -63,7 +63,6 @@ describe('de.array', () => {
         expect(result).toEqual([]);
     });
 
-
     it('two subblocks', async() => {
         const dataFoo = {
             foo: 42,
@@ -116,7 +115,7 @@ describe('de.array', () => {
         });
 
         const result = await de.run(block);
-        //const result2 = block.run({});
+        // const result2 = block.run({});
 
         expect(result).toEqual([
             dataFoo,
@@ -215,7 +214,7 @@ describe('de.array', () => {
             block: {
                 foo: blockFoo.extend({
                     options: {
-                        params: ({ params }: { params: { x: number }}) => {
+                        params: ({ params }: { params: { x: number } }) => {
                             return {
                                 ...params,
                                 x: 1,
@@ -226,7 +225,7 @@ describe('de.array', () => {
                 }),
                 bar: blockBar.extend({
                     options: {
-                        params: ({ params }: { params: { z: number }}) => {
+                        params: ({ params }: { params: { z: number } }) => {
                             return {
                                 ...params,
                                 x: 1,
@@ -370,7 +369,7 @@ describe('de.array', () => {
             try {
                 await de.run(block);
 
-            } catch (e) {}
+            } catch {}
 
             const call00 = actionBarSpy.mock.calls[ 0 ][ 0 ];
             expect(de.isError(call00)).toBe(true);

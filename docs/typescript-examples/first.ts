@@ -105,7 +105,6 @@ de.run(block4, {
         console.log(result);
     });
 
-
 const bfn1 = de.func({
     block: ({ params }: { params: { p1: number } }) => {
         return {
@@ -121,7 +120,6 @@ const bfn1 = de.func({
         },
     },
 });
-
 
 const bfn2 = de.func({
     block: ({ params }: { params: { p2: string } }) => {

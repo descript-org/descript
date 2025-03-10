@@ -117,8 +117,8 @@ de.run(block2, {
 const block3 = de.http({
     block: {},
     options: {
-        //TODO как вывести In из Out?
-        //params: ({ params }: { params: ParamsIn }) => params,
+        // TODO как вывести In из Out?
+        // params: ({ params }: { params: ParamsIn }) => params,
         before: ({ params }: { params: ParamsIn }) => {
             if (!params.id) {
                 return 'foo';
@@ -183,7 +183,7 @@ const block6 = de.object({
                         p4: params.p4,
                     };
                 },
-                //after: ({ result }) => result,
+                // after: ({ result }) => result,
             },
         }),
         block3: block3.extend({}),
@@ -214,7 +214,7 @@ const block7 = de.object({
                         x: 1,
                     };
                 },
-                //after: ({ result }) => result,
+                // after: ({ result }) => result,
             },
         }),
         block3: block3.extend({}),
@@ -225,7 +225,6 @@ const block7 = de.object({
         },
     },
 });
-
 
 de.run(block7, {
     params: {
@@ -255,7 +254,6 @@ const block9 = block8.extend({
         after: ({ params }) => params,
     },
 });
-
 
 de.run(block9, {
     params: {

@@ -4,11 +4,11 @@ type ArbitraryObject = { [key: string]: unknown };
 
 function isErrnoException(error: unknown): error is NodeJS.ErrnoException {
     return isArbitraryObject(error) &&
-        error instanceof Error &&
-        (typeof error.errno === 'number' || typeof error.errno === 'undefined') &&
-        (typeof error.code === 'string' || typeof error.code === 'undefined') &&
-        (typeof error.path === 'string' || typeof error.path === 'undefined') &&
-        (typeof error.syscall === 'string' || typeof error.syscall === 'undefined');
+      error instanceof Error &&
+      (typeof error.errno === 'number' || typeof error.errno === 'undefined') &&
+      (typeof error.code === 'string' || typeof error.code === 'undefined') &&
+      (typeof error.path === 'string' || typeof error.path === 'undefined') &&
+      (typeof error.syscall === 'string' || typeof error.syscall === 'undefined');
 }
 
 function isArbitraryObject(potentialObject: unknown): potentialObject is ArbitraryObject {
@@ -56,8 +56,7 @@ export interface ErrorData<Error = Buffer | null | unknown> {
     reason?: Reason | Array<Reason>;
 }
 
-
-export type IncomingError = NodeJS.ErrnoException | Error | (ErrorData & {name?: string}) | string
+export type IncomingError = NodeJS.ErrnoException | Error | (ErrorData & { name?: string }) | string;
 
 export class DescriptError {
     error: ErrorData;
@@ -130,8 +129,8 @@ export class DescriptError {
         }
 
         this.error = Object.keys(this.error).reduce((acc, key) => {
-            if ((this.error as any)[key] !== undefined) {
-                (acc as any)[key] = (this.error as any)[key];
+            if ((this.error as any)[ key ] !== undefined) {
+                (acc as any)[ key ] = (this.error as any)[ key ];
             }
 
             return acc;

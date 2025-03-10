@@ -36,7 +36,7 @@ describe('http', <
         BeforeResultOut = undefined,
         AfterResultOut = undefined,
         ErrorResultOut = undefined,
-        Params = ParamsOut
+        Params = ParamsOut,
     >({ block, options }: {
         block?: DescriptHttpBlockDescription<ParamsOut, Context, HTTPResult>;
         options?: DescriptBlockOptions<Context, ParamsOut, BlockResult, BeforeResultOut, AfterResultOut, ErrorResultOut, Params>;
@@ -66,7 +66,7 @@ describe('http', <
     describe('basic block properties', () => {
         const path = getPath();
 
-        type P = 'method' | 'protocol' | 'port' | 'hostname' | 'pathname' | 'maxRetries' | 'timeout' | 'headers' | 'query' | 'body'
+        type P = 'method' | 'protocol' | 'port' | 'hostname' | 'pathname' | 'maxRetries' | 'timeout' | 'headers' | 'query' | 'body';
 
         const PROPS: Array<[ P, DescriptHttpBlockDescription<ParamsOut, Context, HTTPResult>[P]]> = [
             [ 'method', 'POST' ],
@@ -155,6 +155,7 @@ describe('http', <
 
             const result = await de.run(block);
 
+            // eslint-disable-next-line @typescript-eslint/no-unused-expressions
             result.bar;
 
             const call = spy.mock.calls[ 0 ][ 0 ];
@@ -165,51 +166,49 @@ describe('http', <
 
     });
 
-    /*
-    it( 'path is a string', async () => {
+    it('path is a string', async() => {
         const path = getPath();
 
         const CONTENT = 'Привет!';
 
-        fake.add( path, {
+        fake.add(path, {
             statusCode: 200,
             content: CONTENT,
-        } );
+        });
 
-        const block = baseBlock( {
+        const block = baseBlock({
             block: {
                 pathname: path,
             },
-        } );
+        });
 
-        const result = await de.run( block );
+        const result = await de.run(block);
 
-        expect( result.statusCode ).toBe( 200 );
-        expect( result.result ).toBe( CONTENT );
-    } );
+        expect(result.statusCode).toBe(200);
+        expect(result.result).toBe(CONTENT);
+    });
 
-    it( 'path is a function', async () => {
+    it('path is a function', async() => {
         const path = getPath();
 
         const CONTENT = 'Привет!';
 
-        fake.add( path, {
+        fake.add(path, {
             statusCode: 200,
             content: CONTENT,
-        } );
+        });
 
-        const block = baseBlock( {
+        const block = baseBlock({
             block: {
                 pathname: () => path,
             },
-        } );
+        });
 
-        const result = await de.run( block );
+        const result = await de.run(block);
 
-        expect( result.statusCode ).toBe( 200 );
-        expect( result.result ).toBe( CONTENT );
-    } );
-    */
+        expect(result.statusCode).toBe(200);
+        expect(result.result).toBe(CONTENT);
+    });
 
     describe('headers', () => {
 
@@ -254,8 +253,8 @@ describe('http', <
                     timeout: 150,
                     prepareRequestOptions: (requestOptions, blockOptions) => {
                         requestOptions.headers = requestOptions.headers || {};
-                        requestOptions.headers['x-timeout-header'] = String(requestOptions.timeout ?? blockOptions.timeout);
-                        requestOptions.headers['x-required-header'] = blockOptions.required ? 'true' : 'false';
+                        requestOptions.headers[ 'x-timeout-header' ] = String(requestOptions.timeout ?? blockOptions.timeout);
+                        requestOptions.headers[ 'x-required-header' ] = blockOptions.required ? 'true' : 'false';
                         return requestOptions;
                     },
                 },
@@ -285,8 +284,8 @@ describe('http', <
                     pathname: path,
                     prepareRequestOptions: (requestOptions, blockOptions) => {
                         requestOptions.headers = requestOptions.headers || {};
-                        requestOptions.headers['x-timeout-header'] = String(requestOptions.timeout ?? blockOptions.timeout);
-                        requestOptions.headers['x-required-header'] = blockOptions.required ? 'true' : 'false';
+                        requestOptions.headers[ 'x-timeout-header' ] = String(requestOptions.timeout ?? blockOptions.timeout);
+                        requestOptions.headers[ 'x-required-header' ] = blockOptions.required ? 'true' : 'false';
                         return requestOptions;
                     },
                 },
@@ -701,7 +700,6 @@ describe('http', <
                 },
             });
 
-
             await de.run(block, { params });
 
             const req = spy.mock.calls[ 0 ][ 0 ];
@@ -1112,7 +1110,7 @@ describe('http', <
                     pathname: path,
                     isJson: true,
                 },
-                //TODO без этого бы прокидывать тип
+                // TODO без этого бы прокидывать тип
                 options: {
                     after: ({ result }: { result: DescriptHttpBlockResult<typeof RESPONSE> }) => result,
                 },
