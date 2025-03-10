@@ -1,6 +1,5 @@
 import { describe, expect, it, vi } from 'vitest';
 
-/* eslint-disable jest/no-conditional-expect */
 import { getErrorBlock, getResultBlock } from './helpers';
 
 import * as de from '../lib';
@@ -67,7 +66,7 @@ describe('options.error', () => {
     it('throws ReferenceError', async() => {
         const error1 = de.error('ERROR_1');
         const spy = vi.fn(() => {
-            // eslint-disable-next-line no-undef,@typescript-eslint/ban-ts-comment
+            // eslint-disable-next-line @typescript-eslint/ban-ts-comment
             // @ts-ignore
             return x;
         });

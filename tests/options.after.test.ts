@@ -4,7 +4,6 @@ import * as de from '../lib';
 
 import { getErrorBlock, getResultBlock, waitForError, waitForValue } from './helpers';
 
-
 describe('options.after', () => {
 
     it('after gets { params, context, result }', async() => {
@@ -44,8 +43,7 @@ describe('options.after', () => {
 
         try {
             await de.run(block);
-        } catch (e) {
-        }
+        } catch {}
 
         expect(spy.mock.calls).toHaveLength(0);
     });
@@ -197,7 +195,7 @@ describe('options.after', () => {
             },
         });
 
-        //TODO кривые результаты
+        // TODO кривые результаты
         const r = await de.run(block);
 
         expect(r.bar).toBe(barResult);
@@ -207,7 +205,7 @@ describe('options.after', () => {
         type Params = {
             n: number;
             r: number;
-        }
+        };
         const factorial: any = de.func({
             block: () => 1,
             options: {

@@ -27,19 +27,19 @@ class FunctionBlock<
     BeforeResultOut = undefined,
     AfterResultOut = undefined,
     ErrorResultOut = undefined,
-    Params = never extends InferParamsOutFromBlock<BlockResult> ? ParamsOut : InferParamsOutFromBlock<BlockResult>
+    Params = never extends InferParamsOutFromBlock<BlockResult> ? ParamsOut : InferParamsOutFromBlock<BlockResult>,
 > extends BaseBlock<
-    Context,
-    FunctionBlockDefinition<Context, ParamsOut, BlockResult>,
-    ParamsOut,
-    ResultOut,
-    BlockResult,
-    BlockResult,
+        Context,
+        FunctionBlockDefinition<Context, ParamsOut, BlockResult>,
+        ParamsOut,
+        ResultOut,
+        BlockResult,
+        BlockResult,
 
-    BeforeResultOut,
-    AfterResultOut,
-    ErrorResultOut,
-    Params
+        BeforeResultOut,
+        AfterResultOut,
+        ErrorResultOut,
+        Params
     > {
 
     protected initBlock(block: FunctionBlockDefinition<Context, ParamsOut, BlockResult>) {
@@ -96,7 +96,7 @@ class FunctionBlock<
         ExtendedParamsOut extends Params = Params,
         ExtendedParams = Params,
         // eslint-disable-next-line @typescript-eslint/no-unused-vars
-        //ExtendedCustomBlock = DescriptHttpBlockDescription<ExtendedParamsOut, Context, HttpResult>,
+        // ExtendedCustomBlock = DescriptHttpBlockDescription<ExtendedParamsOut, Context, HttpResult>,
 
         ExtendedBlockResult = ResultOut,
         ExtendedBeforeResultOut = undefined,
@@ -104,13 +104,13 @@ class FunctionBlock<
         ExtendedErrorResultOut = undefined,
     >({ options }: {
         options: DescriptBlockOptions<
-        Context, ExtendedParamsOut, ExtendedBlockResult, ExtendedBeforeResultOut, ExtendedAfterResultOut, ExtendedErrorResultOut, ExtendedParams
+            Context, ExtendedParamsOut, ExtendedBlockResult, ExtendedBeforeResultOut, ExtendedAfterResultOut, ExtendedErrorResultOut, ExtendedParams
         >;
     }) {
         return new FunctionBlock({
             block: this.extendBlock(this.block) as typeof this.block,
             // eslint-disable-next-line @typescript-eslint/ban-ts-comment
-            //@ts-expect-error
+            // @ts-expect-error
             options: this.extendOptions(this.options, options) as typeof options,
         });
     }

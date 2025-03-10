@@ -5,10 +5,10 @@ import type http from 'node:http';
 
 type Config = {
     debug?: boolean;
-}
+};
 
 export enum EVENT {
-    REQUEST_START= 'REQUEST_START',
+    REQUEST_START = 'REQUEST_START',
     REQUEST_SUCCESS = 'REQUEST_SUCCESS',
     REQUEST_ERROR = 'REQUEST_ERROR',
 }

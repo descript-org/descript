@@ -4,7 +4,7 @@ import type { DescriptHttpBlockResult } from '../../lib/types';
 const block1 = de.http({
     block: {},
     options: {
-        //TODO как указать тип blockResult?
+        // TODO как указать тип blockResult?
         after: ({ result }: { result: DescriptHttpBlockResult<string> }) => {
             if (de.isError(result)) {
                 return result.error.id;

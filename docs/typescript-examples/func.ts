@@ -82,7 +82,6 @@ const block3 = block2.extend({
     },
 });
 
-
 de.run(block3, {
     params: {
         param2: 2,
@@ -91,7 +90,6 @@ de.run(block3, {
     .then((result) => {
         console.log(result);
     });
-
 
 const objBlock = de.object({
     block: {
@@ -103,9 +101,9 @@ const objBlock = de.object({
 const block4 = de.func({
     // eslint-disable-next-line @typescript-eslint/no-unused-vars
     block: ({ params }) => {
-        //TODO не выводится params.
+        // TODO не выводится params.
         // eslint-disable-next-line @typescript-eslint/no-unused-vars
-        //const x = params.id;
+        // const x = params.id;
         return objBlock;
     },
     options: {

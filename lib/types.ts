@@ -26,7 +26,7 @@ export interface DescriptHttpResult {
     timestamps: EventTimestamps;
 }
 
-export type UnionToIntersection< U > = (
+export type UnionToIntersection<U> = (
     U extends any ?
         (k: U) => void :
         never
@@ -34,29 +34,28 @@ export type UnionToIntersection< U > = (
     (k: infer I) => void
 ) ? I : never;
 
-
-// eslint-disable-next-line @typescript-eslint/no-empty-interface
+// eslint-disable-next-line @typescript-eslint/no-empty-object-type
 export interface DescriptContext {}
 
 export type NonNullableObject<T extends Record<string, unknown>> = {
     [P in keyof T]: Exclude<T[P], undefined>;
-}
+};
 
 export type DescriptJSON =
-    boolean |
-    number |
-    string |
-    undefined |
-    null |
+  boolean |
+  number |
+  string |
+  undefined |
+  null |
     { [ property: string ]: DescriptJSON } |
     object |
-    Array< DescriptJSON >;
+    Array<DescriptJSON>;
 
 export type BlockResultOut<
     BlockResult,
     BeforeResultOut,
     AfterResultOut,
-    ErrorResultOut
+    ErrorResultOut,
 > =
      (never | undefined)extends ErrorResultOut ?
          undefined extends AfterResultOut ?
@@ -72,79 +71,76 @@ export type BlockResultOut<
 
 export type InferResultOrResult<Result> = Result extends BaseBlock<
 // eslint-disable-next-line @typescript-eslint/no-unused-vars
-infer Context, infer CustomBlock, infer ParamsOut, infer ResultOut, infer IntermediateResult,
-// eslint-disable-next-line @typescript-eslint/no-unused-vars
-infer BlockResult, infer BeforeResultOut, infer AfterResultOut, infer ErrorResultOut, infer Params
+    infer Context, infer CustomBlock, infer ParamsOut, infer ResultOut, infer IntermediateResult,
+    // eslint-disable-next-line @typescript-eslint/no-unused-vars
+    infer BlockResult, infer BeforeResultOut, infer AfterResultOut, infer ErrorResultOut, infer Params
 > ? InferResultOrResult<ResultOut> : Result;
 
 export type InferResultOrResultOnce<Result> = Result extends BaseBlock<
 // eslint-disable-next-line @typescript-eslint/no-unused-vars
-infer Context, infer CustomBlock, infer ParamsOut, infer ResultOut, infer IntermediateResult,
-// eslint-disable-next-line @typescript-eslint/no-unused-vars
-infer BlockResult, infer BeforeResultOut, infer AfterResultOut, infer ErrorResultOut, infer Params
+    infer Context, infer CustomBlock, infer ParamsOut, infer ResultOut, infer IntermediateResult,
+    // eslint-disable-next-line @typescript-eslint/no-unused-vars
+    infer BlockResult, infer BeforeResultOut, infer AfterResultOut, infer ErrorResultOut, infer Params
 > ? ResultOut : Result;
 
 export type InferResultFromBlock<Type> = Type extends BaseBlock<
 // eslint-disable-next-line @typescript-eslint/no-unused-vars
-infer Context, infer CustomBlock, infer ParamsOut, infer ResultOut, infer IntermediateResult,
-// eslint-disable-next-line @typescript-eslint/no-unused-vars
-infer BlockResult, infer BeforeResultOut, infer AfterResultOut, infer ErrorResultOut, infer Params
+    infer Context, infer CustomBlock, infer ParamsOut, infer ResultOut, infer IntermediateResult,
+    // eslint-disable-next-line @typescript-eslint/no-unused-vars
+    infer BlockResult, infer BeforeResultOut, infer AfterResultOut, infer ErrorResultOut, infer Params
 > ? InferResultOrResult<ResultOut> : never;
 
 export type InferParamsInFromBlock<Type> = Type extends BaseBlock<
 // eslint-disable-next-line @typescript-eslint/no-unused-vars
-infer Context, infer CustomBlock, infer ParamsOut, infer ResultOut, infer IntermediateResult,
-// eslint-disable-next-line @typescript-eslint/no-unused-vars
-infer BlockResult, infer BeforeResultOut, infer AfterResultOut, infer ErrorResultOut, infer Params
+    infer Context, infer CustomBlock, infer ParamsOut, infer ResultOut, infer IntermediateResult,
+    // eslint-disable-next-line @typescript-eslint/no-unused-vars
+    infer BlockResult, infer BeforeResultOut, infer AfterResultOut, infer ErrorResultOut, infer Params
 > ? Params : never;
-
 
 export type InferParamsInFromBlockOrParams<Type, P> = Type extends BaseBlock<
 // eslint-disable-next-line @typescript-eslint/no-unused-vars
-infer Context, infer CustomBlock, infer ParamsOut, infer ResultOut, infer IntermediateResult,
-// eslint-disable-next-line @typescript-eslint/no-unused-vars
-infer BlockResult, infer BeforeResultOut, infer AfterResultOut, infer ErrorResultOut, infer Params
+    infer Context, infer CustomBlock, infer ParamsOut, infer ResultOut, infer IntermediateResult,
+    // eslint-disable-next-line @typescript-eslint/no-unused-vars
+    infer BlockResult, infer BeforeResultOut, infer AfterResultOut, infer ErrorResultOut, infer Params
 > ? Params : P;
-
 
 export type InferParamsOutFromBlock<Type> = Type extends BaseBlock<
 // eslint-disable-next-line @typescript-eslint/no-unused-vars
-infer Context, infer CustomBlock, infer ParamsOut, infer ResultOut, infer IntermediateResult,
-// eslint-disable-next-line @typescript-eslint/no-unused-vars
-infer BlockResult, infer BeforeResultOut, infer AfterResultOut, infer ErrorResultOut, infer Params
+    infer Context, infer CustomBlock, infer ParamsOut, infer ResultOut, infer IntermediateResult,
+    // eslint-disable-next-line @typescript-eslint/no-unused-vars
+    infer BlockResult, infer BeforeResultOut, infer AfterResultOut, infer ErrorResultOut, infer Params
 > ? ParamsOut : never;
-
 
 export type InferBlock<Type> = Type extends BaseBlock<
 // eslint-disable-next-line @typescript-eslint/no-unused-vars
-infer Context, infer CustomBlock, infer ParamsOut, infer ResultOut, infer IntermediateResult,
-// eslint-disable-next-line @typescript-eslint/no-unused-vars
-infer BlockResult, infer BeforeResultOut, infer AfterResultOut, infer ErrorResultOut, infer Params
+    infer Context, infer CustomBlock, infer ParamsOut, infer ResultOut, infer IntermediateResult,
+    // eslint-disable-next-line @typescript-eslint/no-unused-vars
+    infer BlockResult, infer BeforeResultOut, infer AfterResultOut, infer ErrorResultOut, infer Params
 > ? Type : never;
 
 export type InferHttpBlock<Type> = Type extends HttpBlock<
 // eslint-disable-next-line @typescript-eslint/no-unused-vars
-infer Context, infer ParamsOut, infer HttpResult, infer ResultOut, infer BlockResult,
-// eslint-disable-next-line @typescript-eslint/no-unused-vars
-infer BeforeResultOut, infer AfterResultOut, infer ErrorResultOut, infer Params
+    infer Context, infer ParamsOut, infer HttpResult, infer ResultOut, infer BlockResult,
+    // eslint-disable-next-line @typescript-eslint/no-unused-vars
+    infer BeforeResultOut, infer AfterResultOut, infer ErrorResultOut, infer Params
 > ? Type : never;
 
-export type InferContextFromBlock< T > = T extends BaseBlock<
+export type InferContextFromBlock<T> = T extends BaseBlock<
 // eslint-disable-next-line @typescript-eslint/no-unused-vars
-infer Context, infer CustomBlock, infer ParamsOut, infer ResultOut, infer IntermediateResult,
-// eslint-disable-next-line @typescript-eslint/no-unused-vars
-infer BlockResult, infer BeforeResultOut, infer AfterResultOut, infer ErrorResultOut, infer Params
+    infer Context, infer CustomBlock, infer ParamsOut, infer ResultOut, infer IntermediateResult,
+    // eslint-disable-next-line @typescript-eslint/no-unused-vars
+    infer BlockResult, infer BeforeResultOut, infer AfterResultOut, infer ErrorResultOut, infer Params
 > ? Context : never;
 
-export type First< T > =
+export type First<T> =
 // eslint-disable-next-line @typescript-eslint/no-unused-vars
     T extends readonly [ infer First, ...infer Rest ] | [ infer First, ...infer Rest ] ? First : never;
 
-export type Tail< T > =
+export type Tail<T> =
 // eslint-disable-next-line @typescript-eslint/no-unused-vars
     T extends readonly [ infer First, ...infer Rest ] | [ infer First, ...infer Rest ] ? Rest : never;
 
-export type Equal< A, B > = A extends B ? (B extends A ? A : never) : never;
+export type Equal<A, B> = A extends B ? (B extends A ? A : never) : never;
 
 export type DepsIds = Array<DescriptBlockId>;
 export interface DescriptBlockOptions<

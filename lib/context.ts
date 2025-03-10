@@ -1,7 +1,7 @@
 import type { DescriptError } from './error';
-import { ERROR_ID, createError } from './error' ;
+import { ERROR_ID, createError } from './error';
 
-import BlockClass from './block' ;
+import BlockClass from './block';
 
 import type { Deffered } from './getDeferred';
 import getDeferred from './getDeferred';
@@ -17,9 +17,9 @@ type StoredResult<Result, Error> = {
     error: Error;
 } | {
     result: Result;
-}
+};
 
-type Dependency = {blockCancel: Cancel; nParents: number}
+type Dependency = { blockCancel: Cancel; nParents: number };
 
 class RunContext<
     BlockResult,
@@ -46,8 +46,9 @@ class RunContext<
     addWaitingDeps(dep: Dependency) {
         this.waitingForDeps.push(dep);
     }
+
     removeWaitingDeps(blockCancel: Dependency['blockCancel']) {
-        this.waitingForDeps = this.waitingForDeps.filter(item => item.blockCancel !== blockCancel);
+        this.waitingForDeps = this.waitingForDeps.filter((item) => item.blockCancel !== blockCancel);
     }
 
     getNumberOfBlocks() {
@@ -57,6 +58,7 @@ class RunContext<
     incNumberOfBlocks() {
         return this.nBlocks++;
     }
+
     decNumberOfBlocks() {
         return this.nBlocks--;
     }
@@ -68,6 +70,7 @@ class RunContext<
     incNumberOfActiveBlocks() {
         return this.nActiveBlocks++;
     }
+
     decNumberOfActiveBlocks() {
         return this.nActiveBlocks--;
     }
@@ -123,17 +126,17 @@ class RunContext<
         { block, blockCancel, depsDomain, params, context, cancel, prev, nParents = 0 }:
         {
             block: BaseBlock<Context,
-            CustomBlock,
-            ParamsOut,
+                CustomBlock,
+                ParamsOut,
 
-            ResultOut,
-            IntermediateResult,
-            BlockResult,
+                ResultOut,
+                IntermediateResult,
+                BlockResult,
 
-            BeforeResultOut,
-            AfterResultOut,
-            ErrorResultOut,
-            Params
+                BeforeResultOut,
+                AfterResultOut,
+                ErrorResultOut,
+                Params
             >;
             blockCancel: Cancel;
             depsDomain?: DepsDomain;

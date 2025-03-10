@@ -1,11 +1,9 @@
 import { describe, expect, it, vi } from 'vitest';
 
-/* eslint-disable jest/no-conditional-expect */
 import * as de from '../lib';
 
 import { getErrorBlock, getResultBlock, getTimeout, waitForValue } from './helpers';
 import type { DescriptBlockId } from '../lib/depsDomain';
-
 
 //  ---------------------------------------------------------------------------------------------------------------  //
 
@@ -533,7 +531,6 @@ describe('options.deps', () => {
             expect(e.error.id).toBe(de.ERROR_ID.DEPS_NOT_RESOLVED);
         }
 
-
     });
 
     it('before( { deps } ) has deps results #1', async() => {
@@ -915,7 +912,6 @@ describe('options.deps', () => {
 
         expect(r.D).toBeNull();
     });
-
 
     describe('de.pipe', () => {
 

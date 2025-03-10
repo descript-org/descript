@@ -92,7 +92,7 @@ describe('de.object', () => {
             block: {
                 foo: blockFoo.extend({
                     options: {
-                        params: ({ params }: { params: { x: number }}) => {
+                        params: ({ params }: { params: { x: number } }) => {
                             return {
                                 ...params,
                                 x: 1,
@@ -103,7 +103,7 @@ describe('de.object', () => {
                 }),
                 bar: blockBar.extend({
                     options: {
-                        params: ({ params }: { params: { z: number }}) => {
+                        params: ({ params }: { params: { z: number } }) => {
                             return {
                                 ...params,
                                 x: 1,
@@ -359,7 +359,7 @@ describe('de.object', () => {
             try {
                 await de.run(block);
 
-            } catch (err) {}
+            } catch {}
 
             const call00 = actionBarSpy.mock.calls[ 0 ][ 0 ];
             expect(de.isError(call00)).toBe(true);

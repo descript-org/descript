@@ -8,7 +8,7 @@ export type Deffered<R, C> = {
     promise: CustomPromise<R, C>;
     resolve: (value: R | PromiseLike<R>) => void;
     reject: (reason?: C) => void;
-}
+};
 
 export default function getDeferred<R, C>(): Deffered<R, C> {
     let resolve: ((value: R | PromiseLike<R>) => void) | null = null;

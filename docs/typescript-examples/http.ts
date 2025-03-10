@@ -6,7 +6,6 @@ import { DEFAULT_OPTIONS } from '../../lib/request';
 
 //  ---------------------------------------------------------------------------------------------------------------  //
 
-
 interface ParamsIn1 {
     id1: string;
 }
@@ -22,7 +21,7 @@ const block1 = de.http({
                 return null;
             }
 
-            if (headers['content-type']?.startsWith('application/json')) {
+            if (headers[ 'content-type' ]?.startsWith('application/json')) {
                 return JSON.parse(body.toString('utf-8'));
             } else {
                 return body;
@@ -57,7 +56,7 @@ const block1 = de.http({
 
     options: ({
         before: () => {
-            //TODO возврат результата и типизация в after
+            // TODO возврат результата и типизация в after
             // return {
             //     d: 1,
             // };
@@ -73,8 +72,8 @@ const block1 = de.http({
             };
         },
 
-        //TODO автовыведение ResultIn1
-        after: ({ params, result }: { params: { s1: ParamsIn1['id1']}; result: DescriptHttpBlockResult<ResultIn1> }) => {
+        // TODO автовыведение ResultIn1
+        after: ({ params, result }: { params: { s1: ParamsIn1['id1'] }; result: DescriptHttpBlockResult<ResultIn1> }) => {
             return {
                 a: params.s1,
                 b: result.result.foo,
@@ -98,13 +97,12 @@ interface ParamsIn2 {
 
 const block2 = block1.extend({
     options: ({
-        params: ({ params }: { params: ParamsIn2 & ParamsIn1}) => {
+        params: ({ params }: { params: ParamsIn2 & ParamsIn1 }) => {
             return {
                 id1: params.id1,
                 s2: params.id2,
             };
         },
-
 
         after: ({ params, result }) => {
             return {
@@ -117,7 +115,7 @@ const block2 = block1.extend({
 });
 
 de.run(block2, {
-    //TODO что за undefined?
+    // TODO что за undefined?
     params: {
         id1: '12345',
         id2: '12345',

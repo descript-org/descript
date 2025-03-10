@@ -1,4 +1,4 @@
-//TODO как это типизировать any этот?
+// TODO как это типизировать any этот?
 export type DescriptBlockDeps = Record<DescriptBlockId, any>;
 export type DescriptBlockId = symbol;
 export type GenerateId = (label?: string) => DescriptBlockId;

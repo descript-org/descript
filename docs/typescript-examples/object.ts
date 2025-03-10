@@ -57,7 +57,6 @@ const block1 = de.http({
     },
 });
 
-
 de.run(block1, {
     params: {
         id1: '67890',
@@ -83,7 +82,7 @@ interface ParamsIn2 {
 const block2 = de.http({
     block: {},
     options: {
-        params: ({ params }: {params: ParamsIn2}) => {
+        params: ({ params }: { params: ParamsIn2 }) => {
             return params;
         },
 
@@ -98,7 +97,7 @@ const block2 = de.http({
 const block2Func = de.func({
     // eslint-disable-next-line @typescript-eslint/no-unused-vars
     block: ({ params }: { params: InferParamsInFromBlock<typeof block1> & { p1: number } }) => block2,
-    //block: () => block2,
+    // block: () => block2,
     options: {
         after: ({ result }) => {
             console.log(result.b);
@@ -126,7 +125,6 @@ de.run(block2Func, {
             bar: result.b,
         };
     });
-
 
 //  ---------------------------------------------------------------------------------------------------------------  //
 
@@ -214,7 +212,7 @@ const block4 = block3.extend({
     options: {
         after: ({ result }) => {
             return (('a' in result.foo ? result.foo.a : result.foo.error.id) || '') +
-            (('b' in result.bar ? result.bar.b : result.bar.error.id) || '');
+              (('b' in result.bar ? result.bar.b : result.bar.error.id) || '');
         },
     },
 });
@@ -243,7 +241,6 @@ de.run(block4, {
     .then((result) => {
         console.log(result);
     });
-
 
 de.run(block5, {
     params: {

@@ -1,6 +1,6 @@
-import CompositeBlock from './compositeBlock' ;
-import { createError, ERROR_ID } from './error' ;
-import type { DescriptError } from './error' ;
+import CompositeBlock from './compositeBlock';
+import { createError, ERROR_ID } from './error';
+import type { DescriptError } from './error';
 import type {
     BlockResultOut,
     First,
@@ -15,36 +15,36 @@ import type Cancel from './cancel';
 import type { DescriptBlockDeps } from './depsDomain';
 import type DepsDomain from './depsDomain';
 
-export type GetArrayBlockResult< T extends ReadonlyArray<unknown>> = {
+export type GetArrayBlockResult<T extends ReadonlyArray<unknown>> = {
     0: never;
-    1: [ InferResultFromBlock< First< T > > | DescriptError ];
-    2: [ InferResultFromBlock< First< T > > | DescriptError, ...GetArrayBlockResult< Tail< T > > ];
+    1: [ InferResultFromBlock<First<T>> | DescriptError ];
+    2: [ InferResultFromBlock<First<T>> | DescriptError, ...GetArrayBlockResult<Tail<T>> ];
 }[ T extends [] ? 0 : T extends ((readonly [ any ]) | [ any ]) ? 1 : 2 ];
 
-export type GetArrayBlockParamsUnion< T extends ReadonlyArray<unknown>> = {
+export type GetArrayBlockParamsUnion<T extends ReadonlyArray<unknown>> = {
     0: never;
-    1: First< T >;
-    2: First< T > & GetArrayBlockParamsUnion< Tail< T > >;
+    1: First<T>;
+    2: First<T> & GetArrayBlockParamsUnion<Tail<T>>;
 }[ T extends [] ? 0 : T extends ((readonly [ any ]) | [ any ]) ? 1 : 2 ];
 
-type GetArrayBlockParamsMap< T extends ReadonlyArray<unknown>> = {
+type GetArrayBlockParamsMap<T extends ReadonlyArray<unknown>> = {
     [ P in keyof T ]: InferParamsInFromBlock<T[ P ]>;
-}
+};
 
 export type GetArrayBlockParams<
     T extends ReadonlyArray<unknown>,
     PA extends ReadonlyArray<unknown> = GetArrayBlockParamsMap<T>,
-    PU = GetArrayBlockParamsUnion<PA>
+    PU = GetArrayBlockParamsUnion<PA>,
 > = PU;
 
-export type ArrayBlockDefinition< T > = {
+export type ArrayBlockDefinition<T> = {
     [ P in keyof T ]: T[ P ] extends BaseBlock<
     // eslint-disable-next-line @typescript-eslint/no-unused-vars
-    infer Context, infer CustomBlock, infer ParamsOut, infer ResultOut, infer IntermediateResult,
-    // eslint-disable-next-line @typescript-eslint/no-unused-vars
-    infer BlockResult, infer BeforeResultOut, infer AfterResultOut, infer ErrorResultOut, infer Params
+        infer Context, infer CustomBlock, infer ParamsOut, infer ResultOut, infer IntermediateResult,
+        // eslint-disable-next-line @typescript-eslint/no-unused-vars
+        infer BlockResult, infer BeforeResultOut, infer AfterResultOut, infer ErrorResultOut, infer Params
     > ? T[ P ] : never
-}
+};
 
 class ArrayBlock<
     Context,
@@ -58,17 +58,17 @@ class ArrayBlock<
     ErrorResultOut = undefined,
     Params = GetArrayBlockParams<Block>,
 > extends CompositeBlock<
-    Context,
-    ArrayBlockDefinition<Block>,
-    ParamsOut,
-    ResultOut,
-    BlockResult,
-    BlockResult,
+        Context,
+        ArrayBlockDefinition<Block>,
+        ParamsOut,
+        ResultOut,
+        BlockResult,
+        BlockResult,
 
-    BeforeResultOut,
-    AfterResultOut,
-    ErrorResultOut,
-    Params
+        BeforeResultOut,
+        AfterResultOut,
+        ErrorResultOut,
+        Params
     > {
 
     extend<
@@ -83,7 +83,7 @@ class ArrayBlock<
         ExtendedErrorResultOut = undefined,
     >({ options }: {
         options: DescriptBlockOptions<
-        Context, ExtendedParamsOut, ExtendedBlockResult, ExtendedBeforeResultOut, ExtendedAfterResultOut, ExtendedErrorResultOut, ExtendedParams
+            Context, ExtendedParamsOut, ExtendedBlockResult, ExtendedBeforeResultOut, ExtendedAfterResultOut, ExtendedErrorResultOut, ExtendedParams
         >;
     }) {
         return new ArrayBlock({

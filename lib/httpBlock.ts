@@ -1,12 +1,12 @@
-import Block from './block' ;
-import { ERROR_ID, createError } from './error' ;
+import Block from './block';
+import { ERROR_ID, createError } from './error';
 
 import type { DescriptRequestOptions, BlockRequestOptions } from './request';
-import request from './request' ;
+import request from './request';
 
-import extend from './extend' ;
-import extendOption from './extendOption' ;
-import stripNullAndUndefinedValues from './stripNullAndUndefinedValues' ;
+import extend from './extend';
+import extendOption from './extendOption';
+import stripNullAndUndefinedValues from './stripNullAndUndefinedValues';
 import type { DescriptBlockDeps } from './depsDomain';
 import type { BlockResultOut, DescriptHttpBlockResult, DescriptBlockOptions, DescriptHttpResult, DescriptHttpBlockHeaders, DescriptJSON } from './types';
 import type ContextClass from './context';
@@ -18,24 +18,24 @@ import type { LoggerInterface } from './logger';
 
 const rxIsJson = /^application\/json(?:;|\s|$)/;
 
-type DescriptHttpBlockDescriptionCallback< T, Params, Context > = T | ((args: {
+type DescriptHttpBlockDescriptionCallback<T, Params, Context> = T | ((args: {
     params: Params;
     context: Context;
     deps: DescriptBlockDeps;
 }) => T);
 
 export type DescriptHttpBlockQueryValue = string | number | boolean | undefined | null | Array<string | number | boolean | object>;
-export type DescriptHttpBlockQuery = Record< string, DescriptHttpBlockQueryValue >;
+export type DescriptHttpBlockQuery = Record<string, DescriptHttpBlockQueryValue>;
 
 type HttpQuery<Params, Context> = Record<
-string,
-DescriptHttpBlockQueryValue |
-((args: {
-    params: Params;
-    context: Context;
-    deps: DescriptBlockDeps;
-    query: DescriptHttpBlockQuery;
-}) => DescriptHttpBlockQueryValue)
+    string,
+    DescriptHttpBlockQueryValue |
+    ((args: {
+        params: Params;
+        context: Context;
+        deps: DescriptBlockDeps;
+        query: DescriptHttpBlockQuery;
+    }) => DescriptHttpBlockQueryValue)
 > |
 (
     (args: {
@@ -46,14 +46,14 @@ DescriptHttpBlockQueryValue |
     }) => DescriptHttpBlockQuery
 );
 
-export type HttpHeaders<Params, Context> = Record< string,
-string |
-((args: {
-    params: Params;
-    context: Context;
-    deps: DescriptBlockDeps;
-    headers: DescriptHttpBlockHeaders;
-}) => string)
+export type HttpHeaders<Params, Context> = Record<string,
+  string |
+  ((args: {
+      params: Params;
+      context: Context;
+      deps: DescriptBlockDeps;
+      headers: DescriptHttpBlockHeaders;
+  }) => string)
 > |
 (
     (args: {
@@ -65,48 +65,47 @@ string |
 );
 
 type HttpBody<Params, Context> = string |
-Buffer |
-DescriptJSON |
-((args: {
-    params: Params;
-    context: Context;
-    deps: DescriptBlockDeps;
-}) => string | Buffer | DescriptJSON);
+  Buffer |
+  DescriptJSON |
+  ((args: {
+      params: Params;
+      context: Context;
+      deps: DescriptBlockDeps;
+  }) => string | Buffer | DescriptJSON);
 
 export interface DescriptHttpBlockDescription<
     Params,
     Context,
-    HTTPResult
+    HTTPResult,
 > extends Pick<
-    DescriptRequestOptions,
+        DescriptRequestOptions,
     'isError' | 'isRetryAllowed' | 'retryTimeout'
     > {
     // sync with EVALUABLE_PROPS
-    agent?: DescriptHttpBlockDescriptionCallback< DescriptRequestOptions['agent'], Params, Context >;
-    auth?: DescriptHttpBlockDescriptionCallback< DescriptRequestOptions['auth'], Params, Context >;
-    bodyCompress?: DescriptHttpBlockDescriptionCallback< DescriptRequestOptions['bodyCompress'], Params, Context >;
-    ca?: DescriptHttpBlockDescriptionCallback< DescriptRequestOptions['ca'], Params, Context >;
-    cert?: DescriptHttpBlockDescriptionCallback< DescriptRequestOptions['cert'], Params, Context >;
-    ciphers?: DescriptHttpBlockDescriptionCallback< DescriptRequestOptions['ciphers'], Params, Context >;
-    family?: DescriptHttpBlockDescriptionCallback< DescriptRequestOptions['family'], Params, Context >;
-    hostname?: DescriptHttpBlockDescriptionCallback< DescriptRequestOptions['hostname'], Params, Context >;
-    key?: DescriptHttpBlockDescriptionCallback< DescriptRequestOptions['key'], Params, Context >;
-    maxRetries?: DescriptHttpBlockDescriptionCallback< DescriptRequestOptions['maxRetries'], Params, Context >;
-    method?: DescriptHttpBlockDescriptionCallback< DescriptRequestOptions['method'], Params, Context >;
-    passphrase?: DescriptHttpBlockDescriptionCallback< DescriptRequestOptions['passphrase'], Params, Context >;
-    pathname?: DescriptHttpBlockDescriptionCallback< DescriptRequestOptions['pathname'], Params, Context >;
-    pfx?: DescriptHttpBlockDescriptionCallback< DescriptRequestOptions['pfx'], Params, Context >;
-    port?: DescriptHttpBlockDescriptionCallback< DescriptRequestOptions['port'], Params, Context >;
-    protocol?: DescriptHttpBlockDescriptionCallback< DescriptRequestOptions['protocol'], Params, Context >;
-    rejectUnauthorized?: DescriptHttpBlockDescriptionCallback< DescriptRequestOptions['rejectUnauthorized'], Params, Context >;
-    secureProtocol?: DescriptHttpBlockDescriptionCallback< DescriptRequestOptions['secureProtocol'], Params, Context >;
-    servername?: DescriptHttpBlockDescriptionCallback< DescriptRequestOptions['servername'], Params, Context >;
-    timeout?: DescriptHttpBlockDescriptionCallback< DescriptRequestOptions['timeout'], Params, Context >;
+    agent?: DescriptHttpBlockDescriptionCallback<DescriptRequestOptions['agent'], Params, Context>;
+    auth?: DescriptHttpBlockDescriptionCallback<DescriptRequestOptions['auth'], Params, Context>;
+    bodyCompress?: DescriptHttpBlockDescriptionCallback<DescriptRequestOptions['bodyCompress'], Params, Context>;
+    ca?: DescriptHttpBlockDescriptionCallback<DescriptRequestOptions['ca'], Params, Context>;
+    cert?: DescriptHttpBlockDescriptionCallback<DescriptRequestOptions['cert'], Params, Context>;
+    ciphers?: DescriptHttpBlockDescriptionCallback<DescriptRequestOptions['ciphers'], Params, Context>;
+    family?: DescriptHttpBlockDescriptionCallback<DescriptRequestOptions['family'], Params, Context>;
+    hostname?: DescriptHttpBlockDescriptionCallback<DescriptRequestOptions['hostname'], Params, Context>;
+    key?: DescriptHttpBlockDescriptionCallback<DescriptRequestOptions['key'], Params, Context>;
+    maxRetries?: DescriptHttpBlockDescriptionCallback<DescriptRequestOptions['maxRetries'], Params, Context>;
+    method?: DescriptHttpBlockDescriptionCallback<DescriptRequestOptions['method'], Params, Context>;
+    passphrase?: DescriptHttpBlockDescriptionCallback<DescriptRequestOptions['passphrase'], Params, Context>;
+    pathname?: DescriptHttpBlockDescriptionCallback<DescriptRequestOptions['pathname'], Params, Context>;
+    pfx?: DescriptHttpBlockDescriptionCallback<DescriptRequestOptions['pfx'], Params, Context>;
+    port?: DescriptHttpBlockDescriptionCallback<DescriptRequestOptions['port'], Params, Context>;
+    protocol?: DescriptHttpBlockDescriptionCallback<DescriptRequestOptions['protocol'], Params, Context>;
+    rejectUnauthorized?: DescriptHttpBlockDescriptionCallback<DescriptRequestOptions['rejectUnauthorized'], Params, Context>;
+    secureProtocol?: DescriptHttpBlockDescriptionCallback<DescriptRequestOptions['secureProtocol'], Params, Context>;
+    servername?: DescriptHttpBlockDescriptionCallback<DescriptRequestOptions['servername'], Params, Context>;
+    timeout?: DescriptHttpBlockDescriptionCallback<DescriptRequestOptions['timeout'], Params, Context>;
 
     query?: HttpQuery<Params, Context> | Array<HttpQuery<Params, Context>>;
 
     headers?: HttpHeaders<Params, Context> | Array<HttpHeaders<Params, Context>>;
-
 
     body?: HttpBody<Params, Context>;
 
@@ -114,31 +113,31 @@ export interface DescriptHttpBlockDescription<
 
     prepareRequestOptions?: (httpOptions: DescriptRequestOptions, blockOptions: BlockRequestOptions) => DescriptRequestOptions;
 
-    parseBody?: (result: {body: DescriptHttpResult['body']; headers: DescriptHttpResult['headers']}, context: Context) =>
+    parseBody?: (result: { body: DescriptHttpResult['body']; headers: DescriptHttpResult['headers'] }, context: Context) =>
     HTTPResult;
 
 }
 
 const EVALUABLE_PROPS: Array<keyof Pick<DescriptRequestOptions, 'agent' |
-'auth' |
-'bodyCompress' |
-'ca' |
-'cert' |
-'ciphers' |
-'family' |
-'hostname' |
-'key' |
-'maxRetries' |
-'method' |
-'passphrase' |
-'pathname' |
-'pfx' |
-'port' |
-'protocol' |
-'rejectUnauthorized' |
-'secureProtocol' |
-'servername' |
-'timeout'>> = [
+  'auth' |
+  'bodyCompress' |
+  'ca' |
+  'cert' |
+  'ciphers' |
+  'family' |
+  'hostname' |
+  'key' |
+  'maxRetries' |
+  'method' |
+  'passphrase' |
+  'pathname' |
+  'pfx' |
+  'port' |
+  'protocol' |
+  'rejectUnauthorized' |
+  'secureProtocol' |
+  'servername' |
+  'timeout'>> = [
     'agent',
     'auth',
     'bodyCompress',
@@ -165,7 +164,7 @@ type CallbackArgs<Params, Context> = {
     params: Params;
     context: Context;
     deps: DescriptBlockDeps;
-}
+};
 
 //  ---------------------------------------------------------------------------------------------------------------  //
 
@@ -178,28 +177,26 @@ class HttpBlock<
     BeforeResultOut = undefined,
     AfterResultOut = undefined,
     ErrorResultOut = undefined,
-    Params = ParamsOut
+    Params = ParamsOut,
 > extends Block<
-    Context,
-    DescriptHttpBlockDescription<ParamsOut, Context, HttpResult>,
-    ParamsOut,
-    ResultOut,
-    HttpResult,
-    BlockResult,
-    BeforeResultOut,
-    AfterResultOut,
-    ErrorResultOut,
-    Params
+        Context,
+        DescriptHttpBlockDescription<ParamsOut, Context, HttpResult>,
+        ParamsOut,
+        ResultOut,
+        HttpResult,
+        BlockResult,
+        BeforeResultOut,
+        AfterResultOut,
+        ErrorResultOut,
+        Params
     > {
-
-    // eslint-disable-next-line @typescript-eslint/ban-ts-comment
 
     extend<
         ExtendedResultOut extends BlockResultOut<ExtendedBlockResult, ExtendedBeforeResultOut, ExtendedAfterResultOut, ExtendedErrorResultOut>,
         ExtendedParamsOut extends Params = Params,
         ExtendedParams = Params,
-        // eslint-disable-next-line @typescript-eslint/no-unused-vars
-        //ExtendedCustomBlock = DescriptHttpBlockDescription<ExtendedParamsOut, Context, HttpResult>,
+
+        // ExtendedCustomBlock = DescriptHttpBlockDescription<ExtendedParamsOut, Context, HttpResult>,
 
         ExtendedBlockResult = ResultOut,
         ExtendedBeforeResultOut = undefined,
@@ -208,19 +205,19 @@ class HttpBlock<
     >({ options, block }: {
         block?: DescriptHttpBlockDescription<ParamsOut & ExtendedParamsOut, Context, HttpResult>;
         options?: DescriptBlockOptions<
-        Context, ExtendedParamsOut, ExtendedBlockResult, ExtendedBeforeResultOut, ExtendedAfterResultOut, ExtendedErrorResultOut, ExtendedParams
+            Context, ExtendedParamsOut, ExtendedBlockResult, ExtendedBeforeResultOut, ExtendedAfterResultOut, ExtendedErrorResultOut, ExtendedParams
         >;
     }) {
         const x = new HttpBlock<
-        Context,
-        ExtendedParamsOut,
-        HttpResult,
-        ExtendedResultOut,
-        ExtendedBlockResult,
-        ExtendedBeforeResultOut,
-        ExtendedAfterResultOut,
-        ExtendedErrorResultOut,
-        ExtendedParams
+            Context,
+            ExtendedParamsOut,
+            HttpResult,
+            ExtendedResultOut,
+            ExtendedBlockResult,
+            ExtendedBeforeResultOut,
+            ExtendedAfterResultOut,
+            ExtendedErrorResultOut,
+            ExtendedParams
         >({
             block: this.extendBlock(block),
             options: this.extendOptions(this.options, options),
@@ -289,7 +286,7 @@ class HttpBlock<
             body: null,
             ...(
                 EVALUABLE_PROPS.reduce((ret, prop) => {
-                    let value = block[prop];
+                    let value = block[ prop ];
 
                     if (typeof value === 'function') {
                         value = value(callbackArgs);
@@ -308,7 +305,6 @@ class HttpBlock<
                 })
             ),
         };
-
 
         //  TODO: Надо пострелять, чтобы понять, стоит ли городить эту оптимизацию.
         //  Блоки часто будут создаваться динамически, внутри замыкания с generate_id,
@@ -366,7 +362,7 @@ class HttpBlock<
                     try {
                         error.body = block.parseBody(result, context);
 
-                    } catch (e) {
+                    } catch {
                         //  Do nothing
                     }
 
@@ -410,7 +406,7 @@ class HttpBlock<
         return blockResult as BlockResult;
     }
 
-    protected parseBody({ body, headers }: {body: DescriptHttpResult['body']; headers: DescriptHttpResult['headers']}): HttpResult {
+    protected parseBody({ body, headers }: { body: DescriptHttpResult['body']; headers: DescriptHttpResult['headers'] }): HttpResult {
         const isJson = this.isJsonResponse(headers);
         if (isJson) {
             try {
@@ -430,7 +426,7 @@ class HttpBlock<
             try {
                 return JSON.parse(body.toString());
 
-            } catch (e) {
+            } catch {
                 //  Do nothing.
             }
         }

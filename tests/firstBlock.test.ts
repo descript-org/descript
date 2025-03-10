@@ -1,7 +1,5 @@
 import { describe, expect, it, vi } from 'vitest';
 
-/* eslint-disable jest/no-conditional-expect */
-
 import * as de from '../lib';
 
 describe('de.first', () => {

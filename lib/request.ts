@@ -63,9 +63,7 @@ export interface DescriptRequestOptions {
     isError?: (error: DescriptError) => boolean;
 
     isRetryAllowed?: (error: DescriptError, requestOptions: RequestOptions) => boolean;
-    body?: string |
-    Buffer |
-    DescriptJSON;
+    body?: string | Buffer | DescriptJSON;
 
     maxRetries?: number;
     retryTimeout?: number;
@@ -382,7 +380,6 @@ class DescriptRequest {
                 this.doFail(reason);
             });
 
-
             if (this.options.bodyCompress && this.options.body) {
                 const gzipStream = createGzip(this.options.bodyCompress);
                 gzipStream.pipe(this.req, { end: true });
@@ -569,7 +566,6 @@ class DescriptRequest {
 async function request(options: DescriptRequestOptions, logger: LoggerInterface<LoggerEvent>, cancel: Cancel): Promise<DescriptHttpResult> {
     const requestOptions = new RequestOptions(options);
 
-    // eslint-disable-next-line no-constant-condition
     while (true) {
         const req = new DescriptRequest(requestOptions, logger, cancel);
 

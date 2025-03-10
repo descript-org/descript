@@ -36,7 +36,7 @@ function waitForError<ErrorOrBlock>(error: ErrorOrBlock, timeout: number) {
 
 type Options = {
     onCancel?: SubscribeCallback;
-}
+};
 
 function getResultBlock<
     Value extends(unknown | (() => unknown)),
