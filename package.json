@@ -25,13 +25,13 @@
         "@eslint/js": "^9.21.0",
         "@stylistic/eslint-plugin": "^4.2.0",
         "@types/node": "^22.15.3",
-        "@vitest/eslint-plugin": "^1.1.36",
-        "eslint": "^9.22.0",
+        "@vitest/eslint-plugin": "^1.1.43",
+        "eslint": "^9.25.1",
         "globals": "^16.0.0",
         "ts-add-js-extension": "^1.6.5",
-        "typescript": "^5.8.2",
-        "typescript-eslint": "^8.26.0",
-        "vitest": "^3.0.8"
+        "typescript": "^5.8.3",
+        "typescript-eslint": "^8.31.1",
+        "vitest": "^3.1.2"
     },
     "files": [
         "build"
