@@ -9,7 +9,7 @@ import type { ParsedUrlQueryInput } from 'querystring';
 import qs_ from 'querystring';
 import url_ from 'url';
 import type { ZlibOptions } from 'node:zlib';
-import { createGzip, createUnzip } from 'node:zlib';
+import { createGzip, createUnzip, createZstdDecompress } from 'node:zlib';
 import { decompress } from '@fengkx/zstd-napi';
 import type { TransformOptions, TransformCallback } from 'stream';
 import { Transform } from 'stream';
@@ -635,7 +635,12 @@ function decompressResponse(res: http.IncomingMessage) {
     const contentEncoding = res.headers[ 'content-encoding' ];
 
     if (contentEncoding === 'zstd') {
-        return res.pipe(new ZstdDecompress());
+        if (createZstdDecompress) {
+            // native zstd support
+            return res.pipe(createZstdDecompress());
+        } else {
+            return res.pipe(new ZstdDecompress());
+        }
     }
 
     if (contentEncoding === 'gzip' || contentEncoding === 'deflate') {
