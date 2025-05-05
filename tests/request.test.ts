@@ -812,7 +812,8 @@ describe('request', () => {
                     } catch (error) {
                         expect(de.isError(error)).toBe(true);
                         expect(error.error.id).toBe('JS_ERROR');
-                        expect(error.error.code).toBe('ZSTD_error_prefix_unknown');
+                        // @fengkx/zstd-napi | native zstd 
+                        expect(error.error.code).toMatch(/^GenericFailure$|^ZSTD_error_prefix_unknown$/);
                     }
                 });
             });
