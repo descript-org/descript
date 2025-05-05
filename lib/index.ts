@@ -25,6 +25,7 @@ import type {
     InferParamsInFromBlock,
     InferBlock,
     InferHttpBlock,
+    InferResultOrResult,
 } from './types';
 import type BaseBlock from './block';
 import type { DescriptHttpBlockDescription, DescriptHttpBlockQuery, DescriptHttpBlockQueryValue } from './httpBlock';
@@ -160,7 +161,7 @@ const run = function<
     // block: FunctionBlock<Context, ParamsOut, BlockResult, ResultOut, BeforeResultOut, AfterResultOut, ErrorResultOut, Params>,
     { params, context, cancel }: {
         params?: Params; context?: Context; cancel?: Cancel;
-    } = {}) {
+    } = {}): Promise<InferResultOrResult<ResultOut>> {
     const runContext = new RunContext<BlockResult, IntermediateResult, ResultOut, Context, BeforeResultOut, AfterResultOut, ErrorResultOut>();
 
     if (!(params && typeof params === 'object')) {

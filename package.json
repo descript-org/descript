@@ -19,7 +19,7 @@
         "eslint": "npx eslint .",
         "test": "cd tests && ./gen-certs.sh && npx vitest",
         "ts-compile": "npx tsc --noEmit",
-        "prepack": "rm -rf build && npx tsc -p ./tsconfig-build.json && npx ts-add-js-extension --dir=build"
+        "prepack": "rm -rf build && npx tsc -p ./tsconfig-build.json && npx ts-add-js-extension --dir=build && npx tsc -p ./tsconfig-build.json -d"
     },
     "devDependencies": {
         "@eslint/js": "^9.21.0",
