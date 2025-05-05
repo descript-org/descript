@@ -812,7 +812,7 @@ describe('request', () => {
                     } catch (error) {
                         expect(de.isError(error)).toBe(true);
                         expect(error.error.id).toBe('JS_ERROR');
-                        expect(error.error.code).toBe('GenericFailure');
+                        expect(error.error.code).toBe('ZSTD_error_prefix_unknown');
                     }
                 });
             });
