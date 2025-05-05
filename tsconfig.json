@@ -19,7 +19,7 @@
     "skipLibCheck": true, // https://www.typescriptlang.org/tsconfig#skipLibCheck
     "strict": false,
     "strictNullChecks": true,
-    "declaration":true,
+    "declaration":false,
 
     "baseUrl": ".",
     "outDir": "./build"
