@@ -812,7 +812,7 @@ describe('request', () => {
                     } catch (error) {
                         expect(de.isError(error)).toBe(true);
                         expect(error.error.id).toBe('JS_ERROR');
-                        // @fengkx/zstd-napi | native zstd 
+                        // @fengkx/zstd-napi | native zstd
                         expect(error.error.code).toMatch(/^GenericFailure$|^ZSTD_error_prefix_unknown$/);
                     }
                 });
