@@ -6,7 +6,7 @@ import Logger, { EVENT } from './logger';
 import type { LoggerEvent, LoggerInterface } from './logger';
 import Cache, { CacheInterface } from './cache';
 
-import request from './request';
+import request, { type RequestOptions } from './request';
 import type { GenerateId, DescriptBlockDeps, DescriptBlockId } from './depsDomain';
 import Block from './block';
 import ArrayBlock from './arrayBlock';
@@ -212,4 +212,5 @@ export {
     BlockResultOut,
     InferHttpBlock,
     HttpBlock,
+    RequestOptions,
 };
