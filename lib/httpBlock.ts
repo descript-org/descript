@@ -103,6 +103,10 @@ export interface DescriptHttpBlockDescription<
     servername?: DescriptHttpBlockDescriptionCallback<DescriptRequestOptions['servername'], Params, Context>;
     timeout?: DescriptHttpBlockDescriptionCallback<DescriptRequestOptions['timeout'], Params, Context>;
 
+    // Отдельный таймаут на чтение ответа. Если не указан, то используется общий таймаут.
+    // Если указан, то после получения первого байта из ответа общий таймаут сбрасывается и выставляется новый только на чтение.
+    readTimeout?: DescriptHttpBlockDescriptionCallback<DescriptRequestOptions['readTimeout'], Params, Context>;
+
     query?: HttpQuery<Params, Context> | Array<HttpQuery<Params, Context>>;
 
     headers?: HttpHeaders<Params, Context> | Array<HttpHeaders<Params, Context>>;
@@ -134,6 +138,7 @@ const EVALUABLE_PROPS: Array<keyof Pick<DescriptRequestOptions, 'agent' |
   'pfx' |
   'port' |
   'protocol' |
+  'readTimeout' |
   'rejectUnauthorized' |
   'secureProtocol' |
   'servername' |
@@ -154,6 +159,7 @@ const EVALUABLE_PROPS: Array<keyof Pick<DescriptRequestOptions, 'agent' |
     'pfx',
     'port',
     'protocol',
+    'readTimeout',
     'rejectUnauthorized',
     'secureProtocol',
     'servername',

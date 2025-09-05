@@ -715,6 +715,48 @@ describe('request', () => {
                 }
             });
 
+            it('200, timeout, readTimeout, slow response', async() => {
+                const path = getPath();
+
+                fake.add(path, async(req: http.IncomingMessage, res: http.ServerResponse) => {
+                    res.statusCode = 200;
+                    res.write('Привет!');
+                    await waitForValue(null, 100);
+                    res.end();
+                });
+
+                const result = await doRequest({
+                    pathname: path,
+                    timeout: 50,
+                    readTimeout: 150,
+                });
+                expect(result.body?.toString()).toBe('Привет!');
+            });
+
+            it('200, timeout, readTimeout, incomplete response', async() => {
+                const path = getPath();
+
+                fake.add(path, async(req: http.IncomingMessage, res: http.ServerResponse) => {
+                    res.statusCode = 200;
+                    res.write('Привет!');
+                    await waitForValue(null, 100);
+                    res.end();
+                });
+
+                expect.assertions(2);
+                try {
+                    await doRequest({
+                        pathname: path,
+                        timeout: 50,
+                        readTimeout: 90,
+                    });
+
+                } catch (error) {
+                    expect(de.isError(error)).toBe(true);
+                    expect(error.error.id).toBe(de.ERROR_ID.REQUEST_TIMEOUT);
+                }
+            });
+
         });
 
         describe('content-encoding', () => {

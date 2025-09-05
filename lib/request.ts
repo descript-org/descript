@@ -74,6 +74,7 @@ export interface DescriptRequestOptions {
         name: string;
     };
 
+    readTimeout?: number;
     timeout?: number;
 
     bodyCompress?: ZlibOptions;
@@ -135,6 +136,7 @@ export class RequestOptions {
     isError: DescriptRequestOptions['isError'];
     isRetryAllowed: DescriptRequestOptions['isRetryAllowed'];
     maxRetries: number;
+    readTimeout: DescriptRequestOptions['readTimeout'];
     retries: number;
     retryTimeout: number;
     timeout: DescriptRequestOptions['timeout'];
@@ -159,6 +161,7 @@ export class RequestOptions {
         this.retries = options.retries || 0;
 
         this.timeout = options.timeout;
+        this.readTimeout = options.readTimeout;
         this.bodyCompress = options.bodyCompress;
 
         this.httpOptions = {};
@@ -293,7 +296,7 @@ class DescriptRequest {
     logger: LoggerInterface<LoggerEvent>;
     cancel: Cancel;
     timestamps: EventTimestamps;
-    hTimeout: number | null;
+    hTimeout: NodeJS.Timeout | null;
     req?: http.ClientRequest;
     isResolved: boolean;
 
@@ -466,8 +469,9 @@ class DescriptRequest {
         this.doFail(error);
     }
 
-    setTimeout() {
-        if ((this.options.timeout || 0) > 0) {
+    setTimeout(customTimeout?: number) {
+        const timeout = customTimeout || this.options.timeout || 0;
+        if (timeout > 0) {
             this.hTimeout = setTimeout(() => {
                 let error;
                 if (!this.timestamps.tcpConnection) {
@@ -480,7 +484,7 @@ class DescriptRequest {
 
                 this.doCancel(error);
 
-            }, this.options.timeout) as unknown as number;
+            }, timeout);
         }
     }
 
@@ -500,6 +504,13 @@ class DescriptRequest {
     async requestHandler(res: http.IncomingMessage): Promise<DescriptHttpResult> {
         res.once('readable', () => {
             this.timestamps.firstByte = Date.now();
+
+            // Если есть отдельный таймаут на чтение, то после получения первого байта,
+            // нужно сбросить общий таймаут и создать новый.
+            if (this.options.readTimeout) {
+                this.clearTimeout();
+                this.setTimeout(this.options.readTimeout);
+            }
         });
 
         const unzipped = decompressResponse(res);
