@@ -53,21 +53,21 @@ export type DescriptJSON =
 
 export type BlockResultOut<
     BlockResult,
-    BeforeResultOut,
-    AfterResultOut,
-    ErrorResultOut,
+    BeforeResultOut = unknown,
+    AfterResultOut = unknown,
+    ErrorResultOut = unknown,
 > =
-     (never | undefined)extends ErrorResultOut ?
-         undefined extends AfterResultOut ?
-             never | undefined extends BeforeResultOut ?
+     [ unknown ] extends [ Exclude<ErrorResultOut, undefined | void> ] ?
+         [ unknown ] extends [ AfterResultOut ] ?
+             [ unknown ] extends [ Exclude<BeforeResultOut, undefined | void> ] ?
                  BlockResult :
-                 BeforeResultOut | BlockResult :
+                 Exclude<BeforeResultOut, undefined | void> | BlockResult :
              AfterResultOut :
-         undefined extends AfterResultOut ?
-             never | undefined extends BeforeResultOut ?
-                 BlockResult | ErrorResultOut :
-                 BeforeResultOut | BlockResult | ErrorResultOut :
-             AfterResultOut | ErrorResultOut;
+         [ unknown ] extends [ AfterResultOut ] ?
+             [ unknown ] extends [ Exclude<BeforeResultOut, undefined | void> ] ?
+                 BlockResult | Exclude<ErrorResultOut, undefined | void> :
+                 Exclude<BeforeResultOut, undefined | void> | BlockResult | Exclude<ErrorResultOut, undefined | void> :
+             AfterResultOut | Exclude<ErrorResultOut, undefined | void>;
 
 export type InferResultOrResult<Result> = Result extends BaseBlock<
 // eslint-disable-next-line @typescript-eslint/no-unused-vars
@@ -84,28 +84,28 @@ export type InferResultOrResultOnce<Result> = Result extends BaseBlock<
 > ? ResultOut : Result;
 
 export type InferResultFromBlock<Type> = Type extends BaseBlock<
-// eslint-disable-next-line @typescript-eslint/no-unused-vars
+    // eslint-disable-next-line @typescript-eslint/no-unused-vars
     infer Context, infer CustomBlock, infer ParamsOut, infer ResultOut, infer IntermediateResult,
     // eslint-disable-next-line @typescript-eslint/no-unused-vars
     infer BlockResult, infer BeforeResultOut, infer AfterResultOut, infer ErrorResultOut, infer Params
 > ? InferResultOrResult<ResultOut> : never;
 
 export type InferParamsInFromBlock<Type> = Type extends BaseBlock<
-// eslint-disable-next-line @typescript-eslint/no-unused-vars
+    // eslint-disable-next-line @typescript-eslint/no-unused-vars
     infer Context, infer CustomBlock, infer ParamsOut, infer ResultOut, infer IntermediateResult,
     // eslint-disable-next-line @typescript-eslint/no-unused-vars
     infer BlockResult, infer BeforeResultOut, infer AfterResultOut, infer ErrorResultOut, infer Params
 > ? Params : never;
 
 export type InferParamsInFromBlockOrParams<Type, P> = Type extends BaseBlock<
-// eslint-disable-next-line @typescript-eslint/no-unused-vars
+    // eslint-disable-next-line @typescript-eslint/no-unused-vars
     infer Context, infer CustomBlock, infer ParamsOut, infer ResultOut, infer IntermediateResult,
     // eslint-disable-next-line @typescript-eslint/no-unused-vars
     infer BlockResult, infer BeforeResultOut, infer AfterResultOut, infer ErrorResultOut, infer Params
 > ? Params : P;
 
 export type InferParamsOutFromBlock<Type> = Type extends BaseBlock<
-// eslint-disable-next-line @typescript-eslint/no-unused-vars
+    // eslint-disable-next-line @typescript-eslint/no-unused-vars
     infer Context, infer CustomBlock, infer ParamsOut, infer ResultOut, infer IntermediateResult,
     // eslint-disable-next-line @typescript-eslint/no-unused-vars
     infer BlockResult, infer BeforeResultOut, infer AfterResultOut, infer ErrorResultOut, infer Params
@@ -147,9 +147,9 @@ export interface DescriptBlockOptions<
     Context,
     ParamsOut,
     BlockResult,
-    BeforeResultOut = undefined,
-    AfterResultOut = undefined,
-    ErrorResultOut = undefined,
+    BeforeResultOut = unknown,
+    AfterResultOut = unknown,
+    ErrorResultOut = unknown,
     Params = ParamsOut,
 > {
     name?: string;
@@ -175,8 +175,8 @@ export interface DescriptBlockOptions<
         context?: Context;
         deps: DescriptBlockDeps;
         cancel: Cancel;
-        result: (undefined) extends BeforeResultOut ?
-            InferResultOrResult<BlockResult> : InferResultOrResult<BeforeResultOut> | InferResultOrResult<BlockResult>;
+        result: [ unknown ] extends [ Exclude<BeforeResultOut, undefined | void> ] ?
+            InferResultOrResult<BlockResult> : InferResultOrResult<Exclude<BeforeResultOut, undefined | void>> | InferResultOrResult<BlockResult>;
     }) => AfterResultOut;
 
     error?: (args: {

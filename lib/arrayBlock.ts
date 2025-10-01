@@ -53,9 +53,9 @@ class ArrayBlock<
     ParamsOut = GetArrayBlockParams<Block>,
     BlockResult = GetArrayBlockResult<Block>,
 
-    BeforeResultOut = undefined,
-    AfterResultOut = undefined,
-    ErrorResultOut = undefined,
+    BeforeResultOut = unknown,
+    AfterResultOut = unknown,
+    ErrorResultOut = unknown,
     Params = GetArrayBlockParams<Block>,
 > extends CompositeBlock<
         Context,
@@ -78,9 +78,9 @@ class ArrayBlock<
         ExtendedParamsOut extends Params = Params,
         ExtendedParams = Params,
         ExtendedBlockResult = ResultOut,
-        ExtendedBeforeResultOut = undefined,
-        ExtendedAfterResultOut = undefined,
-        ExtendedErrorResultOut = undefined,
+        ExtendedBeforeResultOut = unknown,
+        ExtendedAfterResultOut = unknown,
+        ExtendedErrorResultOut = unknown,
     >({ options }: {
         options: DescriptBlockOptions<
             Context, ExtendedParamsOut, ExtendedBlockResult, ExtendedBeforeResultOut, ExtendedAfterResultOut, ExtendedErrorResultOut, ExtendedParams

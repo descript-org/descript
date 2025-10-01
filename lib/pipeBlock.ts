@@ -64,9 +64,9 @@ class PipeBlock<
     ParamsOut = GetPipeBlockParams<Block>,
     BlockResult = GetPipeBlockResult<Block>,
 
-    BeforeResultOut = undefined,
-    AfterResultOut = undefined,
-    ErrorResultOut = undefined,
+    BeforeResultOut = unknown,
+    AfterResultOut = unknown,
+    ErrorResultOut = unknown,
     Params = GetPipeBlockParams<Block>,
 > extends CompositeBlock<
         Context,
@@ -90,9 +90,9 @@ class PipeBlock<
         ExtendedParamsOut extends Params = Params,
         ExtendedParams = Params,
         ExtendedBlockResult = ResultOut,
-        ExtendedBeforeResultOut = undefined,
-        ExtendedAfterResultOut = undefined,
-        ExtendedErrorResultOut = undefined,
+        ExtendedBeforeResultOut = unknown,
+        ExtendedAfterResultOut = unknown,
+        ExtendedErrorResultOut = unknown,
     >({ options }: {
         options: DescriptBlockOptions<
             Context, ExtendedParamsOut, ExtendedBlockResult, ExtendedBeforeResultOut, ExtendedAfterResultOut, ExtendedErrorResultOut, ExtendedParams

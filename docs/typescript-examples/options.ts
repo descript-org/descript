@@ -270,3 +270,97 @@ const block10 = de.func({
 de.run(block10, {
     params: {},
 });
+
+export type BlockResultOut<
+    Result = never,
+    Before = never,
+    After = never,
+> =
+[ After ] extends [ never ] ?
+    [ Before ] extends [ never ] ?
+        Result :
+        Before | Result :
+    After;
+
+class Block<
+    ResultOut extends BlockResultOut<Result, Before, After>,
+    Result = never,
+    Before = never,
+    After = never,
+> {
+    // eslint-disable-next-line @typescript-eslint/no-unused-vars
+    constructor(options: Options<Result, Before, After>) {
+
+    }
+
+    extend<
+        ResultOut2 extends BlockResultOut<BlockResult2, Before2, After2>,
+        BlockResult2 = ResultOut,
+        Before2 = never,
+        After2 = never,
+    >(options: Options<BlockResult2, Before2, After2>) {
+        return new Block<ResultOut2, BlockResult2, Before2, After2>(options);
+    };
+
+    run() {
+        return 1 as ResultOut;
+    }
+}
+
+export type InferResultOrResult<Result> = Result extends Block<
+// eslint-disable-next-line @typescript-eslint/no-unused-vars
+    infer ResultOut, infer After, infer Before, infer Result
+> ? InferResultOrResult<ResultOut> : Result;
+
+type Options<
+    Result = never,
+    Before = never,
+    After = never,
+> = {
+    block?: () => Result;
+    before?: () => Before;
+    after?: (
+        res: [ Before ] extends [ never ] ?
+            InferResultOrResult<Result> : InferResultOrResult<Before> | InferResultOrResult<Result>
+    ) => After;
+};
+
+const block = <
+    ResultOut extends BlockResultOut<Result, Before, After>,
+    Result = never,
+    Before = never,
+    After = never,
+>(options: Options<Result, Before, After>) => {
+    return new Block<ResultOut, Result, Before, After>(options);
+};
+
+type Block11Result = {
+    data: { somefield: number } | null;
+    errors: Array<string> | null;
+};
+
+const b1 = block({
+    block: (): Block11Result => {
+        return { data: { somefield: 42 }, errors: null };
+    },
+
+    after: (res) => res,
+});
+
+const b2 = b1.extend({
+    after(res) {
+        return res.data?.somefield;
+    },
+});
+
+const b3 = b2.extend({
+    after(res) {
+        return res;
+    },
+});
+
+// eslint-disable-next-line @typescript-eslint/no-unused-vars
+const r1 = b3.run();
+
+// eslint-disable-next-line @typescript-eslint/no-unused-vars
+type R = typeof r1; // оно должно стать number | undefined

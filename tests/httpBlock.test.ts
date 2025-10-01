@@ -33,9 +33,9 @@ describe('http', <
         BlockResult extends DescriptHttpBlockResult<HTTPResult>,
         HTTPResult,
 
-        BeforeResultOut = undefined,
-        AfterResultOut = undefined,
-        ErrorResultOut = undefined,
+        BeforeResultOut = unknown,
+        AfterResultOut = unknown,
+        ErrorResultOut = unknown,
         Params = ParamsOut,
     >({ block, options }: {
         block?: DescriptHttpBlockDescription<ParamsOut, Context, HTTPResult>;

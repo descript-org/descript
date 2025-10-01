@@ -24,9 +24,9 @@ class FunctionBlock<
     ParamsOut,
     BlockResult,
     ResultOut extends BlockResultOut<BlockResult, BeforeResultOut, AfterResultOut, ErrorResultOut>,
-    BeforeResultOut = undefined,
-    AfterResultOut = undefined,
-    ErrorResultOut = undefined,
+    BeforeResultOut = unknown,
+    AfterResultOut = unknown,
+    ErrorResultOut = unknown,
     Params = never extends InferParamsOutFromBlock<BlockResult> ? ParamsOut : InferParamsOutFromBlock<BlockResult>,
 > extends BaseBlock<
         Context,
@@ -99,12 +99,18 @@ class FunctionBlock<
         // ExtendedCustomBlock = DescriptHttpBlockDescription<ExtendedParamsOut, Context, HttpResult>,
 
         ExtendedBlockResult = ResultOut,
-        ExtendedBeforeResultOut = undefined,
-        ExtendedAfterResultOut = undefined,
-        ExtendedErrorResultOut = undefined,
+        ExtendedBeforeResultOut = unknown,
+        ExtendedAfterResultOut = unknown,
+        ExtendedErrorResultOut = unknown,
     >({ options }: {
         options: DescriptBlockOptions<
-            Context, ExtendedParamsOut, ExtendedBlockResult, ExtendedBeforeResultOut, ExtendedAfterResultOut, ExtendedErrorResultOut, ExtendedParams
+            Context,
+            ExtendedParamsOut,
+            ExtendedBlockResult,
+            ExtendedBeforeResultOut,
+            ExtendedAfterResultOut,
+            ExtendedErrorResultOut,
+            ExtendedParams
         >;
     }) {
         return new FunctionBlock({

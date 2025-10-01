@@ -2,6 +2,8 @@ import { describe, expect, it, vi } from 'vitest';
 
 import * as de from '../lib';
 
+import type { Expect, TypesMatch } from './test.types';
+
 import { getErrorBlock, getResultBlock, waitForError, waitForValue } from './helpers';
 
 describe('options.after', () => {
@@ -433,4 +435,59 @@ describe('options.after', () => {
         expect(result).toBe(afterResult);
     });
 
+    it('types test for after that return maybe undefined', async() => {
+        type BlockResult = {
+            data: { somefield: number } | null;
+            errors: Array<string> | null;
+        };
+
+        const baseBlock = de.func({
+            block: (): de.DescriptHttpBlockResult<BlockResult> => {
+                return {
+                    statusCode: 200,
+                    headers: {},
+                    requestOptions: {} as any,
+                    result: {
+                        data: { somefield: 42 },
+                        errors: null,
+                    },
+                };
+            },
+            options: {
+                before: () => {
+                    return;
+                },
+                after: ({ result }) => {
+                    return result.result;
+                },
+            },
+        });
+
+        const blockWithUndefined = baseBlock.extend({
+            options: {
+                before: () => {
+                    // eslint-disable-next-line no-constant-condition
+                    if (0 > 0.5) {
+                        return null;
+                    }
+                },
+                after: ({ result }) => {
+                    return result?.data?.somefield;
+                },
+            },
+        });
+
+        // вот тут баг
+        // eslint-disable-next-line @typescript-eslint/no-unused-vars
+        const result = await de.run(blockWithUndefined, {
+            params: {},
+        });
+
+        // eslint-disable-next-line @typescript-eslint/no-unused-vars
+        type Tests = [
+            Expect<TypesMatch<typeof result, number | undefined>>,
+        ];
+
+        expect(result).toEqual(42);
+    });
 });

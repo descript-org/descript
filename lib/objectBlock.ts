@@ -9,7 +9,7 @@ import type { DescriptBlockDeps } from './depsDomain';
 import type DepsDomain from './depsDomain';
 
 export type InferResultFromObjectBlocks<Block> = Block extends BaseBlock<
-// eslint-disable-next-line @typescript-eslint/no-unused-vars
+    // eslint-disable-next-line @typescript-eslint/no-unused-vars
     infer Context, infer CustomBlock, infer ParamsOut, infer ResultOut, infer IntermediateResult,
     // eslint-disable-next-line @typescript-eslint/no-unused-vars
     infer BlockResult, infer BeforeResultOut, infer AfterResultOut, infer ErrorResultOut, infer Params
@@ -32,10 +32,10 @@ type GetObjectBlockParamsMap<T extends Record<string, any>> = {
 
 export type ObjectBlockDefinition<T extends Record<string, any>> = {
     [ P in keyof T ]: T[ P ] extends BaseBlock<
-    // eslint-disable-next-line @typescript-eslint/no-unused-vars
-        infer Context, infer CustomBlock, infer ParamsOut, infer ResultOut, infer BlockResult,
         // eslint-disable-next-line @typescript-eslint/no-unused-vars
-        infer IntermediateResult, infer BeforeResultOut, infer AfterResultOut, infer ErrorResultOut, infer Params
+        infer Context, infer CustomBlock, infer ParamsOut, infer ResultOut, infer IntermediateResult,
+        // eslint-disable-next-line @typescript-eslint/no-unused-vars
+        infer BlockResult, infer BeforeResultOut, infer AfterResultOut, infer ErrorResultOut, infer Params
     > ? T[ P ] : never
 };
 
@@ -46,9 +46,9 @@ class ObjectBlock<
     ParamsOut = GetObjectBlockParams<Blocks>,
     BlockResult = GetObjectBlockResult<Blocks>,
 
-    BeforeResultOut = undefined,
-    AfterResultOut = undefined,
-    ErrorResultOut = undefined,
+    BeforeResultOut = unknown,
+    AfterResultOut = unknown,
+    ErrorResultOut = unknown,
     Params = GetObjectBlockParams<Blocks>,
 > extends CompositeBlock<
         Context,
@@ -113,9 +113,9 @@ class ObjectBlock<
         ExtendedParamsOut extends Params = Params,
         ExtendedParams = Params,
         ExtendedBlockResult = ResultOut,
-        ExtendedBeforeResultOut = undefined,
-        ExtendedAfterResultOut = undefined,
-        ExtendedErrorResultOut = undefined,
+        ExtendedBeforeResultOut = unknown,
+        ExtendedAfterResultOut = unknown,
+        ExtendedErrorResultOut = unknown,
     >({ options }: {
         options: DescriptBlockOptions<
             Context, ExtendedParamsOut, ExtendedBlockResult, ExtendedBeforeResultOut, ExtendedAfterResultOut, ExtendedErrorResultOut, ExtendedParams
