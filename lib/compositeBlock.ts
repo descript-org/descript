@@ -24,9 +24,9 @@ abstract class CompositeBlock<
     IntermediateResult,
     BlockResultInt,
 
-    BeforeResultOut = undefined,
-    AfterResultOut = undefined,
-    ErrorResultOut = undefined,
+    BeforeResultOut = unknown,
+    AfterResultOut = unknown,
+    ErrorResultOut = unknown,
     Params = ParamsOut,
 > extends BaseBlock<
         Context,

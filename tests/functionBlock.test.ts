@@ -2,6 +2,9 @@ import { describe, expect, it } from 'vitest';
 
 import { getErrorBlock, getResultBlock, waitForValue } from './helpers';
 
+import ObjectBlock from '../lib/objectBlock';
+import FunctionBlock from '../lib/functionBlock';
+
 import * as de from '../lib';
 //  ---------------------------------------------------------------------------------------------------------------  //
 
@@ -129,4 +132,48 @@ describe('de.func', () => {
         expect(e).toBe(cancelReason);
     });
 
+    // воспроизведение бага с не выведенными параметрами
+    it.skip('=> de.object params should be infered', () => {
+        type Params1 = {
+            param1: number;
+        };
+
+        type Params2 = {
+            param2: number;
+        };
+
+        const block = new FunctionBlock({
+            // eslint-disable-next-line @typescript-eslint/no-unused-vars
+            block: ({ params }) => {
+                const x = new ObjectBlock({
+                    block: {
+                        block1: de.func({
+                            block: ({ params }: { params: Params1 }) => {
+                                return params;
+                            },
+                        }),
+
+                        block2: de.func({
+                            block: ({ params }: { params: Params2 }) => {
+                                return params;
+                            },
+                        }),
+                    },
+                });
+
+                return x;
+            },
+
+            options: {
+                params: ({ params }) => params,
+            },
+        });
+
+        de.run(block, {
+            params: {
+                param1: 1,
+                param2: '2',
+            },
+        });
+    });
 });

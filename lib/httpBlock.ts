@@ -180,9 +180,9 @@ class HttpBlock<
     HttpResult,
     ResultOut extends BlockResultOut<BlockResult, BeforeResultOut, AfterResultOut, ErrorResultOut>,
     BlockResult = DescriptHttpBlockResult<HttpResult>,
-    BeforeResultOut = undefined,
-    AfterResultOut = undefined,
-    ErrorResultOut = undefined,
+    BeforeResultOut = unknown,
+    AfterResultOut = unknown,
+    ErrorResultOut = unknown,
     Params = ParamsOut,
 > extends Block<
         Context,
@@ -205,9 +205,9 @@ class HttpBlock<
         // ExtendedCustomBlock = DescriptHttpBlockDescription<ExtendedParamsOut, Context, HttpResult>,
 
         ExtendedBlockResult = ResultOut,
-        ExtendedBeforeResultOut = undefined,
-        ExtendedAfterResultOut = undefined,
-        ExtendedErrorResultOut = undefined,
+        ExtendedBeforeResultOut = unknown,
+        ExtendedAfterResultOut = unknown,
+        ExtendedErrorResultOut = unknown,
     >({ options, block }: {
         block?: DescriptHttpBlockDescription<ParamsOut & ExtendedParamsOut, Context, HttpResult>;
         options?: DescriptBlockOptions<

@@ -30,23 +30,6 @@ type BlockOptions<
     'before' | 'after' | 'error' | 'params' | 'deps'
   >>;
 
-interface BlockConstructor<
-    Context,
-    ParamsOut,
-    BlockResult,
-    BeforeResultOut,
-    AfterResultOut,
-    ErrorResultOut,
-    Params,
-    ClassType,
-    CustomBlock,
-> {
-    new ({ block, options }: {
-        block?: CustomBlock;
-        options: DescriptBlockOptions<Context, ParamsOut, BlockResult, BeforeResultOut, AfterResultOut, ErrorResultOut, Params>;
-    }): ClassType;
-}
-
 abstract class BaseBlock<
     Context,
     CustomBlock,
@@ -54,9 +37,9 @@ abstract class BaseBlock<
     ResultOut extends BlockResultOut<BlockResult, BeforeResultOut, AfterResultOut, ErrorResultOut>,
     IntermediateResult,
     BlockResult,
-    BeforeResultOut = undefined,
-    AfterResultOut = undefined,
-    ErrorResultOut = undefined,
+    BeforeResultOut = unknown,
+    AfterResultOut = unknown,
+    ErrorResultOut = unknown,
     Params = ParamsOut,
 > {
     protected block: CustomBlock;
@@ -80,39 +63,6 @@ abstract class BaseBlock<
         this.initOptions(options);
     }
 
-    protected extendClass<
-        ClassType,
-        ExtendedBlockResult,
-        ExtendedParamsOut extends Params = Params,
-        ExtendedParams = Params,
-        ExtendedBeforeResultOut = void,
-        ExtendedAfterResultOut = void,
-        ExtendedErrorResultOut = void,
-        ExtendedCustomBlock extends CustomBlock = CustomBlock,
-    >({ block, options }: {
-        block?: ExtendedCustomBlock;
-        options?:
-        DescriptBlockOptions<
-            Context, ExtendedParamsOut, ExtendedBlockResult, ExtendedBeforeResultOut, ExtendedAfterResultOut, ExtendedErrorResultOut, ExtendedParams
-        >;
-    }): ClassType {
-
-        return new (<BlockConstructor<
-            Context,
-            ExtendedParamsOut,
-            ExtendedBlockResult,
-            ExtendedBeforeResultOut,
-            ExtendedAfterResultOut,
-            ExtendedErrorResultOut,
-            ExtendedParams,
-            ClassType,
-            ExtendedCustomBlock
-        >> this.constructor)({
-            block: this.extendBlock(block) as ExtendedCustomBlock,
-            options: this.extendOptions(this.options, options),
-        });
-    }
-
     abstract extend<
 
         // ExtendedResultOut extends
@@ -121,13 +71,19 @@ abstract class BaseBlock<
         ExtendedParams = Params,
         // ExtendedCustomBlock = CustomBlock,
         ExtendedBlockResult = ResultOut,
-        ExtendedBeforeResultOut = void,
-        ExtendedAfterResultOut = void,
-        ExtendedErrorResultOut = void,
+        ExtendedBeforeResultOut = unknown,
+        ExtendedAfterResultOut = unknown,
+        ExtendedErrorResultOut = unknown,
     >({ block, options }: {
         block?: CustomBlock;
         options?: DescriptBlockOptions<
-            Context, ParamsOut & ExtendedParamsOut, ExtendedBlockResult, ExtendedBeforeResultOut, ExtendedAfterResultOut, ExtendedErrorResultOut, ExtendedParams
+            Context,
+            ParamsOut & ExtendedParamsOut,
+            ExtendedBlockResult,
+            ExtendedBeforeResultOut,
+            ExtendedAfterResultOut,
+            ExtendedErrorResultOut,
+            ExtendedParams
         >;
     }): unknown;
 

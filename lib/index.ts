@@ -40,9 +40,9 @@ const func = function<
     ParamsOut,
     BlockResult,
     ResultOut extends BlockResultOut<BlockResult, BeforeResultOut, AfterResultOut, ErrorResultOut>,
-    BeforeResultOut = undefined,
-    AfterResultOut = undefined,
-    ErrorResultOut = undefined,
+    BeforeResultOut = unknown,
+    AfterResultOut = unknown,
+    ErrorResultOut = unknown,
     Params = ParamsOut,
 >({ block, options }: {
     block: FunctionBlockDefinition<Context, ParamsOut, BlockResult>;
@@ -60,9 +60,9 @@ const array = function<
     ResultOut extends BlockResultOut<BlockResult, BeforeResultOut, AfterResultOut, ErrorResultOut>,
     ParamsOut = GetArrayBlockParams<Block>,
     BlockResult = GetArrayBlockResult<Block>,
-    BeforeResultOut = undefined,
-    AfterResultOut = undefined,
-    ErrorResultOut = undefined,
+    BeforeResultOut = unknown,
+    AfterResultOut = unknown,
+    ErrorResultOut = unknown,
     Params = GetArrayBlockParams<Block>,
 >({ block, options }: {
     block: ArrayBlockDefinition<Block>;
@@ -77,9 +77,9 @@ const object = function<
     ParamsOut = GetObjectBlockParams<Blocks>,
     BlockResult = GetObjectBlockResult<Blocks>,
 
-    BeforeResultOut = undefined,
-    AfterResultOut = undefined,
-    ErrorResultOut = undefined,
+    BeforeResultOut = unknown,
+    AfterResultOut = unknown,
+    ErrorResultOut = unknown,
     Params = GetObjectBlockParams<Blocks>,
 >({ block, options }: {
     block?: ObjectBlockDefinition<Blocks>;
@@ -94,9 +94,9 @@ const http = function<
     IntermediateResult,
     BlockResult extends DescriptHttpBlockResult<IntermediateResult>,
 
-    BeforeResultOut = undefined,
-    AfterResultOut = undefined,
-    ErrorResultOut = undefined,
+    BeforeResultOut = unknown,
+    AfterResultOut = unknown,
+    ErrorResultOut = unknown,
     Params = ParamsOut,
 >({ block, options }: {
     block?: DescriptHttpBlockDescription<ParamsOut, Context, IntermediateResult>;
@@ -113,9 +113,9 @@ const first = function<
     ResultOut extends BlockResultOut<BlockResult, BeforeResultOut, AfterResultOut, ErrorResultOut>,
     ParamsOut = GetFirstBlockParams<Block>,
     BlockResult = GetFirstBlockResult<Block>,
-    BeforeResultOut = undefined,
-    AfterResultOut = undefined,
-    ErrorResultOut = undefined,
+    BeforeResultOut = unknown,
+    AfterResultOut = unknown,
+    ErrorResultOut = unknown,
     Params = GetFirstBlockParams<Block>,
 >({ block, options }: {
     block: FirstBlockDefinition<Block>;
@@ -130,9 +130,9 @@ const pipe = function<
     ResultOut extends BlockResultOut<BlockResult, BeforeResultOut, AfterResultOut, ErrorResultOut>,
     ParamsOut = GetPipeBlockParams<Block>,
     BlockResult = GetPipeBlockResult<Block>,
-    BeforeResultOut = undefined,
-    AfterResultOut = undefined,
-    ErrorResultOut = undefined,
+    BeforeResultOut = unknown,
+    AfterResultOut = unknown,
+    ErrorResultOut = unknown,
     Params = GetPipeBlockParams<Block>,
 >({ block, options }: {
     block: PipeBlockDefinition<Block>;
@@ -152,9 +152,9 @@ const run = function<
     ResultOut extends BlockResultOut<BlockResult, BeforeResultOut, AfterResultOut, ErrorResultOut>,
     IntermediateResult,
     BlockResult,
-    BeforeResultOut = undefined,
-    AfterResultOut = undefined,
-    ErrorResultOut = undefined,
+    BeforeResultOut = unknown,
+    AfterResultOut = unknown,
+    ErrorResultOut = unknown,
     Params = ParamsOut,
 >(
     block: BaseBlock<Context, CustomBlock, ParamsOut, ResultOut, IntermediateResult, BlockResult, BeforeResultOut, AfterResultOut, ErrorResultOut, Params>,
