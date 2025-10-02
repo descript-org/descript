@@ -20,13 +20,14 @@ import { EVENT } from './logger';
 import type { Deffered } from './getDeferred';
 import getDeferred from './getDeferred';
 import type Cancel from './cancel';
-import type { DescriptError, Reason } from './error';
+import { DescriptError, Reason } from './error';
 import { createError, ERROR_ID } from './error';
 import is_plain_object from './isPlainObject';
 
 import extend from './extend';
 import type http from 'node:http';
 import type { DescriptHttpResult, DescriptJSON } from './types';
+import { BaseRetryStrategy, RetryStrategyInterface, RetryStrategyRequest } from './retryStrategy';
 
 //  ---------------------------------------------------------------------------------------------------------------  //
 
@@ -80,6 +81,17 @@ export interface DescriptRequestOptions {
     bodyCompress?: ZlibOptions;
 
     agent?: HttpsAgent | HttpsAgentOptions | false | null;
+
+    getRetryStrategy?: ({
+        requestOptions,
+        logger,
+    }: GetRetryStrategyParams) => RetryStrategyInterface;
+}
+
+export interface GetRetryStrategyParams {
+    requestOptions: RequestOptions;
+    logger: LoggerInterface<LoggerEvent>;
+    request: RetryStrategyRequest;
 }
 
 export interface BlockRequestOptions {
@@ -577,41 +589,27 @@ class DescriptRequest {
 async function request(options: DescriptRequestOptions, logger: LoggerInterface<LoggerEvent>, cancel: Cancel): Promise<DescriptHttpResult> {
     const requestOptions = new RequestOptions(options);
 
-    while (true) {
+    const request = async() => {
         const req = new DescriptRequest(requestOptions, logger, cancel);
 
         try {
-            const result = await req.start();
-
-            return result;
-
+            return await req.start();
         } catch (error) {
             if (error.error.statusCode === 429 || error.error.statusCode >= 500) {
                 //  Удаляем сокет, чтобы не залипать на отвечающем ошибкой бекэнде.
                 req.destroyRequestSocket();
             }
 
-            if (requestOptions.retries < requestOptions.maxRetries && requestOptions.isRetryAllowed?.(error, requestOptions)) {
-                requestOptions.retries++;
-
-                if (requestOptions.retryTimeout > 0) {
-                    await waitFor(requestOptions.retryTimeout);
-                }
-
-            } else {
-                throw error;
-            }
+            throw error;
         }
-    }
+    };
+
+    const retryStrategy = options.getRetryStrategy?.({ requestOptions, logger, request }) || new BaseRetryStrategy({ requestOptions, request });
+
+    return await retryStrategy.makeRequest();
 }
 
 request.DEFAULT_OPTIONS = DEFAULT_OPTIONS;
-
-function waitFor(timeout: number) {
-    return new Promise((resolve) => {
-        setTimeout(resolve, timeout);
-    });
-}
 
 class ZstdDecompress extends Transform {
     receivedLength: number;

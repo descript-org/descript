@@ -6,7 +6,7 @@ import Logger, { EVENT } from './logger';
 import type { LoggerEvent, LoggerInterface } from './logger';
 import Cache, { CacheInterface } from './cache';
 
-import request, { type RequestOptions } from './request';
+import request, { type RequestOptions, type GetRetryStrategyParams } from './request';
 import type { GenerateId, DescriptBlockDeps, DescriptBlockId } from './depsDomain';
 import Block from './block';
 import ArrayBlock from './arrayBlock';
@@ -15,6 +15,7 @@ import type { FunctionBlockDefinition } from './functionBlock';
 import FunctionBlock from './functionBlock';
 import HttpBlock from './httpBlock';
 import FirstBlock from './firstBlock';
+import type { RetryStrategyInterface } from './retryStrategy';
 
 import type {
     DescriptHttpBlockResult,
@@ -202,6 +203,8 @@ export {
     DescriptHttpBlockDescription,
     DescriptHttpBlockQuery,
     DescriptHttpBlockQueryValue,
+    RetryStrategyInterface,
+    GetRetryStrategyParams,
     GenerateId,
     DescriptBlockId,
     InferResultFromBlock,
