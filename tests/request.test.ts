@@ -1171,18 +1171,21 @@ describe('request', () => {
                 },
             ]);
 
-            let makeRequestSpy;
+            let requestMock: any;
 
             const result = await doRequest({
                 pathname: path,
                 getRetryStrategy: ({ request }) => {
-                    const instance = new MyRetryStrategy(request, 5);
-                    makeRequestSpy = vi.spyOn(instance, 'makeRequest');
-                    return instance;
+                    if (!requestMock) {
+                        requestMock = vi.fn(request);
+                        request = requestMock;
+                    };
+
+                    return new MyRetryStrategy(request, 5);
                 },
             });
 
-            expect(makeRequestSpy).toHaveBeenCalledTimes(3);
+            expect(requestMock).toHaveBeenCalledTimes(3);
             expect(result.statusCode).toBe(200);
             expect(result.body?.toString()).toBe(content);
         });
