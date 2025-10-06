@@ -16,7 +16,8 @@ import https_ from 'https';
 import http from 'http';
 import fs_ from 'fs';
 import path_ from 'path';
-import type { Cancel, LoggerInterface } from '../lib';
+import type { Cancel, LoggerInterface, RetryStrategyInterface, GetRetryStrategyParams } from '../lib';
+import { DescriptHttpResult } from 'lib/types';
 
 //  ---------------------------------------------------------------------------------------------------------------  //
 
@@ -1091,6 +1092,125 @@ describe('request', () => {
 
         });
 
+    });
+
+    describe('getRetryStrategy', () => {
+        const PORT = 9000;
+        const CUSTOM_RETRY_ERROR_ID = 'CUSTOM_RETRY_ERROR';
+
+        const doRequest = getDoRequest({
+            protocol: 'http:',
+            hostname: '127.0.0.1',
+            port: PORT,
+            pathname: '/',
+        });
+
+        const fake = new Server({
+            module: http,
+            listen_options: {
+                port: PORT,
+            },
+        });
+
+        beforeAll(() => Promise.all([
+            fake.start(),
+        ]));
+
+        afterAll(() => Promise.all([
+            fake.stop(),
+        ]));
+
+        class MyRetryStrategy implements RetryStrategyInterface {
+            retries: number;
+            maxRetries: number;
+            request: GetRetryStrategyParams['request'];
+
+            constructor(request: GetRetryStrategyParams['request'], maxRetries: number) {
+                this.retries = 0;
+                this.request = request;
+                this.maxRetries = maxRetries;
+            }
+
+            public async makeRequest(): Promise<DescriptHttpResult> {
+                try {
+                    return await this.request();
+                    // eslint-disable-next-line @typescript-eslint/no-unused-vars
+                } catch (e) {
+                    return this.retry();
+                }
+            }
+
+            private retry() {
+                this.retries++;
+
+                if (this.retries < this.maxRetries) {
+                    return this.makeRequest();
+                } else {
+                    throw de.error({
+                        id: CUSTOM_RETRY_ERROR_ID,
+                    });
+                }
+            }
+        }
+
+        it('The custom retry strategy is called as expected', async() => {
+            const path = getPath();
+            const statusCode = 404;
+            const content = 'Hello!';
+
+            fake.add(path, [
+                {
+                    statusCode: statusCode,
+                },
+                {
+                    statusCode: statusCode,
+                },
+                {
+                    statusCode: 200,
+                    content: content,
+                },
+            ]);
+
+            let requestMock: any;
+
+            const result = await doRequest({
+                pathname: path,
+                getRetryStrategy: ({ request }) => {
+                    if (!requestMock) {
+                        requestMock = vi.fn(request);
+                        request = requestMock;
+                    };
+
+                    return new MyRetryStrategy(request, 5);
+                },
+            });
+
+            expect(requestMock).toHaveBeenCalledTimes(3);
+            expect(result.statusCode).toBe(200);
+            expect(result.body?.toString()).toBe(content);
+        });
+
+        it('The custom retry strategy throws its error', async() => {
+            const path = getPath();
+
+            fake.add(path, [
+                {
+                    statusCode: 404,
+                },
+            ]);
+
+            try {
+                await doRequest({
+                    pathname: path,
+                    getRetryStrategy: ({ request }) => {
+                        const instance = new MyRetryStrategy(request, 1);
+                        return instance;
+                    },
+                });
+            } catch ({ error }) {
+                expect(error.id).toBe(CUSTOM_RETRY_ERROR_ID);
+            }
+        });
     });
 
     describe('aborted request', () => {

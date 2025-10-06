@@ -79,7 +79,7 @@ export interface DescriptHttpBlockDescription<
     HTTPResult,
 > extends Pick<
         DescriptRequestOptions,
-    'isError' | 'isRetryAllowed' | 'retryTimeout'
+    'isError' | 'isRetryAllowed' | 'retryTimeout' | 'getRetryStrategy'
     > {
     // sync with EVALUABLE_PROPS
     agent?: DescriptHttpBlockDescriptionCallback<DescriptRequestOptions['agent'], Params, Context>;
@@ -289,6 +289,7 @@ class HttpBlock<
             isError: block.isError,
             isRetryAllowed: block.isRetryAllowed,
             retryTimeout: block.retryTimeout,
+            getRetryStrategy: block.getRetryStrategy,
             body: null,
             ...(
                 EVALUABLE_PROPS.reduce((ret, prop) => {
