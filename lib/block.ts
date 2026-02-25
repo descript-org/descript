@@ -523,8 +523,16 @@ abstract class BaseBlock<
         depsDomain?: DepsDomain;
     }): Promise<BlockResult> {
         let result: BlockResult | undefined = undefined;
+        let cache;
 
-        const cache = this.options.cache;
+        try {
+            cache = typeof this.options.cache === 'function' ?
+                await this.options.cache({ params }) :
+                this.options.cache;
+        } catch {
+            //  Do nothing
+        }
+
         let key;
         const optionsKey = this.options.key;
 

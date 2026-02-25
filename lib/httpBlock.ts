@@ -1,7 +1,7 @@
 import Block from './block';
 import { ERROR_ID, createError } from './error';
 
-import type { DescriptRequestOptions, BlockRequestOptions } from './request';
+import type { DescriptRequestOptions, BlockRequestOptions, GetRetryStrategyParams } from './request';
 import request from './request';
 
 import extend from './extend';
@@ -13,6 +13,7 @@ import type ContextClass from './context';
 import type Cancel from './cancel';
 import type DepsDomain from './depsDomain';
 import type { LoggerInterface } from './logger';
+import { RetryStrategyInterface } from './retryStrategy';
 
 //  ---------------------------------------------------------------------------------------------------------------  //
 
@@ -79,7 +80,7 @@ export interface DescriptHttpBlockDescription<
     HTTPResult,
 > extends Pick<
         DescriptRequestOptions,
-    'isError' | 'isRetryAllowed' | 'retryTimeout' | 'getRetryStrategy'
+    'isError' | 'isRetryAllowed' | 'retryTimeout'
     > {
     // sync with EVALUABLE_PROPS
     agent?: DescriptHttpBlockDescriptionCallback<DescriptRequestOptions['agent'], Params, Context>;
@@ -120,6 +121,9 @@ export interface DescriptHttpBlockDescription<
     parseBody?: (result: { body: DescriptHttpResult['body']; headers: DescriptHttpResult['headers'] }, context: Context) =>
     HTTPResult;
 
+    getRetryStrategy?: (args: {
+        params: Params;
+    } & GetRetryStrategyParams) => RetryStrategyInterface;
 }
 
 const EVALUABLE_PROPS: Array<keyof Pick<DescriptRequestOptions, 'agent' |
@@ -285,11 +289,16 @@ class HttpBlock<
 
         const callbackArgs: CallbackArgs<ParamsOut, Context> = { params, context, deps };
 
+        const blockGetRetryStrategy = block.getRetryStrategy;
+        const getRetryStrategy = typeof blockGetRetryStrategy === 'function' ?
+            (args: GetRetryStrategyParams) => blockGetRetryStrategy({ ...args, params }) :
+            undefined;
+
         let options: DescriptRequestOptions = {
             isError: block.isError,
             isRetryAllowed: block.isRetryAllowed,
             retryTimeout: block.retryTimeout,
-            getRetryStrategy: block.getRetryStrategy,
+            getRetryStrategy,
             body: null,
             ...(
                 EVALUABLE_PROPS.reduce((ret, prop) => {
