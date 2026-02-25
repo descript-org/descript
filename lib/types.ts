@@ -195,7 +195,7 @@ export interface DescriptBlockOptions<
         deps: DescriptBlockDeps;
     }) => string);
     maxage?: number;
-    cache?: CacheInterface<BlockResult>;
+    cache?: CacheInterface<BlockResult> | ((args: { params: ParamsOut }) => Promise<CacheInterface<BlockResult>>);
 
     required?: boolean;
 

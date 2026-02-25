@@ -441,7 +441,7 @@ block: {
 
 ```js
 block: {
-    getRetryStragety: ( { requestOptions, request } ) => {
+    getRetryStragety: ( { requestOptions, request, params } ) => {
         return new MyAwesomeRetryStrategy({ request, ... });
     },
 },

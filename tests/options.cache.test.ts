@@ -324,4 +324,47 @@ describe('options.cache, options.key, options.maxage', () => {
         }).not.toThrow();
     });
 
+    it('cache can be a function', async() => {
+        const cache = new Cache();
+        const cachedValue = 'cached';
+        const params = { foo: 'bar' };
+
+        await cache.set({ key: 'KEY', value: cachedValue, maxage: 10000 });
+
+        const spy = vi.fn(() => 'result');
+        const cacheFn = vi.fn(() => Promise.resolve(cache));
+        const block = getResultBlock(spy, 50).extend({
+            options: {
+                cache: cacheFn,
+                key: 'KEY',
+                maxage: 10000,
+            },
+        });
+
+        const result = await de.run(block, { params });
+
+        expect(result).toBe(cachedValue);
+        expect(spy.mock.calls).toHaveLength(0);
+        expect(cacheFn).toHaveBeenCalledWith({ params });
+    });
+
+    it('cache function throws, block executes without cache', async() => {
+        const blockValue = 'result';
+
+        const spy = vi.fn(() => blockValue);
+        const cacheFn = vi.fn(() => Promise.reject(de.error('cache error')));
+        const block = getResultBlock(spy, 50).extend({
+            options: {
+                cache: cacheFn,
+                key: 'KEY',
+                maxage: 10000,
+            },
+        });
+
+        const result = await de.run(block);
+
+        expect(result).toBe(blockValue);
+        expect(spy.mock.calls).toHaveLength(1);
+    });
+
 });
