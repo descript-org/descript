@@ -3,7 +3,7 @@ import { describe, expect, it, vi } from 'vitest';
 import * as de from '../lib';
 
 import { getErrorBlock, getResultBlock, getTimeout, waitForValue } from './helpers';
-import type { DescriptBlockId } from '../lib/depsDomain';
+import type { UntypedId } from '../lib/depsDomain';
 
 //  ---------------------------------------------------------------------------------------------------------------  //
 
@@ -13,7 +13,7 @@ describe('options.deps', () => {
         const data = {
             foo: 42,
         };
-        const id = Symbol('block');
+        const id = Symbol('block') as UntypedId;
         const block = getResultBlock(data, 50).extend({
             options: {
                 id: id,
@@ -52,7 +52,7 @@ describe('options.deps', () => {
 
     it('failed block with id and without deps', async() => {
         const error = de.error('ERROR');
-        const id = Symbol('block');
+        const id = Symbol('block') as UntypedId;
         const block = getErrorBlock(error, 50).extend({
             options: {
                 id: id,
@@ -74,7 +74,7 @@ describe('options.deps', () => {
         const data = {
             foo: 42,
         };
-        const id = Symbol('block');
+        const id = Symbol('block') as UntypedId;
         const block = getResultBlock(data, 50).extend({
             options: {
                 deps: id,
@@ -100,7 +100,7 @@ describe('options.deps', () => {
         };
         const block = de.func({
             block: () => {
-                const id = Symbol('block');
+                const id = Symbol('block') as UntypedId;
                 return getResultBlock(data, 50).extend({
                     options: {
                         deps: id,
@@ -542,7 +542,7 @@ describe('options.deps', () => {
 
         const beforeBar = vi.fn();
 
-        let idFoo: DescriptBlockId;
+        let idFoo!: UntypedId;
         const block = de.func({
             block: ({ generateId }) => {
                 idFoo = generateId();
@@ -570,9 +570,7 @@ describe('options.deps', () => {
         await de.run(block);
 
         const deps = beforeBar.mock.calls[ 0 ][ 0 ].deps;
-        // eslint-disable-next-line @typescript-eslint/ban-ts-comment
-        // @ts-ignore
-        expect(deps[ idFoo ]).toBe(dataFoo);
+        expect(de.dep(deps, idFoo)).toBe(dataFoo);
     });
 
     it('before( { deps } ) has deps results #2', async() => {
@@ -590,8 +588,8 @@ describe('options.deps', () => {
 
         const beforeQuu = vi.fn();
 
-        let idFoo: DescriptBlockId;
-        let idBar: DescriptBlockId;
+        let idFoo!: UntypedId;
+        let idBar!: UntypedId;
         const block = de.func({
             block: ({ generateId }) => {
                 idFoo = generateId();
@@ -626,12 +624,8 @@ describe('options.deps', () => {
         await de.run(block);
 
         const deps = beforeQuu.mock.calls[ 0 ][ 0 ].deps;
-        // eslint-disable-next-line @typescript-eslint/ban-ts-comment
-        // @ts-ignore
-        expect(deps[ idFoo ]).toBe(dataFoo);
-        // eslint-disable-next-line @typescript-eslint/ban-ts-comment
-        // @ts-ignore
-        expect(deps[ idBar ]).toBe(dataBar);
+        expect(de.dep(deps, idFoo)).toBe(dataFoo);
+        expect(de.dep(deps, idBar)).toBe(dataBar);
     });
 
     it('before( { deps } ) has not results from other blocks', async() => {
@@ -649,8 +643,8 @@ describe('options.deps', () => {
 
         const beforeQuu = vi.fn();
 
-        let idFoo: DescriptBlockId;
-        let idBar: DescriptBlockId;
+        let idFoo!: UntypedId;
+        let idBar!: UntypedId;
         const block = de.func({
             block: ({ generateId }) => {
                 idFoo = generateId();
@@ -685,12 +679,8 @@ describe('options.deps', () => {
         await de.run(block);
 
         const deps = beforeQuu.mock.calls[ 0 ][ 0 ].deps;
-        // eslint-disable-next-line @typescript-eslint/ban-ts-comment
-        // @ts-ignore
-        expect(deps[ idFoo ]).toBeUndefined();
-        // eslint-disable-next-line @typescript-eslint/ban-ts-comment
-        // @ts-ignore
-        expect(deps[ idBar ]).toBe(dataBar);
+        expect(de.dep(deps, idFoo)).toBeUndefined();
+        expect(de.dep(deps, idBar)).toBe(dataBar);
     });
 
     it('wait for result of de.func', async() => {
@@ -699,7 +689,7 @@ describe('options.deps', () => {
         const dataFoo = {
             foo: 42,
         };
-        let idFoo: DescriptBlockId;
+        let idFoo!: UntypedId;
 
         const block = de.func({
             block: ({ generateId }) => {
@@ -730,9 +720,7 @@ describe('options.deps', () => {
         await de.run(block);
 
         const deps = beforeQuu.mock.calls[ 0 ][ 0 ].deps;
-        // eslint-disable-next-line @typescript-eslint/ban-ts-comment
-        // @ts-ignore
-        expect(deps[ idFoo ]).toBe(dataFoo);
+        expect(de.dep(deps, idFoo)).toBe(dataFoo);
     });
 
     it('result of de.func has deps #1', async() => {
@@ -822,7 +810,7 @@ describe('options.deps', () => {
     });
 
     it('unresolved deps #1, id is "foo"', async() => {
-        const id = Symbol('foo');
+        const id = Symbol('foo') as UntypedId;
         const block = getResultBlock(null, 50).extend({
             options: {
                 deps: id,
@@ -840,7 +828,7 @@ describe('options.deps', () => {
     });
 
     it('unresolved deps #2, id is "foo"', async() => {
-        const id = Symbol('foo');
+        const id = Symbol('foo') as UntypedId;
         const blockFoo = getResultBlock(null, 50);
         const blockBar = getResultBlock(null, 50);
 

@@ -3,7 +3,7 @@ import { describe, expect, it, vi } from 'vitest';
 import * as de from '../lib';
 
 import { getResultBlock } from './helpers';
-import type { DescriptBlockId } from '../lib/depsDomain';
+import type { UntypedId } from '../lib/depsDomain';
 
 describe('options.params', () => {
 
@@ -44,7 +44,7 @@ describe('options.params', () => {
             const spy = vi.fn();
 
             let dataFoo;
-            let idFoo: DescriptBlockId;
+            let idFoo!: UntypedId;
 
             const block = de.func({
                 block: ({ generateId }) => {

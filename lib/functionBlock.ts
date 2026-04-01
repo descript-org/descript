@@ -1,6 +1,6 @@
 import BaseBlock from './block';
-import type { DescriptBlockDeps } from './depsDomain';
-import DepsDomain from './depsDomain';
+import type { DepAccessor, DescriptBlockDeps } from './depsDomain';
+import DepsDomain, { createDepAccessor } from './depsDomain';
 import { createError, ERROR_ID } from './error';
 import type { BlockResultOut, DescriptBlockOptions, InferParamsOutFromBlock } from './types';
 import type ContextClass from './context';
@@ -14,6 +14,7 @@ export type FunctionBlockDefinition<
     params: Params;
     context: Context;
     deps: DescriptBlockDeps;
+    dep: DepAccessor;
     generateId: DepsDomain['generateId'];
     cancel: Cancel;
     blockCancel: Cancel;
@@ -72,6 +73,7 @@ class FunctionBlock<
                 params: params,
                 context: context,
                 deps: deps,
+                dep: createDepAccessor(deps),
                 generateId: depsDomain.generateId,
             }),
             blockCancel.getPromise(),

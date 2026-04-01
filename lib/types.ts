@@ -1,6 +1,6 @@
 import type Cancel from './cancel';
 import type BaseBlock from './block';
-import type { DescriptBlockDeps, DescriptBlockId } from './depsDomain';
+import type { DepAccessor, DescriptBlockDeps, DescriptBlockId, UntypedId } from './depsDomain';
 import type { DescriptError } from './error';
 import type { CacheInterface } from './cache';
 import type { IncomingHttpHeaders } from 'http';
@@ -142,7 +142,7 @@ export type Tail<T> =
 
 export type Equal<A, B> = A extends B ? (B extends A ? A : never) : never;
 
-export type DepsIds = Array<DescriptBlockId>;
+export type DepsIds = Array<DescriptBlockId<any> | UntypedId>;
 export interface DescriptBlockOptions<
     Context,
     ParamsOut,
@@ -154,19 +154,21 @@ export interface DescriptBlockOptions<
 > {
     name?: string;
 
-    id?: DescriptBlockId;
-    deps?: DescriptBlockId | DepsIds | null;
+    id?: NoInfer<DescriptBlockId<InferResultOrResult<BlockResultOut<BlockResult, BeforeResultOut, AfterResultOut, ErrorResultOut>>>> | UntypedId;
+    deps?: DescriptBlockId<any> | UntypedId | DepsIds | null;
 
     params?: (args: {
         params: Params;
         context?: Context;
         deps: DescriptBlockDeps;
+        dep: DepAccessor;
     }) => ParamsOut;
 
     before?: (args: {
         params: ParamsOut;
         context?: Context;
         deps: DescriptBlockDeps;
+        dep: DepAccessor;
         cancel: Cancel;
     }) => BeforeResultOut;
 
@@ -174,6 +176,7 @@ export interface DescriptBlockOptions<
         params: ParamsOut;
         context?: Context;
         deps: DescriptBlockDeps;
+        dep: DepAccessor;
         cancel: Cancel;
         result: [ unknown ] extends [ Exclude<BeforeResultOut, undefined | void> ] ?
             InferResultOrResult<BlockResult> : InferResultOrResult<Exclude<BeforeResultOut, undefined | void>> | InferResultOrResult<BlockResult>;
@@ -183,6 +186,7 @@ export interface DescriptBlockOptions<
         params: ParamsOut;
         context?: Context;
         deps: DescriptBlockDeps;
+        dep: DepAccessor;
         cancel: Cancel;
         error: DescriptError;
     }) => ErrorResultOut;
@@ -193,6 +197,7 @@ export interface DescriptBlockOptions<
         params: ParamsOut;
         context?: Context;
         deps: DescriptBlockDeps;
+        dep: DepAccessor;
     }) => string);
     maxage?: number;
     cache?: CacheInterface<BlockResult> | ((args: { params: ParamsOut }) => Promise<CacheInterface<BlockResult>>);

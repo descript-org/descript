@@ -5,7 +5,6 @@ import BlockClass from './block';
 
 import type { Deffered } from './getDeferred';
 import getDeferred from './getDeferred';
-import type { DescriptBlockId } from './depsDomain';
 import type Cancel from './cancel';
 import type DepsDomain from './depsDomain';
 import type { BlockResultOut, InferResultOrResult } from './types';
@@ -34,8 +33,8 @@ class RunContext<
     private nBlocks = 0;
     private nActiveBlocks = 0;
 
-    private blockPromises: Record<DescriptBlockId, Deffered<ResultOut, DescriptError>> = {};
-    private blockResults: Record<DescriptBlockId, StoredResult<ResultOut, DescriptError>> = {};
+    private blockPromises: Record<symbol, Deffered<ResultOut, DescriptError>> = {};
+    private blockResults: Record<symbol, StoredResult<ResultOut, DescriptError>> = {};
 
     private waitingForDeps: Array<Dependency> = [];
 
@@ -75,7 +74,7 @@ class RunContext<
         return this.nActiveBlocks--;
     }
 
-    getPromise(id: DescriptBlockId) {
+    getPromise(id: symbol) {
         let deferred = this.blockPromises[ id ];
         if (!deferred) {
             const result = this.blockResults[ id ];
@@ -95,7 +94,7 @@ class RunContext<
         return deferred.promise;
     }
 
-    resolvePromise(id: DescriptBlockId, result: ResultOut) {
+    resolvePromise(id: symbol, result: ResultOut) {
         this.blockResults[ id ] = {
             result: result,
         };
@@ -107,7 +106,7 @@ class RunContext<
         }
     }
 
-    rejectPromise(id: DescriptBlockId, error: DescriptError) {
+    rejectPromise(id: symbol, error: DescriptError) {
         this.blockResults[ id ] = {
             error: error,
         };
