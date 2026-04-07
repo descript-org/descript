@@ -1,7 +1,7 @@
 import { createError, ERROR_ID } from './error';
 
-import type { DescriptBlockDeps, DescriptBlockId } from './depsDomain';
-import DepsDomain from './depsDomain';
+import type { DescriptBlockDeps, DescriptBlockId, UntypedId } from './depsDomain';
+import DepsDomain, { createDepAccessor } from './depsDomain';
 import type Cancel from './cancel';
 import type ContextClass from './context';
 import type { BlockResultOut, InferResultOrResult, DescriptBlockOptions, DepsIds } from './types';
@@ -42,6 +42,8 @@ abstract class BaseBlock<
     ErrorResultOut = unknown,
     Params = ParamsOut,
 > {
+    declare readonly __resultType: InferResultOrResult<ResultOut>;
+
     protected block: CustomBlock;
     protected options: BlockOptions<Context, ParamsOut, BlockResult, BeforeResultOut, AfterResultOut, ErrorResultOut, Params>;
 
@@ -393,6 +395,8 @@ abstract class BaseBlock<
         let resultAfter: AfterResultOut | undefined = undefined;
         let errorResult: ErrorResultOut | undefined = undefined;
 
+        const dep = createDepAccessor(deps);
+
         try {
 
             if (step.params) {
@@ -401,14 +405,14 @@ abstract class BaseBlock<
                 }
 
                 //  Тут не нужен cancel.
-                params = step.params({ params: params as unknown as Params, context, deps });
+                params = step.params({ params: params as unknown as Params, context, deps, dep });
                 if (!(params && typeof params === 'object')) {
                     throw createError('Result of options.params must be an object', ERROR_ID.INVALID_OPTIONS_PARAMS);
                 }
             }
 
             if (typeof step.before === 'function') {
-                resultBefore = await step.before({ cancel, params, context, deps });
+                resultBefore = await step.before({ cancel, params, context, deps, dep });
                 blockCancel.throwIfCancelled();
 
                 if (resultBefore instanceof BaseBlock) {
@@ -438,7 +442,7 @@ abstract class BaseBlock<
             blockCancel.throwIfCancelled();
 
             if (typeof step.after === 'function') {
-                resultAfter = await step.after({ cancel, params, context, deps, result: (resultBefore || resultBlock) as any });
+                resultAfter = await step.after({ cancel, params, context, deps, dep, result: (resultBefore || resultBlock) as any });
                 blockCancel.throwIfCancelled();
 
                 if (resultAfter instanceof BaseBlock) {
@@ -461,7 +465,7 @@ abstract class BaseBlock<
             //  FIXME: А нужно ли уметь options.error делать асинхронным?
             //
             if (typeof step.error === 'function') {
-                errorResult = step.error({ cancel, params, context, deps, error });
+                errorResult = step.error({ cancel, params, context, deps, dep, error });
             } else {
                 throw error;
             }
@@ -536,9 +540,11 @@ abstract class BaseBlock<
         let key;
         const optionsKey = this.options.key;
 
+        const dep = createDepAccessor(deps);
+
         if (cache && optionsKey) {
             //  Тут не нужен cancel.
-            key = (typeof optionsKey === 'function') ? optionsKey({ params, context, deps }) : optionsKey;
+            key = (typeof optionsKey === 'function') ? optionsKey({ params, context, deps, dep }) : optionsKey;
             if (typeof key !== 'string') {
                 key = null;
             }
@@ -595,7 +601,7 @@ export default BaseBlock;
 
 //  ---------------------------------------------------------------------------------------------------------------  //
 
-function extendDeps(deps?: DescriptBlockId | DepsIds | null): DepsIds | null {
+function extendDeps(deps?: DescriptBlockId | UntypedId | DepsIds | null): DepsIds | null {
     if (!deps) {
         return null;
     }

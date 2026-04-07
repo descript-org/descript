@@ -85,9 +85,9 @@ const block = ( { generateId } ) => {
 Иногда нам просто достаточно, чтобы один блок выполнился после окончания работы другого блока.
 Но чаще всего, нам нужно результат одного блока использовать для запуска другого блока.
 
-```js
+```ts
 const block = ( { generateId } ) => {
-    const fooId = generateId();
+    const fooId = generateId(blockFoo);
 
     return de.object( {
         block: {
@@ -101,13 +101,10 @@ const block = ( { generateId } ) => {
                 options: {
                     deps: fooId,
 
-                    params: ( { deps } ) => {
-                        //  В deps приходят результаты работы всех блоков,
-                        //  от которых зависит блок.
-                        //
-                        //  Достаем результат blockFoo.
-                        //
-                        const fooResult = deps[ fooId ];
+                    params: ( { dep } ) => {
+                        //  dep — типобезопасный accessor для получения результатов всех блоков, от которых зависит блок.
+                        //  Достаем результат blockFoo c сохранением типов.
+                        const fooResult = dep( fooId );
 
                         //  Используем значение из fooResult в качестве
                         //  параметра запроса блока blockBar.
@@ -124,8 +121,10 @@ const block = ( { generateId } ) => {
 };
 ```
 
-Если у блока были зависимости, то во все "хуки" (`options.params`, `options.before`, ...) в поле `deps`
-будет приходить объект с результатами этих зависимостей.
+Если у блока были зависимости, то во все "хуки" (`options.params`, `options.before`, ...) в аргументах приходят:
+
+- `deps` — объект `Record<symbol, any>` с результатами всех зависимостей
+- `dep` — типобезопасный accessor: `dep(id)` эквивалентен `deps[id]`, но сохраняет тип конкретной зависимости
 
 
 ## `generateId()`
@@ -152,6 +151,24 @@ const block = de.func( {
 
 id-шники, сгенерированные при помощи `generateId`, действительны только внутри соответствующего замыкания.
 И при попытке использовать какое-либо другое значение в качестве id, блок завершится с ошибкой `de.ERROR_ID.INVALID_DEPS_ID`.
+
+
+### Типизированный `generateId`
+
+`generateId` поддерживает несколько перегрузок:
+
+```ts
+// Нетипизированный id (UntypedId) — dep(id) вернет unknown
+const id = generateId();
+const id = generateId('label');
+
+// Типизированный id с явным типом — dep(id) вернет MyType
+const id = generateId<MyType>();
+
+// Типизированный id, тип выведен из блока — dep(id) вернет тип результата blockFoo
+const id = generateId(blockFoo);
+```
+
 
 
 ## Ошибки `de.ERROR_ID.DEPS_ERROR` и `de.ERROR_ID.DEPS_NOT_RESOLVED`

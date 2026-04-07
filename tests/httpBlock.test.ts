@@ -16,7 +16,7 @@ import type { ServerResponse, ClientRequest } from 'node:http';
 import strip_null_and_undefined_values from '../lib/stripNullAndUndefinedValues';
 import type { DescriptBlockOptions, DescriptHttpBlockResult } from '../lib/types';
 import type { DescriptHttpBlockDescription } from '../lib/httpBlock';
-import type { DescriptBlockId } from '../lib/depsDomain';
+import type { UntypedId } from '../lib/depsDomain';
 //  ---------------------------------------------------------------------------------------------------------------  //
 
 describe('http', <
@@ -115,7 +115,7 @@ describe('http', <
             const spy = vi.fn((...args: any) => value);
 
             let fooResult;
-            let id: DescriptBlockId;
+            let id!: UntypedId;
             const block = de.func({
                 block: ({ generateId }) => {
                     id = generateId();
