@@ -41,6 +41,13 @@ export type NonNullableObject<T extends Record<string, unknown>> = {
     [P in keyof T]: Exclude<T[P], undefined>;
 };
 
+export type DescriptParamsError<Required, Available> = {
+    readonly __descriptError: 'NESTED_BLOCK_PARAMS_INCOMPATIBLE';
+    readonly __requiredParams: Required;
+    readonly __availableParams: Available;
+    readonly __fix: 'Add options.params to transform parent params into the required shape';
+};
+
 export type DescriptJSON =
   boolean |
   number |
