@@ -68,7 +68,7 @@ const array = function<
     Params = GetArrayBlockParams<Block>,
 >({ block, options }: {
     block: ArrayBlockDefinition<Block>;
-    options?: DescriptBlockOptions<Context, ParamsOut, BlockResult, BeforeResultOut, AfterResultOut, ErrorResultOut, Params>;
+    options?: DescriptBlockOptions<Context, NoInfer<ParamsOut>, BlockResult, BeforeResultOut, AfterResultOut, ErrorResultOut, Params>;
 }) {
     return new ArrayBlock<Context, Block, ResultOut, ParamsOut, BlockResult, BeforeResultOut, AfterResultOut, ErrorResultOut, Params>({ block, options });
 };
@@ -85,7 +85,7 @@ const object = function<
     Params = GetObjectBlockParams<Blocks>,
 >({ block, options }: {
     block?: ObjectBlockDefinition<Blocks>;
-    options?: DescriptBlockOptions<Context, ParamsOut, BlockResult, BeforeResultOut, AfterResultOut, ErrorResultOut, Params>;
+    options?: DescriptBlockOptions<Context, NoInfer<ParamsOut>, BlockResult, BeforeResultOut, AfterResultOut, ErrorResultOut, Params>;
 } = {}) {
     return new ObjectBlock<Context, Blocks, ResultOut, ParamsOut, BlockResult, BeforeResultOut, AfterResultOut, ErrorResultOut, Params>({ block, options });
 };
@@ -121,7 +121,7 @@ const first = function<
     Params = GetFirstBlockParams<Block>,
 >({ block, options }: {
     block: FirstBlockDefinition<Block>;
-    options?: DescriptBlockOptions<Context, ParamsOut, BlockResult, BeforeResultOut, AfterResultOut, ErrorResultOut, Params>;
+    options?: DescriptBlockOptions<Context, NoInfer<ParamsOut>, BlockResult, BeforeResultOut, AfterResultOut, ErrorResultOut, Params>;
 }) {
     return new FirstBlock<Context, Block, ResultOut, ParamsOut, BlockResult, BeforeResultOut, AfterResultOut, ErrorResultOut, Params>({ block, options });
 };
@@ -138,7 +138,7 @@ const pipe = function<
     Params = GetPipeBlockParams<Block>,
 >({ block, options }: {
     block: PipeBlockDefinition<Block>;
-    options?: DescriptBlockOptions<Context, ParamsOut, BlockResult, BeforeResultOut, AfterResultOut, ErrorResultOut, Params>;
+    options?: DescriptBlockOptions<Context, NoInfer<ParamsOut>, BlockResult, BeforeResultOut, AfterResultOut, ErrorResultOut, Params>;
 }) {
     return new PipeBlock<Context, Block, ResultOut, ParamsOut, BlockResult, BeforeResultOut, AfterResultOut, ErrorResultOut, Params>({ block, options });
 };

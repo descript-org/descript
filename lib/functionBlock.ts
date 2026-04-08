@@ -2,9 +2,20 @@ import BaseBlock from './block';
 import type { DepAccessor, DescriptBlockDeps } from './depsDomain';
 import DepsDomain, { createDepAccessor } from './depsDomain';
 import { createError, ERROR_ID } from './error';
-import type { BlockResultOut, DescriptBlockOptions, InferParamsOutFromBlock } from './types';
+import type { BlockResultOut, DescriptBlockOptions, DescriptParamsError, InferParamsOutFromBlock } from './types';
 import type ContextClass from './context';
 import type Cancel from './cancel';
+
+type NestedBlockParamsConstraint<T, Params> =
+    [ unknown ] extends [ Params ]
+        ? T
+        : T extends BaseBlock<any, any, any, any, any, any, any, any, any, infer BParams>
+            ? unknown extends BParams
+                ? T
+                : [ Params ] extends [ BParams ]
+                    ? T
+                    : DescriptParamsError<BParams, Params>
+            : T;
 
 export type FunctionBlockDefinition<
     Context,
@@ -18,7 +29,7 @@ export type FunctionBlockDefinition<
     generateId: DepsDomain['generateId'];
     cancel: Cancel;
     blockCancel: Cancel;
-}) => Promise<BlockResult> | BlockResult;
+}) => Promise<NestedBlockParamsConstraint<BlockResult, Params>> | NestedBlockParamsConstraint<BlockResult, Params>;
 
 class FunctionBlock<
     Context,
