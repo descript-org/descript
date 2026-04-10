@@ -18,7 +18,9 @@ export type InferResultFromObjectBlocks<Block> = Block extends BaseBlock<
     Block;
 
 export type GetObjectBlockResult<T extends Record<string, any>> = {
-    [ P in keyof T ]: InferResultFromBlock<T[P]> | DescriptError
+    [ P in keyof T ]: T[P] extends { readonly __isRequired: true }
+        ? InferResultFromBlock<T[P]>
+        : InferResultFromBlock<T[P]> | DescriptError
 };
 
 export type GetObjectBlockParams<
@@ -106,21 +108,42 @@ class ObjectBlock<
     }
 
     extend<
-        // eslint-disable-next-line @typescript-eslint/no-unused-vars
-        ExtendedResultOut extends
-        BlockResultOut<ExtendedBlockResult, ExtendedBeforeResultOut, ExtendedAfterResultOut, ExtendedErrorResultOut>,
-        // ExtendedCustomBlock extends ObjectBlockDefinition<Blocks>,
+        ExtendedResultOut extends BlockResultOut<ExtendedBlockResult, ExtendedBeforeResultOut, ExtendedAfterResultOut, ExtendedErrorResultOut>,
         ExtendedParamsOut extends Params = Params,
         ExtendedParams = Params,
         ExtendedBlockResult = ResultOut,
         ExtendedBeforeResultOut = unknown,
         ExtendedAfterResultOut = unknown,
         ExtendedErrorResultOut = unknown,
-    >({ options }: {
-        options: DescriptBlockOptions<
-            Context, ExtendedParamsOut, ExtendedBlockResult, ExtendedBeforeResultOut, ExtendedAfterResultOut, ExtendedErrorResultOut, ExtendedParams
-        >;
-    }) {
+    >(args: {
+        options: DescriptBlockOptions<Context, ExtendedParamsOut, ExtendedBlockResult, ExtendedBeforeResultOut, ExtendedAfterResultOut, ExtendedErrorResultOut, ExtendedParams> & { required: true };
+    }): ObjectBlock<Context, Blocks, ExtendedResultOut, ExtendedParamsOut, ExtendedBlockResult, ExtendedBeforeResultOut, ExtendedAfterResultOut, ExtendedErrorResultOut, ExtendedParams> & { readonly __isRequired: true };
+    extend<
+        ExtendedResultOut extends BlockResultOut<ExtendedBlockResult, ExtendedBeforeResultOut, ExtendedAfterResultOut, ExtendedErrorResultOut>,
+        ExtendedParamsOut extends Params = Params,
+        ExtendedParams = Params,
+        ExtendedBlockResult = ResultOut,
+        ExtendedBeforeResultOut = unknown,
+        ExtendedAfterResultOut = unknown,
+        ExtendedErrorResultOut = unknown,
+    >(
+        this: ObjectBlock<Context, Blocks, ResultOut, ParamsOut, BlockResult, BeforeResultOut, AfterResultOut, ErrorResultOut, Params> & { readonly __isRequired: true },
+        args: {
+            options?: DescriptBlockOptions<Context, ExtendedParamsOut, ExtendedBlockResult, ExtendedBeforeResultOut, ExtendedAfterResultOut, ExtendedErrorResultOut, ExtendedParams> & { required?: true };
+        }
+    ): ObjectBlock<Context, Blocks, ExtendedResultOut, ExtendedParamsOut, ExtendedBlockResult, ExtendedBeforeResultOut, ExtendedAfterResultOut, ExtendedErrorResultOut, ExtendedParams> & { readonly __isRequired: true };
+    extend<
+        ExtendedResultOut extends BlockResultOut<ExtendedBlockResult, ExtendedBeforeResultOut, ExtendedAfterResultOut, ExtendedErrorResultOut>,
+        ExtendedParamsOut extends Params = Params,
+        ExtendedParams = Params,
+        ExtendedBlockResult = ResultOut,
+        ExtendedBeforeResultOut = unknown,
+        ExtendedAfterResultOut = unknown,
+        ExtendedErrorResultOut = unknown,
+    >(args: {
+        options?: DescriptBlockOptions<Context, ExtendedParamsOut, ExtendedBlockResult, ExtendedBeforeResultOut, ExtendedAfterResultOut, ExtendedErrorResultOut, ExtendedParams>;
+    }): ObjectBlock<Context, Blocks, ExtendedResultOut, ExtendedParamsOut, ExtendedBlockResult, ExtendedBeforeResultOut, ExtendedAfterResultOut, ExtendedErrorResultOut, ExtendedParams>;
+    extend({ options }: { options?: any }): any {
         return new ObjectBlock({
             block: this.extendBlock(this.block),
             options: this.extendOptions(this.options, options) as typeof options,

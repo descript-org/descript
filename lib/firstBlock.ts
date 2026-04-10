@@ -5,7 +5,7 @@ import type BaseBlock from './block';
 import type {
     BlockResultOut,
     First,
-    InferResultFromBlock,
+    InferResultOrError,
     InferParamsInFromBlock,
     Tail,
     DescriptBlockOptions,
@@ -32,21 +32,14 @@ export type GetFirstBlockParams<
     PU = GetFirstBlockParamsUnion<PA>,
 > = PU;
 
-type GetFirstBlockResultMap<T extends ReadonlyArray<unknown>> = {
-    [ P in keyof T ]: InferResultFromBlock<T[ P ]>;
-};
-
 type GetFirstBlockResultUnion<T extends ReadonlyArray<unknown>> = {
     0: never;
-    1: First<T> | DescriptError;
-    2: First<T> | DescriptError | GetFirstBlockResultUnion<Tail<T>>;
+    1: InferResultOrError<First<T>>;
+    2: InferResultOrError<First<T>> | GetFirstBlockResultUnion<Tail<T>>;
 }[ T extends [] ? 0 : T extends ((readonly [ any ]) | [ any ]) ? 1 : 2 ];
 
-export type GetFirstBlockResult<
-    T extends ReadonlyArray<unknown>,
-    PA extends ReadonlyArray<unknown> = GetFirstBlockResultMap<T>,
-    PU = GetFirstBlockResultUnion<PA>,
-> = PU;
+export type GetFirstBlockResult<T extends ReadonlyArray<unknown>> =
+    GetFirstBlockResultUnion<T>;
 
 export type FirstBlockDefinition<T> = {
     [ P in keyof T ]: T[ P ] extends BaseBlock<
@@ -83,21 +76,42 @@ class FirstBlock<
     > {
 
     extend<
-        // eslint-disable-next-line @typescript-eslint/no-unused-vars
-        ExtendedResultOut extends
-        BlockResultOut<ExtendedBlockResult, ExtendedBeforeResultOut, ExtendedAfterResultOut, ExtendedErrorResultOut>,
-        // ExtendedCustomBlock extends FirstBlockDefinition<Block>,
+        ExtendedResultOut extends BlockResultOut<ExtendedBlockResult, ExtendedBeforeResultOut, ExtendedAfterResultOut, ExtendedErrorResultOut>,
         ExtendedParamsOut extends Params = Params,
         ExtendedParams = Params,
         ExtendedBlockResult = ResultOut,
         ExtendedBeforeResultOut = unknown,
         ExtendedAfterResultOut = unknown,
         ExtendedErrorResultOut = unknown,
-    >({ options }: {
-        options: DescriptBlockOptions<
-            Context, ExtendedParamsOut, ExtendedBlockResult, ExtendedBeforeResultOut, ExtendedAfterResultOut, ExtendedErrorResultOut, ExtendedParams
-        >;
-    }) {
+    >(args: {
+        options: DescriptBlockOptions<Context, ExtendedParamsOut, ExtendedBlockResult, ExtendedBeforeResultOut, ExtendedAfterResultOut, ExtendedErrorResultOut, ExtendedParams> & { required: true };
+    }): FirstBlock<Context, Block, ExtendedResultOut, ExtendedParamsOut, ExtendedBlockResult, ExtendedBeforeResultOut, ExtendedAfterResultOut, ExtendedErrorResultOut, ExtendedParams> & { readonly __isRequired: true };
+    extend<
+        ExtendedResultOut extends BlockResultOut<ExtendedBlockResult, ExtendedBeforeResultOut, ExtendedAfterResultOut, ExtendedErrorResultOut>,
+        ExtendedParamsOut extends Params = Params,
+        ExtendedParams = Params,
+        ExtendedBlockResult = ResultOut,
+        ExtendedBeforeResultOut = unknown,
+        ExtendedAfterResultOut = unknown,
+        ExtendedErrorResultOut = unknown,
+    >(
+        this: FirstBlock<Context, Block, ResultOut, ParamsOut, BlockResult, BeforeResultOut, AfterResultOut, ErrorResultOut, Params> & { readonly __isRequired: true },
+        args: {
+            options?: DescriptBlockOptions<Context, ExtendedParamsOut, ExtendedBlockResult, ExtendedBeforeResultOut, ExtendedAfterResultOut, ExtendedErrorResultOut, ExtendedParams> & { required?: true };
+        }
+    ): FirstBlock<Context, Block, ExtendedResultOut, ExtendedParamsOut, ExtendedBlockResult, ExtendedBeforeResultOut, ExtendedAfterResultOut, ExtendedErrorResultOut, ExtendedParams> & { readonly __isRequired: true };
+    extend<
+        ExtendedResultOut extends BlockResultOut<ExtendedBlockResult, ExtendedBeforeResultOut, ExtendedAfterResultOut, ExtendedErrorResultOut>,
+        ExtendedParamsOut extends Params = Params,
+        ExtendedParams = Params,
+        ExtendedBlockResult = ResultOut,
+        ExtendedBeforeResultOut = unknown,
+        ExtendedAfterResultOut = unknown,
+        ExtendedErrorResultOut = unknown,
+    >(args: {
+        options?: DescriptBlockOptions<Context, ExtendedParamsOut, ExtendedBlockResult, ExtendedBeforeResultOut, ExtendedAfterResultOut, ExtendedErrorResultOut, ExtendedParams>;
+    }): FirstBlock<Context, Block, ExtendedResultOut, ExtendedParamsOut, ExtendedBlockResult, ExtendedBeforeResultOut, ExtendedAfterResultOut, ExtendedErrorResultOut, ExtendedParams>;
+    extend({ options }: { options?: any }): any {
         return new FirstBlock({
             block: this.extendBlock(this.block),
             options: this.extendOptions(this.options, options) as typeof options,

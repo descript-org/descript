@@ -66,27 +66,40 @@ abstract class BaseBlock<
     }
 
     abstract extend<
-
-        // ExtendedResultOut extends
-        // BlockResultOut<ExtendedBlockResult, ExtendedBeforeResultOut, ExtendedAfterResultOut, ExtendedErrorResultOut>,
         ExtendedParamsOut extends Params = Params,
         ExtendedParams = Params,
-        // ExtendedCustomBlock = CustomBlock,
         ExtendedBlockResult = ResultOut,
         ExtendedBeforeResultOut = unknown,
         ExtendedAfterResultOut = unknown,
         ExtendedErrorResultOut = unknown,
-    >({ block, options }: {
+    >(args: {
         block?: CustomBlock;
-        options?: DescriptBlockOptions<
-            Context,
-            ParamsOut & ExtendedParamsOut,
-            ExtendedBlockResult,
-            ExtendedBeforeResultOut,
-            ExtendedAfterResultOut,
-            ExtendedErrorResultOut,
-            ExtendedParams
-        >;
+        options: DescriptBlockOptions<Context, ExtendedParamsOut, ExtendedBlockResult, ExtendedBeforeResultOut, ExtendedAfterResultOut, ExtendedErrorResultOut, ExtendedParams> & { required: true };
+    }): unknown;
+    abstract extend<
+        ExtendedParamsOut extends Params = Params,
+        ExtendedParams = Params,
+        ExtendedBlockResult = ResultOut,
+        ExtendedBeforeResultOut = unknown,
+        ExtendedAfterResultOut = unknown,
+        ExtendedErrorResultOut = unknown,
+    >(
+        this: BaseBlock<Context, CustomBlock, ParamsOut, ResultOut, IntermediateResult, BlockResult, BeforeResultOut, AfterResultOut, ErrorResultOut, Params> & { readonly __isRequired: true },
+        args: {
+            block?: CustomBlock;
+            options?: DescriptBlockOptions<Context, ExtendedParamsOut, ExtendedBlockResult, ExtendedBeforeResultOut, ExtendedAfterResultOut, ExtendedErrorResultOut, ExtendedParams> & { required?: true };
+        }
+    ): unknown;
+    abstract extend<
+        ExtendedParamsOut extends Params = Params,
+        ExtendedParams = Params,
+        ExtendedBlockResult = ResultOut,
+        ExtendedBeforeResultOut = unknown,
+        ExtendedAfterResultOut = unknown,
+        ExtendedErrorResultOut = unknown,
+    >(args: {
+        block?: CustomBlock;
+        options?: DescriptBlockOptions<Context, ExtendedParamsOut, ExtendedBlockResult, ExtendedBeforeResultOut, ExtendedAfterResultOut, ExtendedErrorResultOut, ExtendedParams>;
     }): unknown;
 
     protected initBlock(block: CustomBlock) {

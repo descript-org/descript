@@ -38,110 +38,197 @@ import type { GetFirstBlockParams, GetFirstBlockResult, FirstBlockDefinition } f
 import type { GetPipeBlockParams, GetPipeBlockResult, PipeBlockDefinition } from './pipeBlock';
 import PipeBlock from './pipeBlock';
 
-const func = function<
-    Context,
-    ParamsOut,
-    BlockResult,
-    ResultOut extends BlockResultOut<BlockResult, BeforeResultOut, AfterResultOut, ErrorResultOut>,
-    BeforeResultOut = unknown,
-    AfterResultOut = unknown,
-    ErrorResultOut = unknown,
-    Params = ParamsOut,
->({ block, options }: {
-    block: FunctionBlockDefinition<Context, ParamsOut, BlockResult>;
-    options?: DescriptBlockOptions<
-        Context, ParamsOut, BlockResult, BeforeResultOut, AfterResultOut, ErrorResultOut, Params
-    >;
-} & ([ ExtractBadNestedParams<BlockResult, ParamsOut> ] extends [ never ] ? unknown : ExtractBadNestedParams<BlockResult, ParamsOut>)) {
-    return new FunctionBlock<
-        Context, ParamsOut, BlockResult, ResultOut, BeforeResultOut, AfterResultOut, ErrorResultOut, Params
-    >({ block, options });
+const func: {
+    <
+        Context,
+        ParamsOut,
+        BlockResult,
+        ResultOut extends BlockResultOut<BlockResult, BeforeResultOut, AfterResultOut, ErrorResultOut>,
+        BeforeResultOut = unknown,
+        AfterResultOut = unknown,
+        ErrorResultOut = unknown,
+        Params = ParamsOut,
+    >(args: {
+        block: FunctionBlockDefinition<Context, ParamsOut, BlockResult>;
+        options: DescriptBlockOptions<Context, ParamsOut, BlockResult, BeforeResultOut, AfterResultOut, ErrorResultOut, Params> & { required: true };
+    } & ([ ExtractBadNestedParams<BlockResult, ParamsOut> ] extends [ never ] ? unknown : ExtractBadNestedParams<BlockResult, ParamsOut>)): FunctionBlock<Context, ParamsOut, BlockResult, ResultOut, BeforeResultOut, AfterResultOut, ErrorResultOut, Params> & { readonly __isRequired: true };
+    <
+        Context,
+        ParamsOut,
+        BlockResult,
+        ResultOut extends BlockResultOut<BlockResult, BeforeResultOut, AfterResultOut, ErrorResultOut>,
+        BeforeResultOut = unknown,
+        AfterResultOut = unknown,
+        ErrorResultOut = unknown,
+        Params = ParamsOut,
+    >(args: {
+        block: FunctionBlockDefinition<Context, ParamsOut, BlockResult>;
+        options?: DescriptBlockOptions<Context, ParamsOut, BlockResult, BeforeResultOut, AfterResultOut, ErrorResultOut, Params>;
+    } & ([ ExtractBadNestedParams<BlockResult, ParamsOut> ] extends [ never ] ? unknown : ExtractBadNestedParams<BlockResult, ParamsOut>)): FunctionBlock<Context, ParamsOut, BlockResult, ResultOut, BeforeResultOut, AfterResultOut, ErrorResultOut, Params>;
+} = function({ block, options }: any): any {
+    return new FunctionBlock({ block, options });
 };
-const array = function<
-    Context,
-    Block extends ReadonlyArray<unknown>,
-    ResultOut extends BlockResultOut<BlockResult, BeforeResultOut, AfterResultOut, ErrorResultOut>,
-    ParamsOut = GetArrayBlockParams<Block>,
-    BlockResult = GetArrayBlockResult<Block>,
-    BeforeResultOut = unknown,
-    AfterResultOut = unknown,
-    ErrorResultOut = unknown,
-    Params = GetArrayBlockParams<Block>,
->({ block, options }: {
-    block: ArrayBlockDefinition<Block>;
-    options?: DescriptBlockOptions<Context, NoInfer<ParamsOut>, BlockResult, BeforeResultOut, AfterResultOut, ErrorResultOut, Params>;
-}) {
-    return new ArrayBlock<Context, Block, ResultOut, ParamsOut, BlockResult, BeforeResultOut, AfterResultOut, ErrorResultOut, Params>({ block, options });
+const array: {
+    <
+        Context,
+        Block extends ReadonlyArray<unknown>,
+        ResultOut extends BlockResultOut<BlockResult, BeforeResultOut, AfterResultOut, ErrorResultOut>,
+        ParamsOut = GetArrayBlockParams<Block>,
+        BlockResult = GetArrayBlockResult<Block>,
+        BeforeResultOut = unknown,
+        AfterResultOut = unknown,
+        ErrorResultOut = unknown,
+        Params = GetArrayBlockParams<Block>,
+    >(args: {
+        block: ArrayBlockDefinition<Block>;
+        options: DescriptBlockOptions<Context, NoInfer<ParamsOut>, BlockResult, BeforeResultOut, AfterResultOut, ErrorResultOut, Params> & { required: true };
+    }): ArrayBlock<Context, Block, ResultOut, ParamsOut, BlockResult, BeforeResultOut, AfterResultOut, ErrorResultOut, Params> & { readonly __isRequired: true };
+    <
+        Context,
+        Block extends ReadonlyArray<unknown>,
+        ResultOut extends BlockResultOut<BlockResult, BeforeResultOut, AfterResultOut, ErrorResultOut>,
+        ParamsOut = GetArrayBlockParams<Block>,
+        BlockResult = GetArrayBlockResult<Block>,
+        BeforeResultOut = unknown,
+        AfterResultOut = unknown,
+        ErrorResultOut = unknown,
+        Params = GetArrayBlockParams<Block>,
+    >(args: {
+        block: ArrayBlockDefinition<Block>;
+        options?: DescriptBlockOptions<Context, NoInfer<ParamsOut>, BlockResult, BeforeResultOut, AfterResultOut, ErrorResultOut, Params>;
+    }): ArrayBlock<Context, Block, ResultOut, ParamsOut, BlockResult, BeforeResultOut, AfterResultOut, ErrorResultOut, Params>;
+} = function({ block, options }: any): any {
+    return new ArrayBlock({ block, options });
 };
-const object = function<
-    Context,
-    Blocks extends Record<string, any>,
-    ResultOut extends BlockResultOut<BlockResult, BeforeResultOut, AfterResultOut, ErrorResultOut>,
-    ParamsOut = GetObjectBlockParams<Blocks>,
-    BlockResult = GetObjectBlockResult<Blocks>,
+const object: {
+    <
+        Context,
+        Blocks extends Record<string, any>,
+        ResultOut extends BlockResultOut<BlockResult, BeforeResultOut, AfterResultOut, ErrorResultOut>,
+        ParamsOut = GetObjectBlockParams<Blocks>,
+        BlockResult = GetObjectBlockResult<Blocks>,
+        BeforeResultOut = unknown,
+        AfterResultOut = unknown,
+        ErrorResultOut = unknown,
+        Params = GetObjectBlockParams<Blocks>,
+    >(args: {
+        block?: ObjectBlockDefinition<Blocks>;
+        options: DescriptBlockOptions<Context, NoInfer<ParamsOut>, BlockResult, BeforeResultOut, AfterResultOut, ErrorResultOut, Params> & { required: true };
+    }): ObjectBlock<Context, Blocks, ResultOut, ParamsOut, BlockResult, BeforeResultOut, AfterResultOut, ErrorResultOut, Params> & { readonly __isRequired: true };
+    <
+        Context,
+        Blocks extends Record<string, any>,
+        ResultOut extends BlockResultOut<BlockResult, BeforeResultOut, AfterResultOut, ErrorResultOut>,
+        ParamsOut = GetObjectBlockParams<Blocks>,
+        BlockResult = GetObjectBlockResult<Blocks>,
+        BeforeResultOut = unknown,
+        AfterResultOut = unknown,
+        ErrorResultOut = unknown,
+        Params = GetObjectBlockParams<Blocks>,
+    >(args?: {
+        block?: ObjectBlockDefinition<Blocks>;
+        options?: DescriptBlockOptions<Context, NoInfer<ParamsOut>, BlockResult, BeforeResultOut, AfterResultOut, ErrorResultOut, Params>;
+    }): ObjectBlock<Context, Blocks, ResultOut, ParamsOut, BlockResult, BeforeResultOut, AfterResultOut, ErrorResultOut, Params>;
+} = function({ block, options }: any = {}): any {
+    return new ObjectBlock({ block, options });
+};
+const http: {
+    <
+        Context,
+        ParamsOut,
+        ResultOut extends BlockResultOut<BlockResult, BeforeResultOut, AfterResultOut, ErrorResultOut>,
+        IntermediateResult,
+        BlockResult extends DescriptHttpBlockResult<IntermediateResult>,
+        BeforeResultOut = unknown,
+        AfterResultOut = unknown,
+        ErrorResultOut = unknown,
+        Params = ParamsOut,
+    >(args: {
+        block?: DescriptHttpBlockDescription<ParamsOut, Context, IntermediateResult>;
+        options: DescriptBlockOptions<Context, ParamsOut, BlockResult, BeforeResultOut, AfterResultOut, ErrorResultOut, Params> & { required: true };
+    }): HttpBlock<Context, ParamsOut, IntermediateResult, ResultOut, BlockResult, BeforeResultOut, AfterResultOut, ErrorResultOut, Params> & { readonly __isRequired: true };
+    <
+        Context,
+        ParamsOut,
+        ResultOut extends BlockResultOut<BlockResult, BeforeResultOut, AfterResultOut, ErrorResultOut>,
+        IntermediateResult,
+        BlockResult extends DescriptHttpBlockResult<IntermediateResult>,
+        BeforeResultOut = unknown,
+        AfterResultOut = unknown,
+        ErrorResultOut = unknown,
+        Params = ParamsOut,
+    >(args: {
+        block?: DescriptHttpBlockDescription<ParamsOut, Context, IntermediateResult>;
+        options?: DescriptBlockOptions<Context, ParamsOut, BlockResult, BeforeResultOut, AfterResultOut, ErrorResultOut, Params>;
+    }): HttpBlock<Context, ParamsOut, IntermediateResult, ResultOut, BlockResult, BeforeResultOut, AfterResultOut, ErrorResultOut, Params>;
+} = function({ block, options }: any): any {
+    return new HttpBlock({ block, options });
+};
 
-    BeforeResultOut = unknown,
-    AfterResultOut = unknown,
-    ErrorResultOut = unknown,
-    Params = GetObjectBlockParams<Blocks>,
->({ block, options }: {
-    block?: ObjectBlockDefinition<Blocks>;
-    options?: DescriptBlockOptions<Context, NoInfer<ParamsOut>, BlockResult, BeforeResultOut, AfterResultOut, ErrorResultOut, Params>;
-} = {}) {
-    return new ObjectBlock<Context, Blocks, ResultOut, ParamsOut, BlockResult, BeforeResultOut, AfterResultOut, ErrorResultOut, Params>({ block, options });
-};
-const http = function<
-    Context,
-    ParamsOut,
-    ResultOut extends BlockResultOut<BlockResult, BeforeResultOut, AfterResultOut, ErrorResultOut>,
-    IntermediateResult,
-    BlockResult extends DescriptHttpBlockResult<IntermediateResult>,
-
-    BeforeResultOut = unknown,
-    AfterResultOut = unknown,
-    ErrorResultOut = unknown,
-    Params = ParamsOut,
->({ block, options }: {
-    block?: DescriptHttpBlockDescription<ParamsOut, Context, IntermediateResult>;
-    options?: DescriptBlockOptions<Context, ParamsOut, BlockResult, BeforeResultOut, AfterResultOut, ErrorResultOut, Params>;
-}) {
-    return new HttpBlock<
-        Context, ParamsOut, IntermediateResult, ResultOut, BlockResult, BeforeResultOut, AfterResultOut, ErrorResultOut, Params
-    >({ block, options });
-};
-
-const first = function<
-    Context,
-    Block extends ReadonlyArray<unknown>,
-    ResultOut extends BlockResultOut<BlockResult, BeforeResultOut, AfterResultOut, ErrorResultOut>,
-    ParamsOut = GetFirstBlockParams<Block>,
-    BlockResult = GetFirstBlockResult<Block>,
-    BeforeResultOut = unknown,
-    AfterResultOut = unknown,
-    ErrorResultOut = unknown,
-    Params = GetFirstBlockParams<Block>,
->({ block, options }: {
-    block: FirstBlockDefinition<Block>;
-    options?: DescriptBlockOptions<Context, NoInfer<ParamsOut>, BlockResult, BeforeResultOut, AfterResultOut, ErrorResultOut, Params>;
-}) {
-    return new FirstBlock<Context, Block, ResultOut, ParamsOut, BlockResult, BeforeResultOut, AfterResultOut, ErrorResultOut, Params>({ block, options });
+const first: {
+    <
+        Context,
+        Block extends ReadonlyArray<unknown>,
+        ResultOut extends BlockResultOut<BlockResult, BeforeResultOut, AfterResultOut, ErrorResultOut>,
+        ParamsOut = GetFirstBlockParams<Block>,
+        BlockResult = GetFirstBlockResult<Block>,
+        BeforeResultOut = unknown,
+        AfterResultOut = unknown,
+        ErrorResultOut = unknown,
+        Params = GetFirstBlockParams<Block>,
+    >(args: {
+        block: FirstBlockDefinition<Block>;
+        options: DescriptBlockOptions<Context, NoInfer<ParamsOut>, BlockResult, BeforeResultOut, AfterResultOut, ErrorResultOut, Params> & { required: true };
+    }): FirstBlock<Context, Block, ResultOut, ParamsOut, BlockResult, BeforeResultOut, AfterResultOut, ErrorResultOut, Params> & { readonly __isRequired: true };
+    <
+        Context,
+        Block extends ReadonlyArray<unknown>,
+        ResultOut extends BlockResultOut<BlockResult, BeforeResultOut, AfterResultOut, ErrorResultOut>,
+        ParamsOut = GetFirstBlockParams<Block>,
+        BlockResult = GetFirstBlockResult<Block>,
+        BeforeResultOut = unknown,
+        AfterResultOut = unknown,
+        ErrorResultOut = unknown,
+        Params = GetFirstBlockParams<Block>,
+    >(args: {
+        block: FirstBlockDefinition<Block>;
+        options?: DescriptBlockOptions<Context, NoInfer<ParamsOut>, BlockResult, BeforeResultOut, AfterResultOut, ErrorResultOut, Params>;
+    }): FirstBlock<Context, Block, ResultOut, ParamsOut, BlockResult, BeforeResultOut, AfterResultOut, ErrorResultOut, Params>;
+} = function({ block, options }: any): any {
+    return new FirstBlock({ block, options });
 };
 
-const pipe = function<
-    Context,
-    Block extends ReadonlyArray<unknown>,
-    ResultOut extends BlockResultOut<BlockResult, BeforeResultOut, AfterResultOut, ErrorResultOut>,
-    ParamsOut = GetPipeBlockParams<Block>,
-    BlockResult = GetPipeBlockResult<Block>,
-    BeforeResultOut = unknown,
-    AfterResultOut = unknown,
-    ErrorResultOut = unknown,
-    Params = GetPipeBlockParams<Block>,
->({ block, options }: {
-    block: PipeBlockDefinition<Block>;
-    options?: DescriptBlockOptions<Context, NoInfer<ParamsOut>, BlockResult, BeforeResultOut, AfterResultOut, ErrorResultOut, Params>;
-}) {
-    return new PipeBlock<Context, Block, ResultOut, ParamsOut, BlockResult, BeforeResultOut, AfterResultOut, ErrorResultOut, Params>({ block, options });
+const pipe: {
+    <
+        Context,
+        Block extends ReadonlyArray<unknown>,
+        ResultOut extends BlockResultOut<BlockResult, BeforeResultOut, AfterResultOut, ErrorResultOut>,
+        ParamsOut = GetPipeBlockParams<Block>,
+        BlockResult = GetPipeBlockResult<Block>,
+        BeforeResultOut = unknown,
+        AfterResultOut = unknown,
+        ErrorResultOut = unknown,
+        Params = GetPipeBlockParams<Block>,
+    >(args: {
+        block: PipeBlockDefinition<Block>;
+        options: DescriptBlockOptions<Context, NoInfer<ParamsOut>, BlockResult, BeforeResultOut, AfterResultOut, ErrorResultOut, Params> & { required: true };
+    }): PipeBlock<Context, Block, ResultOut, ParamsOut, BlockResult, BeforeResultOut, AfterResultOut, ErrorResultOut, Params> & { readonly __isRequired: true };
+    <
+        Context,
+        Block extends ReadonlyArray<unknown>,
+        ResultOut extends BlockResultOut<BlockResult, BeforeResultOut, AfterResultOut, ErrorResultOut>,
+        ParamsOut = GetPipeBlockParams<Block>,
+        BlockResult = GetPipeBlockResult<Block>,
+        BeforeResultOut = unknown,
+        AfterResultOut = unknown,
+        ErrorResultOut = unknown,
+        Params = GetPipeBlockParams<Block>,
+    >(args: {
+        block: PipeBlockDefinition<Block>;
+        options?: DescriptBlockOptions<Context, NoInfer<ParamsOut>, BlockResult, BeforeResultOut, AfterResultOut, ErrorResultOut, Params>;
+    }): PipeBlock<Context, Block, ResultOut, ParamsOut, BlockResult, BeforeResultOut, AfterResultOut, ErrorResultOut, Params>;
+} = function({ block, options }: any): any {
+    return new PipeBlock({ block, options });
 };
 
 const isBlock = function(block: any) {
