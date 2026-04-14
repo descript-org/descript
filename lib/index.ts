@@ -28,6 +28,7 @@ import type {
     InferBlock,
     InferHttpBlock,
     InferResultOrResult,
+    ExtractBadNestedParams,
 } from './types';
 import type BaseBlock from './block';
 import type { DescriptHttpBlockDescription, DescriptHttpBlockQuery, DescriptHttpBlockQueryValue } from './httpBlock';
@@ -51,7 +52,7 @@ const func = function<
     options?: DescriptBlockOptions<
         Context, ParamsOut, BlockResult, BeforeResultOut, AfterResultOut, ErrorResultOut, Params
     >;
-}) {
+} & ([ ExtractBadNestedParams<BlockResult, ParamsOut> ] extends [ never ] ? unknown : ExtractBadNestedParams<BlockResult, ParamsOut>)) {
     return new FunctionBlock<
         Context, ParamsOut, BlockResult, ResultOut, BeforeResultOut, AfterResultOut, ErrorResultOut, Params
     >({ block, options });

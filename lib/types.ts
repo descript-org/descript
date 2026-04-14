@@ -48,6 +48,20 @@ export type DescriptParamsError<Required, Available> = {
     readonly __fix: 'Add options.params to transform parent params into the required shape';
 };
 
+// Extracts DescriptParamsError for any block in T whose Params are not satisfied by the available Params.
+// Returns never when all blocks are compatible (no constraint added to the call site).
+export type ExtractBadNestedParams<T, Params> =
+    [ unknown ] extends [ Params ]
+        ? never
+        // eslint-disable-next-line @typescript-eslint/no-explicit-any
+        : T extends BaseBlock<any, any, any, any, any, any, any, any, any, infer BParams>
+            ? unknown extends BParams
+                ? never
+                : [ Params ] extends [ BParams ]
+                    ? never
+                    : DescriptParamsError<BParams, Params>
+            : never;
+
 export type DescriptJSON =
   boolean |
   number |
