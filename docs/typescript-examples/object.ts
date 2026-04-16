@@ -2,6 +2,7 @@
 
 import * as de from '../../lib';
 import type { DescriptHttpBlockResult, InferParamsInFromBlock } from '../../lib/types';
+import { blockNeedsA, blockNeedsB, ParamsA, ParamsAB } from './shared';
 
 //  ---------------------------------------------------------------------------------------------------------------  //
 
@@ -240,3 +241,28 @@ de.run(block5, {
     .then((result) => {
         console.log(result);
     });
+
+//  ---------------------------------------------------------------------------------------------------------------  //
+// Тут проверяем, что есть ошибка при несовпадении параметров и нету ошибки при валидных параметрах вложенных блоков
+// @ts-expect-error тут должна быть DescriptParamsError
+de.func({
+    block: ({ params }: { params: ParamsA }) => {
+        void params;
+
+        return de.object({
+            block: { blockNeedsA, blockNeedsB },
+        });
+    },
+});
+
+de.func({
+    block: ({ params }: { params: ParamsAB }) => {
+        void params;
+
+        return de.object({
+            block: { blockNeedsA, blockNeedsB },
+        });
+    },
+});
+
+//  ---------------------------------------------------------------------------------------------------------------  //

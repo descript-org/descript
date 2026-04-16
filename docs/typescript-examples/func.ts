@@ -1,5 +1,6 @@
 /* eslint-disable no-console */
 import * as de from '../../lib';
+import { blockNeedsA, blockNeedsAB, blockNeedsB, ParamsA, ParamsAB } from './shared';
 
 interface ParamsIn1 {
     id: string;
@@ -126,3 +127,27 @@ de.run(block4, {
     .then((result) => {
         console.log(result);
     });
+
+//  ---------------------------------------------------------------------------------------------------------------  //
+// Тут проверяем, что есть ошибка при несовпадении параметров и нету ошибки при валидных параметрах вложенных блоков
+// @ts-expect-error тут должна быть DescriptParamsError
+de.func({
+    block: ({ params }: { params: ParamsA }) =>
+        params.a === 'special' ? blockNeedsA : blockNeedsB,
+});
+
+de.func({
+    block: ({ params }: { params: ParamsAB }) =>
+        params.a === 'special' ? blockNeedsA : blockNeedsB,
+});
+
+de.run(blockNeedsAB, {
+    params: { a: 'hello', b: 42 },
+});
+
+de.run(blockNeedsAB, {
+    // @ts-expect-error тут должна быть ошибка 'b' is declared here.
+    params: { a: 'hello' },
+});
+
+//  ---------------------------------------------------------------------------------------------------------------  //
