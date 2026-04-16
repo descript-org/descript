@@ -1,5 +1,6 @@
 /* eslint-disable no-console */
 import * as de from '../../lib';
+import { blockNeedsA, blockNeedsB, ParamsA, ParamsAB } from './shared';
 
 //  ---------------------------------------------------------------------------------------------------------------  //
 
@@ -155,3 +156,28 @@ de.run(bfn3, {
     .then((result) => {
         console.log(result[ 0 ], result[ 1 ]);
     });
+
+//  ---------------------------------------------------------------------------------------------------------------  //
+// Тут проверяем, что есть ошибка при несовпадении параметров и нету ошибки при валидных параметрах вложенных блоков
+// @ts-expect-error тут должна быть DescriptParamsError
+de.func({
+    block: ({ params }: { params: ParamsA }) => {
+        void params;
+
+        return de.array({
+            block: [ blockNeedsA, blockNeedsB ],
+        });
+    },
+});
+
+de.func({
+    block: ({ params }: { params: ParamsAB }) => {
+        void params;
+
+        return de.array({
+            block: [ blockNeedsA, blockNeedsB ],
+        });
+    },
+});
+
+//  ---------------------------------------------------------------------------------------------------------------  //

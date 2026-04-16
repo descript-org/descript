@@ -2,6 +2,7 @@
 
 import * as de from '../../lib';
 import type { DescriptHttpBlockResult, InferParamsInFromBlock } from '../../lib/types';
+import { blockNeedsA, blockNeedsB, ParamsA, ParamsAB } from './shared';
 
 //  ---------------------------------------------------------------------------------------------------------------  //
 
@@ -96,7 +97,7 @@ const block2 = de.http({
 
 const block2Func = de.func({
     // eslint-disable-next-line @typescript-eslint/no-unused-vars
-    block: ({ params }: { params: InferParamsInFromBlock<typeof block1> & { p1: number } }) => block2,
+    block: ({ params }: { params: InferParamsInFromBlock<typeof block2> & { p1: number } }) => block2,
     // block: () => block2,
     options: {
         after: ({ result }) => {
@@ -111,11 +112,8 @@ const block2Func = de.func({
 
 de.run(block2Func, {
     params: {
-        id1: '67890',
         p1: 1,
-        payload: {
-            card: {},
-        },
+        id2: 578923,
     },
 })
     .then((result) => {
@@ -166,12 +164,8 @@ const block3 = de.object({
 
 de.run(block3, {
     params: {
-        id1: '12345',
         id2: 67890,
         p1: 1,
-        payload: {
-            card: {},
-        },
     },
 })
     .then((result) => {
@@ -230,12 +224,8 @@ const block5 = block3.extend({
 
 de.run(block4, {
     params: {
-        id1: '12345',
         id2: 67890,
         p1: 1,
-        payload: {
-            card: {},
-        },
     },
 })
     .then((result) => {
@@ -244,14 +234,35 @@ de.run(block4, {
 
 de.run(block5, {
     params: {
-        id1: '12345',
         id2: 67890,
         p1: 1,
-        payload: {
-            card: {},
-        },
     },
 })
     .then((result) => {
         console.log(result);
     });
+
+//  ---------------------------------------------------------------------------------------------------------------  //
+// Тут проверяем, что есть ошибка при несовпадении параметров и нету ошибки при валидных параметрах вложенных блоков
+// @ts-expect-error тут должна быть DescriptParamsError
+de.func({
+    block: ({ params }: { params: ParamsA }) => {
+        void params;
+
+        return de.object({
+            block: { blockNeedsA, blockNeedsB },
+        });
+    },
+});
+
+de.func({
+    block: ({ params }: { params: ParamsAB }) => {
+        void params;
+
+        return de.object({
+            block: { blockNeedsA, blockNeedsB },
+        });
+    },
+});
+
+//  ---------------------------------------------------------------------------------------------------------------  //
