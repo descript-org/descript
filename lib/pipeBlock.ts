@@ -6,6 +6,7 @@ import type {
     First,
     InferResultOrError,
     InferParamsInFromBlock,
+    Last,
     Tail,
     DescriptBlockOptions,
 } from './types';
@@ -31,14 +32,8 @@ export type GetPipeBlockParams<
     PU = GetPipeBlockParamsUnion<PA>,
 > = PU;
 
-type GetPipeBlockResultUnion<T extends ReadonlyArray<unknown>> = {
-    0: never;
-    1: InferResultOrError<First<T>>;
-    2: InferResultOrError<First<T>> | GetPipeBlockResultUnion<Tail<T>>;
-}[ T extends [] ? 0 : T extends ((readonly [ any ]) | [ any ]) ? 1 : 2 ];
-
 export type GetPipeBlockResult<T extends ReadonlyArray<unknown>> =
-    GetPipeBlockResultUnion<T>;
+    InferResultOrError<Last<T>>;
 
 export type PipeBlockDefinition<T> = {
     [ P in keyof T ]: T[ P ] extends BaseBlock<
