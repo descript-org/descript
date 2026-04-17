@@ -1,10 +1,9 @@
 import CompositeBlock from './compositeBlock';
 import { createError, ERROR_ID } from './error';
-import type { DescriptError } from './error';
 import type {
     BlockResultOut,
     First,
-    InferResultFromBlock,
+    InferResultOrError,
     InferParamsInFromBlock,
     Tail,
     DescriptBlockOptions,
@@ -17,8 +16,8 @@ import type DepsDomain from './depsDomain';
 
 export type GetArrayBlockResult<T extends ReadonlyArray<unknown>> = {
     0: never;
-    1: [ InferResultFromBlock<First<T>> | DescriptError ];
-    2: [ InferResultFromBlock<First<T>> | DescriptError, ...GetArrayBlockResult<Tail<T>> ];
+    1: [ InferResultOrError<First<T>> ];
+    2: [ InferResultOrError<First<T>>, ...GetArrayBlockResult<Tail<T>> ];
 }[ T extends [] ? 0 : T extends ((readonly [ any ]) | [ any ]) ? 1 : 2 ];
 
 export type GetArrayBlockParamsUnion<T extends ReadonlyArray<unknown>> = {
@@ -72,20 +71,42 @@ class ArrayBlock<
     > {
 
     extend<
-        // eslint-disable-next-line @typescript-eslint/no-unused-vars
-        ExtendedResultOut extends
-        BlockResultOut<ExtendedBlockResult, ExtendedBeforeResultOut, ExtendedAfterResultOut, ExtendedErrorResultOut>,
+        ExtendedResultOut extends BlockResultOut<ExtendedBlockResult, ExtendedBeforeResultOut, ExtendedAfterResultOut, ExtendedErrorResultOut>,
         ExtendedParamsOut extends Params = Params,
         ExtendedParams = Params,
         ExtendedBlockResult = ResultOut,
         ExtendedBeforeResultOut = unknown,
         ExtendedAfterResultOut = unknown,
         ExtendedErrorResultOut = unknown,
-    >({ options }: {
-        options: DescriptBlockOptions<
-            Context, ExtendedParamsOut, ExtendedBlockResult, ExtendedBeforeResultOut, ExtendedAfterResultOut, ExtendedErrorResultOut, ExtendedParams
-        >;
-    }) {
+    >(args: {
+        options: DescriptBlockOptions<Context, ExtendedParamsOut, ExtendedBlockResult, ExtendedBeforeResultOut, ExtendedAfterResultOut, ExtendedErrorResultOut, ExtendedParams> & { required: true };
+    }): ArrayBlock<Context, Block, ExtendedResultOut, ExtendedParamsOut, ExtendedBlockResult, ExtendedBeforeResultOut, ExtendedAfterResultOut, ExtendedErrorResultOut, ExtendedParams> & { readonly __isRequired: true };
+    extend<
+        ExtendedResultOut extends BlockResultOut<ExtendedBlockResult, ExtendedBeforeResultOut, ExtendedAfterResultOut, ExtendedErrorResultOut>,
+        ExtendedParamsOut extends Params = Params,
+        ExtendedParams = Params,
+        ExtendedBlockResult = ResultOut,
+        ExtendedBeforeResultOut = unknown,
+        ExtendedAfterResultOut = unknown,
+        ExtendedErrorResultOut = unknown,
+    >(
+        this: ArrayBlock<Context, Block, ResultOut, ParamsOut, BlockResult, BeforeResultOut, AfterResultOut, ErrorResultOut, Params> & { readonly __isRequired: true },
+        args: {
+            options?: DescriptBlockOptions<Context, ExtendedParamsOut, ExtendedBlockResult, ExtendedBeforeResultOut, ExtendedAfterResultOut, ExtendedErrorResultOut, ExtendedParams> & { required?: true };
+        }
+    ): ArrayBlock<Context, Block, ExtendedResultOut, ExtendedParamsOut, ExtendedBlockResult, ExtendedBeforeResultOut, ExtendedAfterResultOut, ExtendedErrorResultOut, ExtendedParams> & { readonly __isRequired: true };
+    extend<
+        ExtendedResultOut extends BlockResultOut<ExtendedBlockResult, ExtendedBeforeResultOut, ExtendedAfterResultOut, ExtendedErrorResultOut>,
+        ExtendedParamsOut extends Params = Params,
+        ExtendedParams = Params,
+        ExtendedBlockResult = ResultOut,
+        ExtendedBeforeResultOut = unknown,
+        ExtendedAfterResultOut = unknown,
+        ExtendedErrorResultOut = unknown,
+    >(args: {
+        options?: DescriptBlockOptions<Context, ExtendedParamsOut, ExtendedBlockResult, ExtendedBeforeResultOut, ExtendedAfterResultOut, ExtendedErrorResultOut, ExtendedParams>;
+    }): ArrayBlock<Context, Block, ExtendedResultOut, ExtendedParamsOut, ExtendedBlockResult, ExtendedBeforeResultOut, ExtendedAfterResultOut, ExtendedErrorResultOut, ExtendedParams>;
+    extend({ options }: { options?: any }): any {
         return new ArrayBlock({
             block: this.extendBlock(this.block),
             options: this.extendOptions(this.options, options) as typeof options,

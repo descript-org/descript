@@ -1,12 +1,12 @@
 import CompositeBlock from './compositeBlock';
 import { ERROR_ID, createError } from './error';
-import type { DescriptError } from './error';
 import type BaseBlock from './block';
 import type {
     BlockResultOut,
     First,
-    InferResultFromBlock,
+    InferResultOrError,
     InferParamsInFromBlock,
+    Last,
     Tail,
     DescriptBlockOptions,
 } from './types';
@@ -32,21 +32,8 @@ export type GetPipeBlockParams<
     PU = GetPipeBlockParamsUnion<PA>,
 > = PU;
 
-type GetPipeBlockResultUnion<T extends ReadonlyArray<unknown>> = {
-    0: never;
-    1: First<T> | DescriptError;
-    2: First<T> | DescriptError | GetPipeBlockResultUnion<Tail<T>>;
-}[ T extends [] ? 0 : T extends ((readonly [ any ]) | [ any ]) ? 1 : 2 ];
-
-type GetPipeBlockResultMap<T extends ReadonlyArray<unknown>> = {
-    [ P in keyof T ]: InferResultFromBlock<T[ P ]>;
-};
-
-export type GetPipeBlockResult<
-    T extends ReadonlyArray<unknown>,
-    PA extends ReadonlyArray<unknown> = GetPipeBlockResultMap<T>,
-    PU = GetPipeBlockResultUnion<PA>,
-> = PU;
+export type GetPipeBlockResult<T extends ReadonlyArray<unknown>> =
+    InferResultOrError<Last<T>>;
 
 export type PipeBlockDefinition<T> = {
     [ P in keyof T ]: T[ P ] extends BaseBlock<
@@ -83,21 +70,39 @@ class PipeBlock<
     > {
 
     extend<
-        // eslint-disable-next-line @typescript-eslint/no-unused-vars
-        // ExtendedResultOut extends
-        // BlockResultOut<ExtendedBlockResult, ExtendedBeforeResultOut, ExtendedAfterResultOut, ExtendedErrorResultOut>,
-        // ExtendedCustomBlock extends PipeBlockDefinition<Block>,
         ExtendedParamsOut extends Params = Params,
         ExtendedParams = Params,
         ExtendedBlockResult = ResultOut,
         ExtendedBeforeResultOut = unknown,
         ExtendedAfterResultOut = unknown,
         ExtendedErrorResultOut = unknown,
-    >({ options }: {
-        options: DescriptBlockOptions<
-            Context, ExtendedParamsOut, ExtendedBlockResult, ExtendedBeforeResultOut, ExtendedAfterResultOut, ExtendedErrorResultOut, ExtendedParams
-        >;
-    }) {
+    >(args: {
+        options: DescriptBlockOptions<Context, ExtendedParamsOut, ExtendedBlockResult, ExtendedBeforeResultOut, ExtendedAfterResultOut, ExtendedErrorResultOut, ExtendedParams> & { required: true };
+    }): PipeBlock<Context, Block, BlockResultOut<ExtendedBlockResult, ExtendedBeforeResultOut, ExtendedAfterResultOut, ExtendedErrorResultOut>, ExtendedParamsOut, ExtendedBlockResult, ExtendedBeforeResultOut, ExtendedAfterResultOut, ExtendedErrorResultOut, ExtendedParams> & { readonly __isRequired: true };
+    extend<
+        ExtendedParamsOut extends Params = Params,
+        ExtendedParams = Params,
+        ExtendedBlockResult = ResultOut,
+        ExtendedBeforeResultOut = unknown,
+        ExtendedAfterResultOut = unknown,
+        ExtendedErrorResultOut = unknown,
+    >(
+        this: PipeBlock<Context, Block, ResultOut, ParamsOut, BlockResult, BeforeResultOut, AfterResultOut, ErrorResultOut, Params> & { readonly __isRequired: true },
+        args: {
+            options?: DescriptBlockOptions<Context, ExtendedParamsOut, ExtendedBlockResult, ExtendedBeforeResultOut, ExtendedAfterResultOut, ExtendedErrorResultOut, ExtendedParams> & { required?: true };
+        }
+    ): PipeBlock<Context, Block, BlockResultOut<ExtendedBlockResult, ExtendedBeforeResultOut, ExtendedAfterResultOut, ExtendedErrorResultOut>, ExtendedParamsOut, ExtendedBlockResult, ExtendedBeforeResultOut, ExtendedAfterResultOut, ExtendedErrorResultOut, ExtendedParams> & { readonly __isRequired: true };
+    extend<
+        ExtendedParamsOut extends Params = Params,
+        ExtendedParams = Params,
+        ExtendedBlockResult = ResultOut,
+        ExtendedBeforeResultOut = unknown,
+        ExtendedAfterResultOut = unknown,
+        ExtendedErrorResultOut = unknown,
+    >(args: {
+        options?: DescriptBlockOptions<Context, ExtendedParamsOut, ExtendedBlockResult, ExtendedBeforeResultOut, ExtendedAfterResultOut, ExtendedErrorResultOut, ExtendedParams>;
+    }): PipeBlock<Context, Block, BlockResultOut<ExtendedBlockResult, ExtendedBeforeResultOut, ExtendedAfterResultOut, ExtendedErrorResultOut>, ExtendedParamsOut, ExtendedBlockResult, ExtendedBeforeResultOut, ExtendedAfterResultOut, ExtendedErrorResultOut, ExtendedParams>;
+    extend({ options }: { options?: any }): any {
         return new PipeBlock({
             block: this.extendBlock(this.block),
             options: this.extendOptions(this.options, options) as typeof options,
