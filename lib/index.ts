@@ -24,6 +24,8 @@ import type {
     DescriptBlockOptions,
     DescriptHttpBlockHeaders,
     InferResultFromBlock,
+    DeepInferResultFromBlock,
+    DeepResolveResult,
     InferParamsInFromBlock,
     InferBlock,
     InferHttpBlock,
@@ -32,7 +34,7 @@ import type {
 } from './types';
 import type BaseBlock from './block';
 import type { DescriptHttpBlockDescription, DescriptHttpBlockQuery, DescriptHttpBlockQueryValue } from './httpBlock';
-import type { GetObjectBlockParams, GetObjectBlockResult, ObjectBlockDefinition } from './objectBlock';
+import type { GetObjectBlockParams, GetObjectBlockResult } from './objectBlock';
 import type { GetArrayBlockParams, GetArrayBlockResult, ArrayBlockDefinition } from './arrayBlock';
 import type { GetFirstBlockParams, GetFirstBlockResult, FirstBlockDefinition } from './firstBlock';
 import type { GetPipeBlockParams, GetPipeBlockResult, PipeBlockDefinition } from './pipeBlock';
@@ -103,6 +105,7 @@ const array: {
 const object: {
     <
         Context,
+        // eslint-disable-next-line @typescript-eslint/no-explicit-any
         Blocks extends Record<string, any>,
         ResultOut extends BlockResultOut<BlockResult, BeforeResultOut, AfterResultOut, ErrorResultOut>,
         ParamsOut = GetObjectBlockParams<Blocks>,
@@ -112,11 +115,12 @@ const object: {
         ErrorResultOut = unknown,
         Params = GetObjectBlockParams<Blocks>,
     >(args: {
-        block?: ObjectBlockDefinition<Blocks>;
+        block?: Blocks;
         options: DescriptBlockOptions<Context, NoInfer<ParamsOut>, BlockResult, BeforeResultOut, AfterResultOut, ErrorResultOut, Params> & { required: true };
     }): ObjectBlock<Context, Blocks, ResultOut, ParamsOut, BlockResult, BeforeResultOut, AfterResultOut, ErrorResultOut, Params> & { readonly __isRequired: true };
     <
         Context,
+        // eslint-disable-next-line @typescript-eslint/no-explicit-any
         Blocks extends Record<string, any>,
         ResultOut extends BlockResultOut<BlockResult, BeforeResultOut, AfterResultOut, ErrorResultOut>,
         ParamsOut = GetObjectBlockParams<Blocks>,
@@ -126,7 +130,7 @@ const object: {
         ErrorResultOut = unknown,
         Params = GetObjectBlockParams<Blocks>,
     >(args?: {
-        block?: ObjectBlockDefinition<Blocks>;
+        block?: Blocks;
         options?: DescriptBlockOptions<Context, NoInfer<ParamsOut>, BlockResult, BeforeResultOut, AfterResultOut, ErrorResultOut, Params>;
     }): ObjectBlock<Context, Blocks, ResultOut, ParamsOut, BlockResult, BeforeResultOut, AfterResultOut, ErrorResultOut, Params>;
 } = function({ block, options }: any = {}): any {
@@ -298,6 +302,8 @@ export {
     GenerateId,
     DescriptBlockId,
     InferResultFromBlock,
+    DeepInferResultFromBlock,
+    DeepResolveResult,
     InferParamsInFromBlock,
     InferBlock,
     DescriptBlockDeps,

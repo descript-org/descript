@@ -116,6 +116,18 @@ export type InferResultFromBlock<Type> = Type extends BaseBlock<
     infer BlockResult, infer BeforeResultOut, infer AfterResultOut, infer ErrorResultOut, infer Params
 > ? InferResultOrResult<ResultOut> : never;
 
+export type DeepResolveResult<T> =
+    // eslint-disable-next-line @typescript-eslint/no-explicit-any
+    T extends BaseBlock<any, any, any, infer ResultOut, any, any, any, any, any, any>
+        ? DeepResolveResult<InferResultOrResult<ResultOut>>
+        : T extends DescriptError
+            ? DescriptError
+            : T extends Record<string, unknown>
+                ? { [K in keyof T]: DeepResolveResult<T[K]> }
+                : T;
+
+export type DeepInferResultFromBlock<T> = DeepResolveResult<InferResultFromBlock<T>>;
+
 export type InferParamsInFromBlock<Type> = Type extends BaseBlock<
     // eslint-disable-next-line @typescript-eslint/no-unused-vars
     infer Context, infer CustomBlock, infer ParamsOut, infer ResultOut, infer IntermediateResult,
