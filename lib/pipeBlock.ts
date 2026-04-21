@@ -68,6 +68,7 @@ class PipeBlock<
     AfterResultOut = unknown,
     ErrorResultOut = unknown,
     Params = GetPipeBlockParams<Block>,
+    IsRequired extends boolean = boolean,
 > extends CompositeBlock<
         Context,
         PipeBlockDefinition<Block>,
@@ -79,7 +80,8 @@ class PipeBlock<
         BeforeResultOut,
         AfterResultOut,
         ErrorResultOut,
-        Params
+        Params,
+        IsRequired
     > {
 
     extend<

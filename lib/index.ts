@@ -47,14 +47,15 @@ const func = function<
     AfterResultOut = unknown,
     ErrorResultOut = unknown,
     Params = ParamsOut,
+    const IsRequired extends boolean = false,
 >({ block, options }: {
     block: FunctionBlockDefinition<Context, ParamsOut, BlockResult>;
     options?: DescriptBlockOptions<
         Context, ParamsOut, BlockResult, BeforeResultOut, AfterResultOut, ErrorResultOut, Params
-    >;
+    > & { required?: IsRequired };
 } & ([ ExtractBadNestedParams<BlockResult, ParamsOut> ] extends [ never ] ? unknown : ExtractBadNestedParams<BlockResult, ParamsOut>)) {
     return new FunctionBlock<
-        Context, ParamsOut, BlockResult, ResultOut, BeforeResultOut, AfterResultOut, ErrorResultOut, Params
+        Context, ParamsOut, BlockResult, ResultOut, BeforeResultOut, AfterResultOut, ErrorResultOut, Params, IsRequired
     >({ block, options });
 };
 const array = function<
@@ -67,11 +68,12 @@ const array = function<
     AfterResultOut = unknown,
     ErrorResultOut = unknown,
     Params = GetArrayBlockParams<Block>,
+    const IsRequired extends boolean = false,
 >({ block, options }: {
     block: ArrayBlockDefinition<Block>;
-    options?: DescriptBlockOptions<Context, NoInfer<ParamsOut>, BlockResult, BeforeResultOut, AfterResultOut, ErrorResultOut, Params>;
+    options?: DescriptBlockOptions<Context, NoInfer<ParamsOut>, BlockResult, BeforeResultOut, AfterResultOut, ErrorResultOut, Params> & { required?: IsRequired };
 }) {
-    return new ArrayBlock<Context, Block, ResultOut, ParamsOut, BlockResult, BeforeResultOut, AfterResultOut, ErrorResultOut, Params>({ block, options });
+    return new ArrayBlock<Context, Block, ResultOut, ParamsOut, BlockResult, BeforeResultOut, AfterResultOut, ErrorResultOut, Params, IsRequired>({ block, options });
 };
 const object = function<
     Context,
@@ -84,11 +86,12 @@ const object = function<
     AfterResultOut = unknown,
     ErrorResultOut = unknown,
     Params = GetObjectBlockParams<Blocks>,
+    const IsRequired extends boolean = false,
 >({ block, options }: {
     block?: ObjectBlockDefinition<Blocks>;
-    options?: DescriptBlockOptions<Context, NoInfer<ParamsOut>, BlockResult, BeforeResultOut, AfterResultOut, ErrorResultOut, Params>;
+    options?: DescriptBlockOptions<Context, NoInfer<ParamsOut>, BlockResult, BeforeResultOut, AfterResultOut, ErrorResultOut, Params> & { required?: IsRequired };
 } = {}) {
-    return new ObjectBlock<Context, Blocks, ResultOut, ParamsOut, BlockResult, BeforeResultOut, AfterResultOut, ErrorResultOut, Params>({ block, options });
+    return new ObjectBlock<Context, Blocks, ResultOut, ParamsOut, BlockResult, BeforeResultOut, AfterResultOut, ErrorResultOut, Params, IsRequired>({ block, options });
 };
 const http = function<
     Context,
@@ -101,12 +104,13 @@ const http = function<
     AfterResultOut = unknown,
     ErrorResultOut = unknown,
     Params = ParamsOut,
+    const IsRequired extends boolean = false,
 >({ block, options }: {
     block?: DescriptHttpBlockDescription<ParamsOut, Context, IntermediateResult>;
-    options?: DescriptBlockOptions<Context, ParamsOut, BlockResult, BeforeResultOut, AfterResultOut, ErrorResultOut, Params>;
+    options?: DescriptBlockOptions<Context, ParamsOut, BlockResult, BeforeResultOut, AfterResultOut, ErrorResultOut, Params> & { required?: IsRequired };
 }) {
     return new HttpBlock<
-        Context, ParamsOut, IntermediateResult, ResultOut, BlockResult, BeforeResultOut, AfterResultOut, ErrorResultOut, Params
+        Context, ParamsOut, IntermediateResult, ResultOut, BlockResult, BeforeResultOut, AfterResultOut, ErrorResultOut, Params, IsRequired
     >({ block, options });
 };
 
@@ -120,11 +124,12 @@ const first = function<
     AfterResultOut = unknown,
     ErrorResultOut = unknown,
     Params = GetFirstBlockParams<Block>,
+    const IsRequired extends boolean = false,
 >({ block, options }: {
     block: FirstBlockDefinition<Block>;
-    options?: DescriptBlockOptions<Context, NoInfer<ParamsOut>, BlockResult, BeforeResultOut, AfterResultOut, ErrorResultOut, Params>;
+    options?: DescriptBlockOptions<Context, NoInfer<ParamsOut>, BlockResult, BeforeResultOut, AfterResultOut, ErrorResultOut, Params> & { required?: IsRequired };
 }) {
-    return new FirstBlock<Context, Block, ResultOut, ParamsOut, BlockResult, BeforeResultOut, AfterResultOut, ErrorResultOut, Params>({ block, options });
+    return new FirstBlock<Context, Block, ResultOut, ParamsOut, BlockResult, BeforeResultOut, AfterResultOut, ErrorResultOut, Params, IsRequired>({ block, options });
 };
 
 const pipe = function<
@@ -137,11 +142,12 @@ const pipe = function<
     AfterResultOut = unknown,
     ErrorResultOut = unknown,
     Params = GetPipeBlockParams<Block>,
+    const IsRequired extends boolean = false,
 >({ block, options }: {
     block: PipeBlockDefinition<Block>;
-    options?: DescriptBlockOptions<Context, NoInfer<ParamsOut>, BlockResult, BeforeResultOut, AfterResultOut, ErrorResultOut, Params>;
+    options?: DescriptBlockOptions<Context, NoInfer<ParamsOut>, BlockResult, BeforeResultOut, AfterResultOut, ErrorResultOut, Params> & { required?: IsRequired };
 }) {
-    return new PipeBlock<Context, Block, ResultOut, ParamsOut, BlockResult, BeforeResultOut, AfterResultOut, ErrorResultOut, Params>({ block, options });
+    return new PipeBlock<Context, Block, ResultOut, ParamsOut, BlockResult, BeforeResultOut, AfterResultOut, ErrorResultOut, Params, IsRequired>({ block, options });
 };
 
 const isBlock = function(block: any) {

@@ -29,6 +29,7 @@ class FunctionBlock<
     AfterResultOut = unknown,
     ErrorResultOut = unknown,
     Params = never extends InferParamsOutFromBlock<BlockResult> ? ParamsOut : InferParamsOutFromBlock<BlockResult>,
+    IsRequired extends boolean = boolean,
 > extends BaseBlock<
         Context,
         FunctionBlockDefinition<Context, ParamsOut, BlockResult>,
@@ -40,7 +41,8 @@ class FunctionBlock<
         BeforeResultOut,
         AfterResultOut,
         ErrorResultOut,
-        Params
+        Params,
+        IsRequired
     > {
 
     protected initBlock(block: FunctionBlockDefinition<Context, ParamsOut, BlockResult>) {
@@ -104,6 +106,7 @@ class FunctionBlock<
         ExtendedBeforeResultOut = unknown,
         ExtendedAfterResultOut = unknown,
         ExtendedErrorResultOut = unknown,
+        const ExtendedIsRequired extends boolean = IsRequired,
     >({ options }: {
         options: DescriptBlockOptions<
             Context,
@@ -113,14 +116,15 @@ class FunctionBlock<
             ExtendedAfterResultOut,
             ExtendedErrorResultOut,
             ExtendedParams
-        >;
+        > & { required?: ExtendedIsRequired };
     }) {
-        return new FunctionBlock({
-            block: this.extendBlock(this.block) as typeof this.block,
-            // eslint-disable-next-line @typescript-eslint/ban-ts-comment
-            // @ts-expect-error
-            options: this.extendOptions(this.options, options) as typeof options,
-        });
+        // eslint-disable-next-line @typescript-eslint/no-explicit-any
+        const result = new FunctionBlock({ block: this.extendBlock(this.block) as any, options: this.extendOptions(this.options, options) as any });
+        return result as unknown as FunctionBlock<
+            Context, ExtendedParamsOut, ExtendedBlockResult,
+            BlockResultOut<ExtendedBlockResult, ExtendedBeforeResultOut, ExtendedAfterResultOut, ExtendedErrorResultOut>,
+            ExtendedBeforeResultOut, ExtendedAfterResultOut, ExtendedErrorResultOut, ExtendedParams, ExtendedIsRequired
+        >;
     }
 }
 

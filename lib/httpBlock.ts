@@ -188,6 +188,7 @@ class HttpBlock<
     AfterResultOut = unknown,
     ErrorResultOut = unknown,
     Params = ParamsOut,
+    IsRequired extends boolean = boolean,
 > extends Block<
         Context,
         DescriptHttpBlockDescription<ParamsOut, Context, HttpResult>,
@@ -198,7 +199,8 @@ class HttpBlock<
         BeforeResultOut,
         AfterResultOut,
         ErrorResultOut,
-        Params
+        Params,
+        IsRequired
     > {
 
     extend<

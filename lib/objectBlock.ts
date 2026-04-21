@@ -18,7 +18,9 @@ export type InferResultFromObjectBlocks<Block> = Block extends BaseBlock<
     Block;
 
 export type GetObjectBlockResult<T extends Record<string, any>> = {
-    [ P in keyof T ]: InferResultFromBlock<T[P]> | DescriptError
+    [ P in keyof T ]: T[P] extends { readonly __isRequired: true }
+        ? InferResultFromBlock<T[P]>
+        : InferResultFromBlock<T[P]> | DescriptError
 };
 
 export type GetObjectBlockParams<
@@ -50,6 +52,7 @@ class ObjectBlock<
     AfterResultOut = unknown,
     ErrorResultOut = unknown,
     Params = GetObjectBlockParams<Blocks>,
+    IsRequired extends boolean = boolean,
 > extends CompositeBlock<
         Context,
         ObjectBlockDefinition<Blocks>,
@@ -61,7 +64,8 @@ class ObjectBlock<
         BeforeResultOut,
         AfterResultOut,
         ErrorResultOut,
-        Params
+        Params,
+        IsRequired
     > {
 
     protected initBlock(object: ObjectBlockDefinition<Blocks>) {
