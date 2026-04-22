@@ -175,6 +175,10 @@ export type Tail<T> =
 // eslint-disable-next-line @typescript-eslint/no-unused-vars
     T extends readonly [ infer First, ...infer Rest ] | [ infer First, ...infer Rest ] ? Rest : never;
 
+export type Last<T> =
+// eslint-disable-next-line @typescript-eslint/no-unused-vars
+    T extends readonly [ ...infer Rest, infer L ] | [ ...infer Rest, infer L ] ? L : never;
+
 export type Equal<A, B> = A extends B ? (B extends A ? A : never) : never;
 
 export type DepsIds = Array<DescriptBlockId<any> | UntypedId>;

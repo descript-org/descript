@@ -1,6 +1,7 @@
 import { describe, expect, it, vi } from 'vitest';
 
 import * as de from '../lib';
+import type { Expect, TypesMatch } from './test.types';
 
 describe('de.pipe', () => {
 
@@ -113,6 +114,31 @@ describe('de.pipe', () => {
             expect(e).toBe(error);
             expect(spy1.mock.calls).toHaveLength(1);
         }
+    });
+
+    it('types: result type is the last block result type', async() => {
+        const block1 = de.func({
+            block: () => 42,
+        });
+        const block2 = de.func({
+            block: () => 'hello',
+        });
+        const block3 = de.func({
+            block: () => true,
+        });
+
+        const block = de.pipe({
+            block: [ block1, block2, block3 ],
+        });
+
+        const result = await de.run(block, { params: {} });
+
+        expect(typeof result).toBe('boolean');
+
+        // eslint-disable-next-line @typescript-eslint/no-unused-vars
+        type Tests = [
+            Expect<TypesMatch<typeof result, boolean>>,
+        ];
     });
 
 });

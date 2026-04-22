@@ -1,10 +1,10 @@
 import CompositeBlock from './compositeBlock';
 import { ERROR_ID, createError } from './error';
-import type { DescriptError } from './error';
 import type BaseBlock from './block';
 import type {
     BlockResultOut,
     First,
+    Last,
     InferResultFromBlock,
     InferParamsInFromBlock,
     Tail,
@@ -32,12 +32,6 @@ export type GetPipeBlockParams<
     PU = GetPipeBlockParamsUnion<PA>,
 > = PU;
 
-type GetPipeBlockResultUnion<T extends ReadonlyArray<unknown>> = {
-    0: never;
-    1: First<T> | DescriptError;
-    2: First<T> | DescriptError | GetPipeBlockResultUnion<Tail<T>>;
-}[ T extends [] ? 0 : T extends ((readonly [ any ]) | [ any ]) ? 1 : 2 ];
-
 type GetPipeBlockResultMap<T extends ReadonlyArray<unknown>> = {
     [ P in keyof T ]: InferResultFromBlock<T[ P ]>;
 };
@@ -45,8 +39,7 @@ type GetPipeBlockResultMap<T extends ReadonlyArray<unknown>> = {
 export type GetPipeBlockResult<
     T extends ReadonlyArray<unknown>,
     PA extends ReadonlyArray<unknown> = GetPipeBlockResultMap<T>,
-    PU = GetPipeBlockResultUnion<PA>,
-> = PU;
+> = Last<PA>;
 
 export type PipeBlockDefinition<T> = {
     [ P in keyof T ]: T[ P ] extends BaseBlock<
