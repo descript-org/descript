@@ -104,6 +104,8 @@ export type InferResultOrResultOnce<Result> = Result extends BaseBlock<
     infer BlockResult, infer BeforeResultOut, infer AfterResultOut, infer ErrorResultOut, infer Params
 > ? ResultOut : Result;
 
+export type IsRequiredBlock = { readonly __isRequired: true };
+
 export type InferResultFromBlock<Type> = Type extends BaseBlock<
     // eslint-disable-next-line @typescript-eslint/no-unused-vars
     infer Context, infer CustomBlock, infer ParamsOut, infer ResultOut, infer IntermediateResult,

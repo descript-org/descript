@@ -2,7 +2,7 @@ import CompositeBlock from './compositeBlock';
 import type { DescriptError } from './error';
 import { createError, ERROR_ID } from './error';
 import type BaseBlock from './block';
-import type { InferParamsInFromBlock, DescriptBlockOptions, BlockResultOut, UnionToIntersection, InferResultFromBlock } from './types';
+import type { InferParamsInFromBlock, DescriptBlockOptions, BlockResultOut, UnionToIntersection, InferResultFromBlock, IsRequiredBlock } from './types';
 import type ContextClass from './context';
 import type Cancel from './cancel';
 import type { DescriptBlockDeps } from './depsDomain';
@@ -18,7 +18,7 @@ export type InferResultFromObjectBlocks<Block> = Block extends BaseBlock<
     Block;
 
 export type GetObjectBlockResult<T extends Record<string, any>> = {
-    [ P in keyof T ]: T[P] extends { readonly __isRequired: true }
+    [ P in keyof T ]: T[P] extends IsRequiredBlock
         ? InferResultFromBlock<T[P]>
         : InferResultFromBlock<T[P]> | DescriptError
 };

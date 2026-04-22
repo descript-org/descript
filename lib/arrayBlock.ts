@@ -6,6 +6,7 @@ import type {
     First,
     InferResultFromBlock,
     InferParamsInFromBlock,
+    IsRequiredBlock,
     Tail,
     DescriptBlockOptions,
 } from './types';
@@ -15,7 +16,7 @@ import type Cancel from './cancel';
 import type { DescriptBlockDeps } from './depsDomain';
 import type DepsDomain from './depsDomain';
 
-type InferArrayElement<B> = B extends { readonly __isRequired: true }
+type InferArrayElement<B> = B extends IsRequiredBlock
     ? InferResultFromBlock<B>
     : InferResultFromBlock<B> | DescriptError;
 
