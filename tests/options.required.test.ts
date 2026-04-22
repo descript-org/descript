@@ -6,6 +6,7 @@ import * as de from '../lib';
 import { DescriptError } from '../lib';
 import { getPath } from './helpers';
 import Server from './server';
+import type { Expect, TypesMatch } from './test.types';
 
 const PORT = 10000;
 const fake = new Server({
@@ -179,5 +180,56 @@ describe('options.required', () => {
 
         const childHeaders = spy.mock.calls[ 0 ][ 0 ].headers;
         expect(childHeaders[ 'x-required-header' ]).toBe('true');
+    });
+
+    it('types: required=true removes DescriptError from object block result', async() => {
+        const block = de.object({
+            block: {
+                foo: de.func({
+                    block: () => 42,
+                    options: {
+                        required: true,
+                    },
+                }),
+                bar: de.func({
+                    block: () => 'hello',
+                    options: {
+                        required: true,
+                    },
+                }),
+            },
+        });
+
+        const result = await de.run(block, { params: {} });
+
+        expect(result.foo).toBe(42);
+        expect(result.bar).toBe('hello');
+
+        // eslint-disable-next-line @typescript-eslint/no-unused-vars
+        type Tests = [
+            Expect<TypesMatch<typeof result, { foo: number; bar: string }>>,
+        ];
+    });
+
+    it('types: required=false keeps DescriptError in object block result', async() => {
+        const block = de.object({
+            block: {
+                foo: de.func({
+                    block: () => 42,
+                    options: {
+                        required: false,
+                    },
+                }),
+            },
+        });
+
+        const result = await de.run(block, { params: {} });
+
+        expect(result.foo).toBe(42);
+
+        // eslint-disable-next-line @typescript-eslint/no-unused-vars
+        type Tests = [
+            Expect<TypesMatch<typeof result, { foo: number | DescriptError }>>,
+        ];
     });
 });
