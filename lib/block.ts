@@ -41,8 +41,10 @@ abstract class BaseBlock<
     AfterResultOut = unknown,
     ErrorResultOut = unknown,
     Params = ParamsOut,
+    IsRequired extends boolean = boolean,
 > {
     declare readonly __resultType: InferResultOrResult<ResultOut>;
+    declare readonly __isRequired: IsRequired;
 
     protected block: CustomBlock;
     protected options: BlockOptions<Context, ParamsOut, BlockResult, BeforeResultOut, AfterResultOut, ErrorResultOut, Params>;

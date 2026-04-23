@@ -67,13 +67,7 @@ const block3 = de.pipe({
             return params;
         },
         after: ({ result }) => {
-            if (typeof result === 'number') {
-                return result;
-            } else if ('b1' in result) {
-                return result.b1;
-            } else if ('b2' in result) {
-                return result.b2;
-            }
+            return result * 2;
         },
     },
 });

@@ -68,6 +68,7 @@ class FirstBlock<
     AfterResultOut = unknown,
     ErrorResultOut = unknown,
     Params = GetFirstBlockParams<Block>,
+    IsRequired extends boolean = boolean,
 > extends CompositeBlock<
         Context,
         FirstBlockDefinition<Block>,
@@ -79,7 +80,8 @@ class FirstBlock<
         BeforeResultOut,
         AfterResultOut,
         ErrorResultOut,
-        Params
+        Params,
+        IsRequired
     > {
 
     extend<

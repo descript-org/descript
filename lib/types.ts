@@ -104,12 +104,26 @@ export type InferResultOrResultOnce<Result> = Result extends BaseBlock<
     infer BlockResult, infer BeforeResultOut, infer AfterResultOut, infer ErrorResultOut, infer Params
 > ? ResultOut : Result;
 
+export type IsRequiredBlock = { readonly __isRequired: true };
+
 export type InferResultFromBlock<Type> = Type extends BaseBlock<
     // eslint-disable-next-line @typescript-eslint/no-unused-vars
     infer Context, infer CustomBlock, infer ParamsOut, infer ResultOut, infer IntermediateResult,
     // eslint-disable-next-line @typescript-eslint/no-unused-vars
     infer BlockResult, infer BeforeResultOut, infer AfterResultOut, infer ErrorResultOut, infer Params
 > ? InferResultOrResult<ResultOut> : never;
+
+export type DeepResolveResult<T> =
+    // eslint-disable-next-line @typescript-eslint/no-explicit-any
+    T extends BaseBlock<any, any, any, infer ResultOut, any, any, any, any, any, any>
+        ? DeepResolveResult<InferResultOrResult<ResultOut>>
+        : T extends DescriptError
+            ? DescriptError
+            : T extends Record<string, unknown>
+                ? { [K in keyof T]: DeepResolveResult<T[K]> }
+                : T;
+
+export type DeepInferResultFromBlock<T> = DeepResolveResult<InferResultFromBlock<T>>;
 
 export type InferParamsInFromBlock<Type> = Type extends BaseBlock<
     // eslint-disable-next-line @typescript-eslint/no-unused-vars
@@ -160,6 +174,10 @@ export type First<T> =
 export type Tail<T> =
 // eslint-disable-next-line @typescript-eslint/no-unused-vars
     T extends readonly [ infer First, ...infer Rest ] | [ infer First, ...infer Rest ] ? Rest : never;
+
+export type Last<T> =
+// eslint-disable-next-line @typescript-eslint/no-unused-vars
+    T extends readonly [ ...infer Rest, infer L ] | [ ...infer Rest, infer L ] ? L : never;
 
 export type Equal<A, B> = A extends B ? (B extends A ? A : never) : never;
 

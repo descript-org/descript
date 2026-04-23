@@ -6,6 +6,7 @@ import type {
     First,
     InferResultFromBlock,
     InferParamsInFromBlock,
+    IsRequiredBlock,
     Tail,
     DescriptBlockOptions,
 } from './types';
@@ -15,10 +16,14 @@ import type Cancel from './cancel';
 import type { DescriptBlockDeps } from './depsDomain';
 import type DepsDomain from './depsDomain';
 
+type InferArrayElement<B> = B extends IsRequiredBlock
+    ? InferResultFromBlock<B>
+    : InferResultFromBlock<B> | DescriptError;
+
 export type GetArrayBlockResult<T extends ReadonlyArray<unknown>> = {
     0: never;
-    1: [ InferResultFromBlock<First<T>> | DescriptError ];
-    2: [ InferResultFromBlock<First<T>> | DescriptError, ...GetArrayBlockResult<Tail<T>> ];
+    1: [ InferArrayElement<First<T>> ];
+    2: [ InferArrayElement<First<T>>, ...GetArrayBlockResult<Tail<T>> ];
 }[ T extends [] ? 0 : T extends ((readonly [ any ]) | [ any ]) ? 1 : 2 ];
 
 export type GetArrayBlockParamsUnion<T extends ReadonlyArray<unknown>> = {
@@ -57,6 +62,7 @@ class ArrayBlock<
     AfterResultOut = unknown,
     ErrorResultOut = unknown,
     Params = GetArrayBlockParams<Block>,
+    IsRequired extends boolean = boolean,
 > extends CompositeBlock<
         Context,
         ArrayBlockDefinition<Block>,
@@ -68,7 +74,8 @@ class ArrayBlock<
         BeforeResultOut,
         AfterResultOut,
         ErrorResultOut,
-        Params
+        Params,
+        IsRequired
     > {
 
     extend<

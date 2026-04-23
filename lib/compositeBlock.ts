@@ -28,6 +28,7 @@ abstract class CompositeBlock<
     AfterResultOut = unknown,
     ErrorResultOut = unknown,
     Params = ParamsOut,
+    IsRequired extends boolean = boolean,
 > extends BaseBlock<
         Context,
         CustomBlock,
@@ -39,7 +40,8 @@ abstract class CompositeBlock<
         BeforeResultOut,
         AfterResultOut,
         ErrorResultOut,
-        Params
+        Params,
+        IsRequired
     > {
 
     protected blocks: Array<{
