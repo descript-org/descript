@@ -29,6 +29,7 @@ import type {
     InferHttpBlock,
     InferResultOrResult,
     ExtractBadNestedParams,
+    DeepInferResultFromBlock,
 } from './types';
 import type BaseBlock from './block';
 import type { DescriptHttpBlockDescription, DescriptHttpBlockQuery, DescriptHttpBlockQueryValue } from './httpBlock';
@@ -218,6 +219,7 @@ export {
     DescriptBlockId,
     InferResultFromBlock,
     InferParamsInFromBlock,
+    DeepInferResultFromBlock,
     InferBlock,
     DescriptBlockDeps,
     BaseBlock,
