@@ -79,7 +79,6 @@ class ArrayBlock<
     > {
 
     extend<
-        // eslint-disable-next-line @typescript-eslint/no-unused-vars
         ExtendedResultOut extends
         BlockResultOut<ExtendedBlockResult, ExtendedBeforeResultOut, ExtendedAfterResultOut, ExtendedErrorResultOut>,
         ExtendedParamsOut extends Params = Params,
@@ -88,15 +87,20 @@ class ArrayBlock<
         ExtendedBeforeResultOut = unknown,
         ExtendedAfterResultOut = unknown,
         ExtendedErrorResultOut = unknown,
+        const ExtendedIsRequired extends boolean = IsRequired,
     >({ options }: {
         options: DescriptBlockOptions<
             Context, ExtendedParamsOut, ExtendedBlockResult, ExtendedBeforeResultOut, ExtendedAfterResultOut, ExtendedErrorResultOut, ExtendedParams
-        >;
+        > & { required?: ExtendedIsRequired };
     }) {
-        return new ArrayBlock({
+        const result = new ArrayBlock({
             block: this.extendBlock(this.block),
             options: this.extendOptions(this.options, options) as typeof options,
         });
+        return result as unknown as ArrayBlock<
+            Context, Block, ExtendedResultOut, ExtendedParamsOut, ExtendedBlockResult,
+            ExtendedBeforeResultOut, ExtendedAfterResultOut, ExtendedErrorResultOut, ExtendedParams, ExtendedIsRequired
+        >;
     }
 
     protected initBlock(array: ArrayBlockDefinition<Block>) {

@@ -110,7 +110,6 @@ class ObjectBlock<
     }
 
     extend<
-        // eslint-disable-next-line @typescript-eslint/no-unused-vars
         ExtendedResultOut extends
         BlockResultOut<ExtendedBlockResult, ExtendedBeforeResultOut, ExtendedAfterResultOut, ExtendedErrorResultOut>,
         // ExtendedCustomBlock extends ObjectBlockDefinition<Blocks>,
@@ -120,15 +119,20 @@ class ObjectBlock<
         ExtendedBeforeResultOut = unknown,
         ExtendedAfterResultOut = unknown,
         ExtendedErrorResultOut = unknown,
+        const ExtendedIsRequired extends boolean = IsRequired,
     >({ options }: {
         options: DescriptBlockOptions<
             Context, ExtendedParamsOut, ExtendedBlockResult, ExtendedBeforeResultOut, ExtendedAfterResultOut, ExtendedErrorResultOut, ExtendedParams
-        >;
+        > & { required?: ExtendedIsRequired };
     }) {
-        return new ObjectBlock({
+        const result = new ObjectBlock({
             block: this.extendBlock(this.block),
             options: this.extendOptions(this.options, options) as typeof options,
         });
+        return result as unknown as ObjectBlock<
+            Context, Blocks, ExtendedResultOut, ExtendedParamsOut, ExtendedBlockResult,
+            ExtendedBeforeResultOut, ExtendedAfterResultOut, ExtendedErrorResultOut, ExtendedParams, ExtendedIsRequired
+        >;
     }
 
 }

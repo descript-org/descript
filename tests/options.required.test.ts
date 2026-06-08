@@ -232,4 +232,170 @@ describe('options.required', () => {
             Expect<TypesMatch<typeof result, { foo: number | DescriptError }>>,
         ];
     });
+
+    it('types: func .extend({ required: true }) removes DescriptError from object block result', async() => {
+        const base = de.func({
+            block: () => 42,
+        });
+        const block = de.object({
+            block: {
+                foo: base.extend({
+                    options: {
+                        required: true,
+                    },
+                }),
+            },
+        });
+
+        const result = await de.run(block, { params: {} });
+
+        expect(result.foo).toBe(42);
+
+        // eslint-disable-next-line @typescript-eslint/no-unused-vars
+        type Tests = [
+            Expect<TypesMatch<typeof result, { foo: number }>>,
+        ];
+    });
+
+    it('types: http .extend({ required: true }) removes DescriptError from object block result', async() => {
+        const path = getPath();
+        fake.add(path, {
+            statusCode: 200,
+            headers: { 'content-type': 'application/json' },
+            content: JSON.stringify({ foo: 'bar' }),
+        });
+
+        const base = de.http({
+            block: {
+                hostname: 'localhost',
+                port: PORT,
+                pathname: path,
+            },
+            options: {
+                after: ({ result }) => result.result as { foo: string },
+            },
+        });
+        const block = de.object({
+            block: {
+                data: base.extend({
+                    options: {
+                        required: true,
+                    },
+                }),
+            },
+        });
+
+        const result = await de.run(block);
+
+        expect(result.data).toEqual({ foo: 'bar' });
+
+        // eslint-disable-next-line @typescript-eslint/no-unused-vars
+        type Tests = [
+            Expect<TypesMatch<typeof result, { data: { foo: string } }>>,
+        ];
+    });
+
+    it('types: http .extend({ required: false }) keeps DescriptError in object block result', async() => {
+        const path = getPath();
+        fake.add(path, {
+            statusCode: 200,
+            headers: { 'content-type': 'application/json' },
+            content: JSON.stringify({ foo: 'bar' }),
+        });
+
+        const base = de.http({
+            block: {
+                hostname: 'localhost',
+                port: PORT,
+                pathname: path,
+            },
+            options: {
+                after: ({ result }) => result.result as { foo: string },
+            },
+        });
+        const block = de.object({
+            block: {
+                data: base.extend({
+                    options: {
+                        required: false,
+                    },
+                }),
+            },
+        });
+
+        const result = await de.run(block);
+
+        expect(result.data).toEqual({ foo: 'bar' });
+
+        // eslint-disable-next-line @typescript-eslint/no-unused-vars
+        type Tests = [
+            Expect<TypesMatch<typeof result, { data: { foo: string } | DescriptError }>>,
+        ];
+    });
+
+    it('types: http .extend() inherits required=true from parent', async() => {
+        const path = getPath();
+        fake.add(path, {
+            statusCode: 200,
+            headers: { 'content-type': 'application/json' },
+            content: JSON.stringify({ foo: 'bar' }),
+        });
+
+        const base = de.http({
+            block: {
+                hostname: 'localhost',
+                port: PORT,
+                pathname: path,
+            },
+            options: {
+                after: ({ result }) => result.result as { foo: string },
+                required: true,
+            },
+        });
+        const block = de.object({
+            block: {
+                data: base.extend({}),
+            },
+        });
+
+        const result = await de.run(block);
+
+        expect(result.data).toEqual({ foo: 'bar' });
+
+        // eslint-disable-next-line @typescript-eslint/no-unused-vars
+        type Tests = [
+            Expect<TypesMatch<typeof result, { data: { foo: string } }>>,
+        ];
+    });
+
+    it('types: object .extend({ required: true }) removes DescriptError from parent object block result', async() => {
+        const inner = de.object({
+            block: {
+                foo: de.func({
+                    block: () => 42,
+                    options: {
+                        required: true,
+                    },
+                }),
+            },
+        });
+        const block = de.object({
+            block: {
+                data: inner.extend({
+                    options: {
+                        required: true,
+                    },
+                }),
+            },
+        });
+
+        const result = await de.run(block, { params: {} });
+
+        expect(result.data).toEqual({ foo: 42 });
+
+        // eslint-disable-next-line @typescript-eslint/no-unused-vars
+        type Tests = [
+            Expect<TypesMatch<typeof result, { data: { foo: number } }>>,
+        ];
+    });
 });

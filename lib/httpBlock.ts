@@ -214,11 +214,12 @@ class HttpBlock<
         ExtendedBeforeResultOut = unknown,
         ExtendedAfterResultOut = unknown,
         ExtendedErrorResultOut = unknown,
+        const ExtendedIsRequired extends boolean = IsRequired,
     >({ options, block }: {
         block?: DescriptHttpBlockDescription<ParamsOut & ExtendedParamsOut, Context, HttpResult>;
         options?: DescriptBlockOptions<
             Context, ExtendedParamsOut, ExtendedBlockResult, ExtendedBeforeResultOut, ExtendedAfterResultOut, ExtendedErrorResultOut, ExtendedParams
-        >;
+        > & { required?: ExtendedIsRequired };
     }) {
         const x = new HttpBlock<
             Context,
@@ -229,7 +230,8 @@ class HttpBlock<
             ExtendedBeforeResultOut,
             ExtendedAfterResultOut,
             ExtendedErrorResultOut,
-            ExtendedParams
+            ExtendedParams,
+            ExtendedIsRequired
         >({
             block: this.extendBlock(block),
             options: this.extendOptions(this.options, options),
