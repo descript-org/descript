@@ -78,9 +78,8 @@ class PipeBlock<
     > {
 
     extend<
-        // eslint-disable-next-line @typescript-eslint/no-unused-vars
-        // ExtendedResultOut extends
-        // BlockResultOut<ExtendedBlockResult, ExtendedBeforeResultOut, ExtendedAfterResultOut, ExtendedErrorResultOut>,
+        ExtendedResultOut extends
+        BlockResultOut<ExtendedBlockResult, ExtendedBeforeResultOut, ExtendedAfterResultOut, ExtendedErrorResultOut>,
         // ExtendedCustomBlock extends PipeBlockDefinition<Block>,
         ExtendedParamsOut extends Params = Params,
         ExtendedParams = Params,
@@ -88,15 +87,20 @@ class PipeBlock<
         ExtendedBeforeResultOut = unknown,
         ExtendedAfterResultOut = unknown,
         ExtendedErrorResultOut = unknown,
+        const ExtendedIsRequired extends boolean = IsRequired,
     >({ options }: {
         options: DescriptBlockOptions<
             Context, ExtendedParamsOut, ExtendedBlockResult, ExtendedBeforeResultOut, ExtendedAfterResultOut, ExtendedErrorResultOut, ExtendedParams
-        >;
+        > & { required?: ExtendedIsRequired };
     }) {
-        return new PipeBlock({
+        const result = new PipeBlock({
             block: this.extendBlock(this.block),
             options: this.extendOptions(this.options, options) as typeof options,
         });
+        return result as unknown as PipeBlock<
+            Context, Block, ExtendedResultOut, ExtendedParamsOut, ExtendedBlockResult,
+            ExtendedBeforeResultOut, ExtendedAfterResultOut, ExtendedErrorResultOut, ExtendedParams, ExtendedIsRequired
+        >;
     }
 
     protected initBlock(block: PipeBlockDefinition<Block>) {

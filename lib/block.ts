@@ -78,6 +78,7 @@ abstract class BaseBlock<
         ExtendedBeforeResultOut = unknown,
         ExtendedAfterResultOut = unknown,
         ExtendedErrorResultOut = unknown,
+        const ExtendedIsRequired extends boolean = IsRequired,
     >({ block, options }: {
         block?: CustomBlock;
         options?: DescriptBlockOptions<
@@ -88,7 +89,7 @@ abstract class BaseBlock<
             ExtendedAfterResultOut,
             ExtendedErrorResultOut,
             ExtendedParams
-        >;
+        > & { required?: ExtendedIsRequired };
     }): unknown;
 
     protected initBlock(block: CustomBlock) {
