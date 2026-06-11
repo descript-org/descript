@@ -10,7 +10,7 @@
     "homepage": "https://github.com/descript-org/descript",
     "repository": {
         "type": "git",
-        "url": "git://github.com/descript-org/descript.git"
+        "url": "git+https://github.com/descript-org/descript.git"
     },
     "bugs": {
         "url": "https://github.com/descript-org/descript/issues"
@@ -43,5 +43,8 @@
     "license": "MIT",
     "dependencies": {
         "@fengkx/zstd-napi": "^0.1.0"
+    },
+    "publishConfig": {
+        "provenance": true
     }
 }
